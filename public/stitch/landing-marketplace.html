@@ -1,0 +1,331 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Jenn | Pipeline Marketplace</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Playfair+Display:ital,wght@0,400..800;1,400..800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#e5e2e1",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#eae8e4",
+                        "surface": "#fcf9f5",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#858383",
+                        "secondary-fixed": "#f1e1c4",
+                        "surface-container": "#f0ede9",
+                        "tertiary": "#000000",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "tertiary-fixed-dim": "#c7c6c5",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#c4c7c7",
+                        "outline": "#747878",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#31302e",
+                        "surface-container-highest": "#e5e2de",
+                        "on-primary-fixed": "#1c1b1b",
+                        "tertiary-fixed": "#e3e2e0",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#1a1c1b",
+                        "surface-dim": "#dcdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#d4c5a9",
+                        "secondary": "#685d46",
+                        "on-secondary-fixed": "#221b09",
+                        "on-surface-variant": "#444748",
+                        "secondary-container": "#eedec1",
+                        "background": "#fcf9f5",
+                        "surface-container-low": "#f6f3ef",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#f3f0ec",
+                        "on-tertiary-container": "#838482",
+                        "on-surface": "#1c1c1a",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#504630",
+                        "on-background": "#1c1c1a",
+                        "on-tertiary-fixed": "#1a1c1b",
+                        "surface-bright": "#fcf9f5",
+                        "primary-container": "#1c1b1b",
+                        "surface-variant": "#e5e2de",
+                        "surface-tint": "#5f5e5e",
+                        "on-tertiary-fixed-variant": "#464746",
+                        "on-primary-fixed-variant": "#474746",
+                        "primary": "#000000",
+                        "on-secondary-container": "#6d614a",
+                        "inverse-primary": "#c8c6c5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "page-margin-desktop": "80px",
+                        "stack-xl": "120px",
+                        "stack-md": "48px",
+                        "page-margin-mobile": "24px",
+                        "gutter": "32px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "display-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-mono": ["JetBrains Mono"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "serif": ["Playfair Display", "serif"]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "600"}],
+                        "body-lg": ["20px", {"lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                        "label-mono": ["13px", {"lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "600"}],
+                        "display-xl": ["88px", {"lineHeight": "1", "letterSpacing": "-0.05em", "fontWeight": "400"}],
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .backdrop-blur-nav { backdrop-filter: blur(20px); }
+        .thin-border { border: 1px solid rgba(0, 0, 0, 0.05); }
+        .sharp-border { border: 1px solid var(--color-outline-variant); }
+        .ambient-glow { box-shadow: 0 32px 64px -15px rgba(0, 0, 0, 0.03); }
+        .glass-surface { background: rgba(255, 255, 255, 0.7); }
+        .transition-soft { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        
+        body {
+            background-color: #fcf9f5; /* Theme background */
+            scroll-behavior: smooth;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .abstract-blob-1 {
+            background: radial-gradient(circle, rgba(238,222,193,0.4) 0%, rgba(252,249,245,0) 70%);
+        }
+        .abstract-blob-2 {
+            background: radial-gradient(circle, rgba(200,198,197,0.3) 0%, rgba(252,249,245,0) 70%);
+        }
+    </style>
+</head>
+<body class="text-on-surface relative overflow-x-hidden">
+<!-- Abstract Backgrounds -->
+<div class="absolute top-0 left-0 w-[800px] h-[800px] abstract-blob-1 -translate-x-1/2 -translate-y-1/4 -z-10 rounded-full blur-[80px]"></div>
+<div class="absolute top-[40%] right-0 w-[600px] h-[600px] abstract-blob-2 translate-x-1/3 -z-10 rounded-full blur-[80px]"></div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-on-surface/[0.05]">
+<div class="max-w-[1280px] mx-auto px-page-margin-desktop flex justify-between items-center h-20">
+<div class="flex items-center gap-12">
+<a class="font-serif text-3xl italic font-semibold tracking-tight text-primary" href="#">Jenn</a>
+<div class="hidden md:flex gap-8">
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors uppercase" href="#">Product</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors uppercase" href="#">Features</a>
+<a class="font-label-mono text-label-mono text-primary font-medium border-b border-primary uppercase" href="#">Pipeline</a>
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-colors uppercase" href="#">Documentation</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-soft">search</button>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-none font-label-mono text-label-mono uppercase hover:opacity-80 transition-all active:scale-95">Download Jenn</button>
+</div>
+</div>
+</nav>
+<main class="pt-40">
+<!-- Hero Section -->
+<header class="max-w-[1280px] mx-auto px-page-margin-desktop mb-stack-xl relative z-10 text-center">
+<div class="max-w-4xl mx-auto">
+<span class="font-label-mono text-label-mono uppercase tracking-widest text-secondary mb-6 block">Modular Expansion</span>
+<h1 class="font-serif text-display-xl mb-8 leading-[1] text-primary italic">Assemble your Pipeline.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">High-speed inputs, bespoke renderers, and custom nodes. Tailor the Jenn core to your precise wavelength.</p>
+</div>
+</header>
+<!-- New: High-Speed Input Section (Chrome Smart Clipper) -->
+<section class="max-w-[1280px] mx-auto px-page-margin-desktop mb-stack-xl">
+<div class="bg-surface-container-low rounded-none sharp-border overflow-hidden grid grid-cols-1 lg:grid-cols-2 group hover:ambient-glow transition-soft relative">
+<div class="p-16 flex flex-col justify-center relative z-10 bg-surface/50 backdrop-blur-sm border-b lg:border-b-0 lg:border-r border-on-surface/5">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary text-on-primary rounded-none font-label-mono text-[11px] uppercase tracking-widest w-max mb-8">
+<span class="material-symbols-outlined text-[14px]">bolt</span> High-Speed Input
+                    </div>
+<h2 class="font-serif text-display-lg mb-6 leading-tight italic">Chrome Smart Clipper</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8">Bypass friction. Beam text, images, and full articles directly from your browser into the Jenn Core with semantic auto-tagging.</p>
+<div class="flex items-center gap-4">
+<button class="bg-primary text-on-primary px-8 py-3 rounded-none font-label-mono text-label-mono uppercase hover:bg-inverse-surface transition-colors flex items-center gap-2">
+                            Install Node <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="relative h-[400px] lg:h-auto bg-surface-container-highest overflow-hidden flex items-center justify-center">
+<!-- Abstract representation of the clipper pipeline -->
+<div class="absolute inset-0 bg-[linear-gradient(to_right,#0000000a_1px,transparent_1px),linear-gradient(to_bottom,#0000000a_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+<div class="relative z-10 w-full px-12 flex flex-col gap-6 items-center">
+<div class="w-full max-w-sm bg-surface p-6 sharp-border ambient-glow flex items-center gap-4 animate-[pulse_3s_ease-in-out_infinite]">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center"><span class="material-symbols-outlined text-secondary">language</span></div>
+<div class="flex-1">
+<div class="h-2 w-3/4 bg-surface-variant mb-2"></div>
+<div class="h-2 w-1/2 bg-surface-variant"></div>
+</div>
+</div>
+<div class="h-8 border-l border-dashed border-primary"></div>
+<div class="w-full max-w-md bg-surface p-8 sharp-border ambient-glow shadow-xl -ml-8">
+<div class="flex items-center justify-between mb-4">
+<span class="font-serif italic text-xl">Jenn Core</span>
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+</div>
+<div class="p-4 bg-surface-container-low border border-surface-variant font-label-mono text-xs text-on-surface-variant">
+                                 &gt; Segment ingested.<br>&gt; Generating semantic links...
+                             </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Modular Components (Previously Featured) -->
+<section class="max-w-[1280px] mx-auto px-page-margin-desktop mb-stack-xl">
+<div class="flex items-end justify-between mb-12 border-b border-on-surface/10 pb-6">
+<h2 class="font-serif text-headline-md italic text-primary">Core Modules</h2>
+<button class="font-label-mono text-label-mono uppercase tracking-widest hover:text-secondary transition-colors">View All Nodes</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-0 border-y border-x border-on-surface/10">
+<!-- Featured Item 1 -->
+<div class="group relative bg-surface overflow-hidden border-r border-b border-on-surface/10 transition-soft hover:bg-surface-container-low cursor-pointer p-12">
+<div class="flex flex-col h-full justify-between">
+<div>
+<div class="flex items-center justify-between mb-8">
+<div class="w-14 h-14 rounded-none bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined">network_node</span>
+</div>
+<span class="font-label-mono text-[11px] uppercase tracking-widest px-3 py-1 border border-primary text-primary">Processing Node</span>
+</div>
+<h3 class="font-serif text-3xl mb-4 italic">Neural Bridge</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 line-clamp-3">Automated semantic linking for your daily notes using local-first language models. It identifies patterns while you sleep, restructuring your graph.</p>
+</div>
+<div class="flex items-center justify-between pt-6 border-t border-on-surface/10">
+<p class="font-label-mono text-xs text-on-surface-variant">By Studio Minimal</p>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Featured Item 2 -->
+<div class="group relative bg-surface overflow-hidden border-b border-on-surface/10 transition-soft hover:bg-surface-container-low cursor-pointer p-12">
+<div class="flex flex-col h-full justify-between">
+<div>
+<div class="flex items-center justify-between mb-8">
+<div class="w-14 h-14 rounded-none bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined">text_fields</span>
+</div>
+<span class="font-label-mono text-[11px] uppercase tracking-widest px-3 py-1 border border-secondary text-secondary">Render Module</span>
+</div>
+<h3 class="font-serif text-3xl mb-4 italic">Zen Typography</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 line-clamp-3">Replace the default interface with hand-selected serif families designed for long-form philosophical contemplation. Strips away all UI chrome.</p>
+</div>
+<div class="flex items-center justify-between pt-6 border-t border-on-surface/10">
+<p class="font-label-mono text-xs text-on-surface-variant">By TypeCraft</p>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Community Nodes -->
+<section class="max-w-[1280px] mx-auto px-page-margin-desktop mb-stack-xl">
+<h2 class="font-serif text-headline-md italic mb-12">Community Nodes</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-on-surface/10">
+<!-- Plugin 1 -->
+<div class="group p-8 bg-surface border-r border-b border-on-surface/10 hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<div class="flex items-start gap-4 mb-6">
+<span class="material-symbols-outlined text-secondary">history</span>
+<div>
+<h5 class="font-body-md font-semibold font-serif italic text-xl">Chronos View</h5>
+<p class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">@timekeeper</p>
+</div>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant mb-6 h-16">Visualizes your note history on a dynamic vertical timeline for easy retrospection.</p>
+<div class="flex items-center justify-between pt-6 border-t border-on-surface/5">
+<span class="font-label-mono text-[11px] text-secondary">12.4k installs</span>
+<button class="font-label-mono text-xs uppercase hover:text-primary">Add Node</button>
+</div>
+</div>
+<!-- Plugin 2 -->
+<div class="group p-8 bg-surface border-r border-b border-on-surface/10 hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<div class="flex items-start gap-4 mb-6">
+<span class="material-symbols-outlined text-secondary">eco</span>
+<div>
+<h5 class="font-body-md font-semibold font-serif italic text-xl">Bloom Journal</h5>
+<p class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Garden Studio</p>
+</div>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant mb-6 h-16">A nature-inspired template system that adapts its aesthetic based on your local season.</p>
+<div class="flex items-center justify-between pt-6 border-t border-on-surface/5">
+<span class="font-label-mono text-[11px] text-secondary">8.2k installs</span>
+<button class="font-label-mono text-xs uppercase hover:text-primary">Add Node</button>
+</div>
+</div>
+<!-- Plugin 3 -->
+<div class="group p-8 bg-surface border-b border-on-surface/10 hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<div class="flex items-start gap-4 mb-6">
+<span class="material-symbols-outlined text-secondary">cable</span>
+<div>
+<h5 class="font-body-md font-semibold font-serif italic text-xl">Obsidian Bridge</h5>
+<p class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">OpenWeb</p>
+</div>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant mb-6 h-16">Seamlessly import and two-way sync your markdown vault with the Jenn workspace ecosystem.</p>
+<div class="flex items-center justify-between pt-6 border-t border-on-surface/5">
+<span class="font-label-mono text-[11px] text-secondary">15.9k installs</span>
+<button class="font-label-mono text-xs uppercase hover:text-primary">Add Node</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Developer CTA -->
+<section class="max-w-[1280px] mx-auto px-page-margin-desktop mb-stack-xl">
+<div class="bg-primary text-on-primary rounded-none p-20 text-center relative overflow-hidden">
+<div class="absolute top-0 right-0 w-96 h-96 bg-white/5 blur-[100px] rounded-full -mr-48 -mt-48"></div>
+<div class="absolute bottom-0 left-0 w-96 h-96 bg-white/5 blur-[100px] rounded-full -ml-48 -mb-48"></div>
+<h2 class="font-serif text-display-lg mb-6 relative z-10 italic">Engineer the Pipeline.</h2>
+<p class="max-w-xl mx-auto font-body-md text-body-lg text-on-primary/80 mb-10 relative z-10">Access the Core SDK. Build high-speed inputs, bespoke renderers, and semantic processors to expand the ecosystem.</p>
+<div class="flex flex-col md:flex-row items-center justify-center gap-6 relative z-10">
+<button class="bg-white text-primary px-10 py-4 rounded-none font-label-mono text-label-mono uppercase tracking-widest hover:bg-secondary-container transition-all">Core Documentation</button>
+<button class="border border-white/30 px-10 py-4 rounded-none font-label-mono text-label-mono uppercase tracking-widest hover:bg-white/10 transition-all">Developer Hub</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-xl bg-surface border-t border-on-surface/10">
+<div class="max-w-[1280px] mx-auto px-page-margin-desktop flex flex-col md:flex-row justify-between items-start gap-gutter">
+<div class="mb-8 md:mb-0">
+<span class="font-serif text-headline-md italic text-primary dark:text-primary-fixed mb-4 block">Jenn</span>
+<p class="font-body-md text-sm text-on-surface-variant max-w-[200px] leading-relaxed opacity-60">Crafted for those who value clarity and the space to breathe digital air.</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-2 gap-16">
+<div class="flex flex-col gap-4">
+<span class="font-label-mono text-label-mono uppercase tracking-widest text-secondary mb-2">Navigation</span>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary hover:underline decoration-on-surface-variant/30 underline-offset-4 transition-opacity" href="#">Changelog</a>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary hover:underline decoration-on-surface-variant/30 underline-offset-4 transition-opacity" href="#">Twitter</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-label-mono text-label-mono uppercase tracking-widest text-secondary mb-2">Legal</span>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary hover:underline decoration-on-surface-variant/30 underline-offset-4 transition-opacity" href="#">Privacy Policy</a>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary hover:underline decoration-on-surface-variant/30 underline-offset-4 transition-opacity" href="#">Terms of Service</a>
+</div>
+</div>
+<div class="w-full md:w-auto pt-8 md:pt-0 border-t md:border-0 border-on-surface/5 mt-8 md:mt-0">
+<p class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant">© 2024 Jenn Workspace. All rights reserved.</p>
+</div>
+</div>
+</footer>
+</body></html>

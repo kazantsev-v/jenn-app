@@ -1,0 +1,365 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Jenn - Stop thinking about where to save. Just capture.</title>
+<!-- Google Fonts: Cormorant Garamond, Inter and JetBrains Mono -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700;800&amp;family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Design System Tokens -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#eae8e4",
+                    "on-secondary": "#ffffff",
+                    "on-surface-variant": "#444748",
+                    "on-secondary-fixed": "#221b09",
+                    "on-error-container": "#93000a",
+                    "on-surface": "#1c1c1a",
+                    "tertiary-fixed": "#e3e2e0",
+                    "surface-bright": "#fcf9f5",
+                    "inverse-on-surface": "#f3f0ec",
+                    "background": "#fcf9f5",
+                    "outline": "#747878",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed-variant": "#474746",
+                    "tertiary-fixed-dim": "#c7c6c5",
+                    "on-primary-fixed": "#1c1b1b",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed": "#f1e1c4",
+                    "surface-tint": "#5f5e5e",
+                    "on-tertiary-fixed-variant": "#464746",
+                    "surface": "#fcf9f5",
+                    "on-tertiary": "#ffffff",
+                    "secondary-container": "#eedec1",
+                    "on-tertiary-fixed": "#1a1c1b",
+                    "tertiary-container": "#1a1c1b",
+                    "outline-variant": "#c4c7c7",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed-variant": "#504630",
+                    "on-background": "#1c1c1a",
+                    "tertiary": "#000000",
+                    "secondary": "#685d46",
+                    "inverse-primary": "#c8c6c5",
+                    "surface-container-low": "#f6f3ef",
+                    "on-primary-container": "#858383",
+                    "inverse-surface": "#31302e",
+                    "primary-fixed-dim": "#c8c6c5",
+                    "on-secondary-container": "#6d614a",
+                    "surface-dim": "#dcdad6",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#1c1b1b",
+                    "on-tertiary-container": "#838482",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#f0ede9",
+                    "secondary-fixed-dim": "#d4c5a9",
+                    "surface-container-highest": "#e5e2de",
+                    "primary": "#000000",
+                    "surface-variant": "#e5e2de",
+                    "primary-fixed": "#e5e2e1",
+                    "accent-gold": "#d4af37",
+                    "accent-purple": "#8a2be2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "32px",
+                    "unit": "8px",
+                    "stack-xl": "120px",
+                    "stack-md": "48px",
+                    "page-margin-desktop": "80px",
+                    "page-margin-mobile": "24px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Cormorant Garamond", "serif"],
+                    "label-mono": ["JetBrains Mono", "monospace"],
+                    "body-md": ["Inter", "sans-serif"],
+                    "display-lg": ["Cormorant Garamond", "serif"],
+                    "body-lg": ["Inter", "sans-serif"],
+                    "display-lg-mobile": ["Cormorant Garamond", "serif"]
+            },
+            "fontSize": {
+                    "headline-md": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-mono": ["13px", {"lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "display-lg": ["96px", {"lineHeight": "1.0", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-lg": ["22px", {"lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                    "display-lg-mobile": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        
+        body {
+            background-color: #fcf9f5;
+            color: #1c1c1a;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .glass-nav {
+            background: rgba(252, 249, 245, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .ambient-glow {
+            box-shadow: 0 32px 64px -15px rgba(0,0,0,0.03);
+        }
+
+        .app-mockup-border {
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Micro-interactions */
+        .btn-hover-effect {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-hover-effect:active {
+            transform: scale(0.96);
+        }
+        
+        .clip-diagonal {
+            clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 90%);
+        }
+        
+        .pulse-core {
+            animation: pulse-ring 3s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(138, 43, 226, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(138, 43, 226, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(138, 43, 226, 0); }
+        }
+    </style>
+</head>
+<body class="selection:bg-accent-gold/30 selection:text-primary overflow-x-hidden">
+<!-- TopNavBar Component -->
+<header class="fixed top-0 w-full z-50 glass-nav border-b border-on-surface/[0.05] shadow-[0_32px_64px_-15px_rgba(0,0,0,0.03)]">
+<div class="max-w-[1280px] mx-auto px-page-margin-desktop md:px-page-margin-desktop flex justify-between items-center h-20">
+<!-- Brand Logo -->
+<a class="font-headline-md text-3xl font-bold tracking-tight text-primary" href="#">
+                Jenn
+            </a>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-gutter">
+<a class="font-body-md text-body-md text-primary font-medium border-b border-primary pb-1" href="#">Product</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Pipeline</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Pricing</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Documentation</a>
+</nav>
+<!-- Trailing Action -->
+<div class="flex items-center gap-6">
+<button class="hidden md:block font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors">Sign in</button>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-body-md text-body-md font-medium btn-hover-effect hover:bg-accent-purple transition-colors">
+                    Get Jenn
+                </button>
+</div>
+</div>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative pt-stack-xl pb-stack-md md:pt-[160px]">
+<div class="max-w-[1280px] mx-auto px-page-margin-mobile md:px-page-margin-desktop relative z-10">
+<div class="flex flex-col items-center text-center max-w-5xl mx-auto">
+<!-- Subtle Chip -->
+<div class="mb-8 inline-flex items-center px-4 py-1 rounded-full bg-accent-gold/10 border border-accent-gold/30 text-on-surface">
+<span class="font-label-mono text-label-mono uppercase tracking-widest text-accent-gold font-bold">Overcome Decision Fatigue</span>
+</div>
+<!-- Headline -->
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-8 tracking-tighter leading-none">
+                        Stop thinking about where to save. <span class="text-accent-purple italic">Just capture.</span>
+</h1>
+<!-- Subheading -->
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mb-stack-md leading-relaxed">
+                        Information overload is real. Notion is slow and laggy. Your brain is exhausted by decision fatigue. Jenn is the instant buffer that captures chaos and routes it perfectly.
+                    </p>
+<!-- CTAs -->
+<div class="flex flex-col sm:flex-row gap-4 mb-stack-xl">
+<button class="bg-primary text-on-primary px-10 py-4 rounded-full font-body-lg text-body-lg font-medium btn-hover-effect hover:bg-accent-purple transition-colors shadow-lg shadow-accent-purple/20">
+                            Download Jenn
+                        </button>
+<button class="bg-transparent text-primary px-10 py-4 rounded-full font-body-lg text-body-lg font-medium btn-hover-effect border border-primary hover:bg-primary/5">
+                            See the Pipeline
+                        </button>
+</div>
+</div>
+<!-- Pipeline Visualization Container -->
+<div class="relative w-full max-w-[1280px] mx-auto mt-12 py-20">
+<!-- Dynamic Background -->
+<div class="absolute inset-0 bg-gradient-to-r from-accent-gold/5 via-accent-purple/5 to-transparent skew-y-3 -z-10"></div>
+<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0icmdiYSgwLDAsMCwwLjEpIi8+PC9zdmc+')] -z-10 opacity-50"></div>
+<!-- The Pipeline Layout -->
+<div class="flex flex-col lg:flex-row items-center justify-between gap-8 relative">
+<!-- Flow Lines -->
+<svg class="absolute top-1/2 left-0 w-full h-24 -translate-y-1/2 hidden lg:block -z-1" preserveAspectRatio="none" viewBox="0 0 1000 100">
+<path class="animate-[dash_20s_linear_infinite]" d="M 0 50 Q 250 50, 500 50 T 1000 50" fill="none" stroke="url(#grad1)" stroke-dasharray="10 10" stroke-width="2"></path>
+<defs>
+<linearGradient id="grad1" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" style="stop-color:#d4af37;stop-opacity:1"></stop>
+<stop offset="50%" style="stop-color:#8a2be2;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#1c1c1a;stop-opacity:1"></stop>
+</linearGradient>
+</defs>
+</svg>
+<!-- Left: The Inputs -->
+<div class="flex-1 w-full max-w-sm relative z-10 transform -rotate-1 hover:rotate-0 transition-transform duration-500">
+<div class="bg-surface p-6 border-2 border-primary shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col gap-4">
+<h3 class="font-label-mono uppercase tracking-widest text-accent-gold mb-2 border-b border-on-surface/[0.1] pb-2">1. The Inputs</h3>
+<!-- Extension Mockup -->
+<div class="bg-surface-container-low border border-outline/20 p-3 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">extension</span>
+<div class="flex-1">
+<div class="text-sm font-medium text-primary">Jenn Smart Clipper</div>
+<div class="text-xs text-on-surface-variant">Replaces dead-end bookmarks</div>
+</div>
+<div class="w-8 h-8 rounded-full bg-accent-gold/20 flex items-center justify-center text-accent-gold font-bold">+</div>
+</div>
+<div class="flex gap-2 text-sm font-label-mono text-on-surface-variant mt-2">
+<span class="bg-surface-container px-2 py-1 border border-outline/10">Telegram</span>
+<span class="bg-surface-container px-2 py-1 border border-outline/10">CLI</span>
+<span class="bg-surface-container px-2 py-1 border border-outline/10">Desktop</span>
+</div>
+</div>
+</div>
+<!-- Center: Jenn Core -->
+<div class="flex-none w-64 h-64 relative z-20 flex items-center justify-center">
+<div class="absolute inset-0 bg-accent-purple/20 rounded-full blur-2xl pulse-core"></div>
+<div class="w-48 h-48 bg-primary rounded-full flex flex-col items-center justify-center text-on-primary border-4 border-accent-purple relative overflow-hidden z-10 shadow-[0_0_40px_rgba(138,43,226,0.4)]">
+<div class="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%,transparent_100%)] bg-[length:250%_250%,100%_100%] animate-[bg-pan_3s_linear_infinite]"></div>
+<span class="material-symbols-outlined text-[48px] text-accent-gold mb-2 relative z-10">hub</span>
+<span class="font-headline-md text-2xl relative z-10">Jenn Core</span>
+<span class="font-label-mono text-[10px] uppercase tracking-widest text-on-primary/60 mt-2 relative z-10">Instant Buffer</span>
+</div>
+</div>
+<!-- Right: The Outputs -->
+<div class="flex-1 w-full max-w-sm relative z-10 transform rotate-1 hover:rotate-0 transition-transform duration-500">
+<div class="bg-surface p-6 border-2 border-primary shadow-[-8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col gap-4">
+<h3 class="font-label-mono uppercase tracking-widest text-accent-purple mb-2 border-b border-on-surface/[0.1] pb-2 text-right">3. Structured Output</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 bg-surface-container-low border border-outline/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">article</span>
+<span class="text-sm font-medium">Notion</span>
+</div>
+<span class="text-[10px] font-label-mono text-error uppercase bg-error/10 px-2 py-0.5">Laggy UI Bypassed</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low border border-outline/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">edit_document</span>
+<span class="text-sm font-medium">Obsidian</span>
+</div>
+<span class="text-[10px] font-label-mono text-accent-gold uppercase bg-accent-gold/10 px-2 py-0.5">Markdown Synced</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low border border-outline/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">table_chart</span>
+<span class="text-sm font-medium">Google Sheets</span>
+</div>
+<span class="text-[10px] font-label-mono text-accent-purple uppercase bg-accent-purple/10 px-2 py-0.5">Data Extracted</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Background Texture / Ambient Elements -->
+<div class="absolute top-0 left-0 w-full h-full -z-20 opacity-[0.03] pointer-events-none">
+</div>
+</section>
+<!-- Bento Features Teaser -->
+<section class="max-w-[1280px] mx-auto px-page-margin-desktop py-stack-xl relative z-10">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Large Card -->
+<div class="md:col-span-8 bg-surface p-stack-md flex flex-col justify-between border-2 border-primary group overflow-hidden relative">
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-accent-gold/10 rounded-full blur-3xl"></div>
+<div class="max-w-xl relative z-10">
+<span class="font-label-mono text-label-mono text-accent-gold mb-4 block font-bold">The Buffer Layer</span>
+<h3 class="font-headline-md text-headline-md text-primary mb-4">Because Notion is too slow for your thoughts.</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-lg">
+                            Stop waiting for heavy web apps to load just to jot down an idea. Jenn acts as your lightning-fast local buffer, instantly capturing inputs and seamlessly routing them to your preferred, slower tools in the background.
+                        </p>
+</div>
+<div class="mt-stack-md transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 relative z-10">
+<div class="flex gap-4">
+<div class="flex-1 h-12 bg-primary text-on-primary flex items-center justify-center font-label-mono text-xs uppercase tracking-widest skew-x-[-10deg]">Capture</div>
+<div class="flex-1 h-12 bg-accent-purple text-on-primary flex items-center justify-center font-label-mono text-xs uppercase tracking-widest skew-x-[-10deg]">Process</div>
+<div class="flex-1 h-12 bg-surface-container-highest border border-primary flex items-center justify-center font-label-mono text-xs uppercase tracking-widest skew-x-[-10deg]">Route</div>
+</div>
+</div>
+</div>
+<!-- Small Card -->
+<div class="md:col-span-4 bg-primary text-on-primary p-stack-md flex flex-col border-2 border-primary relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-accent-purple/20 to-transparent"></div>
+<div class="bg-accent-gold w-12 h-12 flex items-center justify-center mb-6 relative z-10 transform rotate-3">
+<span class="material-symbols-outlined text-[28px] text-primary">bolt</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4 relative z-10">Instant. Always.</h3>
+<p class="font-body-md text-body-md text-on-primary/80 leading-relaxed relative z-10">
+                        Zero latency. No loading spinners. When inspiration strikes, Jenn is already there waiting.
+                    </p>
+<div class="mt-auto pt-8 relative z-10">
+<a class="font-label-mono text-label-mono uppercase tracking-widest flex items-center gap-2 hover:gap-4 transition-all text-accent-gold" href="#">
+                            See How Fast <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="w-full py-stack-xl mt-stack-xl bg-surface-container-low border-t-2 border-primary">
+<div class="max-w-[1280px] mx-auto px-page-margin-desktop flex flex-col md:flex-row justify-between items-start gap-gutter">
+<div class="space-y-4">
+<span class="font-headline-md text-3xl font-bold text-primary">Jenn</span>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">The instant buffer for your chaotic mind.</p>
+</div>
+<div class="flex flex-wrap gap-x-12 gap-y-6">
+<div class="flex flex-col gap-3">
+<span class="font-label-mono text-label-mono uppercase tracking-widest text-accent-purple mb-2">Product</span>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:underline underline-offset-4 decoration-accent-purple" href="#">Changelog</a>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:underline underline-offset-4 decoration-accent-purple" href="#">Plugins</a>
+</div>
+<div class="flex flex-col gap-3">
+<span class="font-label-mono text-label-mono uppercase tracking-widest text-accent-purple mb-2">Community</span>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:underline underline-offset-4 decoration-accent-purple" href="#">Twitter</a>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:underline underline-offset-4 decoration-accent-purple" href="#">Discord</a>
+</div>
+<div class="flex flex-col gap-3">
+<span class="font-label-mono text-label-mono uppercase tracking-widest text-accent-purple mb-2">Legal</span>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:underline underline-offset-4 decoration-accent-purple" href="#">Privacy Policy</a>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:underline underline-offset-4 decoration-accent-purple" href="#">Terms of Service</a>
+</div>
+</div>
+<div class="w-full md:w-auto pt-8 md:pt-0">
+<p class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant">© 2024 Jenn Workspace. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<style>
+    @keyframes dash {
+        to {
+            stroke-dashoffset: -1000;
+        }
+    }
+    @keyframes bg-pan {
+        0% { background-position: 0% 0%; }
+        100% { background-position: 100% 100%; }
+    }
+</style>
+</body></html>

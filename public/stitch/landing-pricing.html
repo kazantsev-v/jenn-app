@@ -1,0 +1,289 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Pricing | Jenn Workspace</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#f6f3ef",
+                    "surface-container-highest": "#e5e2de",
+                    "outline": "#747878",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-on-surface": "#f3f0ec",
+                    "tertiary": "#000000",
+                    "secondary-container": "#eedec1",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "surface-tint": "#5f5e5e",
+                    "surface-container": "#f0ede9",
+                    "primary-container": "#1c1b1b",
+                    "on-primary-fixed-variant": "#474746",
+                    "on-surface-variant": "#444748",
+                    "primary-fixed": "#e5e2e1",
+                    "inverse-surface": "#31302e",
+                    "surface-variant": "#e5e2de",
+                    "on-tertiary-fixed": "#1a1c1b",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#c7c6c5",
+                    "tertiary-container": "#1a1c1b",
+                    "surface-dim": "#dcdad6",
+                    "on-secondary-fixed-variant": "#504630",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-primary-container": "#858383",
+                    "on-secondary-container": "#6d614a",
+                    "background": "#fcf9f5",
+                    "primary-fixed-dim": "#c8c6c5",
+                    "primary": "#000000",
+                    "outline-variant": "#c4c7c7",
+                    "on-primary-fixed": "#1c1b1b",
+                    "secondary-fixed": "#f1e1c4",
+                    "surface": "#fcf9f5",
+                    "on-tertiary-fixed-variant": "#464746",
+                    "inverse-primary": "#c8c6c5",
+                    "on-secondary": "#ffffff",
+                    "surface-bright": "#fcf9f5",
+                    "secondary-fixed-dim": "#d4c5a9",
+                    "secondary": "#685d46",
+                    "on-surface": "#1c1c1a",
+                    "on-background": "#1c1c1a",
+                    "surface-container-high": "#eae8e4",
+                    "on-tertiary-container": "#838482",
+                    "on-secondary-fixed": "#221b09",
+                    "tertiary-fixed": "#e3e2e0",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "stack-xl": "120px",
+                    "page-margin-desktop": "80px",
+                    "gutter": "32px",
+                    "page-margin-mobile": "24px",
+                    "stack-md": "48px"
+            },
+            "fontFamily": {
+                    "label-mono": ["JetBrains Mono"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "display-lg-mobile": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-mono": ["13px", {"lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "body-lg": ["20px", {"lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "600"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "600"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fcf9f5;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .ambient-glow {
+            box-shadow: 0 32px 64px -15px rgba(0,0,0,0.03);
+        }
+        .pricing-card {
+            border: 1px solid rgba(0,0,0,0.06);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .pricing-card:hover {
+            border-color: rgba(0,0,0,0.12);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.03);
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 glass-nav border-b border-on-surface/[0.05]">
+<div class="max-w-[1280px] mx-auto px-page-margin-desktop flex justify-between items-center h-20">
+<div class="font-headline-md text-headline-md font-semibold tracking-tight text-primary">Jenn</div>
+<nav class="hidden md:flex gap-8">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Product</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Features</a>
+<a class="font-body-md text-body-md text-primary font-medium border-b border-primary" href="#">Pricing</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Documentation</a>
+</nav>
+<button class="font-body-md text-body-md bg-primary text-on-primary px-6 py-2 rounded-full active:scale-95 transition-all duration-300 hover:opacity-90">
+                Download Jenn
+            </button>
+</div>
+</header>
+<main class="pt-40">
+<!-- Hero Section -->
+<section class="max-w-[1280px] mx-auto px-page-margin-desktop text-center mb-stack-xl">
+<span class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant mb-6 block">Pricing</span>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg mb-8">Invest in your mind.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                Simple pricing for a tool built to last a lifetime. No subscriptions, no distractions. Just your thoughts, organized for eternity.
+            </p>
+</section>
+<!-- Pricing Tiers -->
+<section class="max-w-[1280px] mx-auto px-page-margin-desktop mb-stack-xl">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Personal Tier -->
+<div class="pricing-card bg-surface-container-lowest p-12 rounded-xl flex flex-col h-full">
+<div class="mb-10">
+<h2 class="font-headline-md text-headline-md mb-2">Personal</h2>
+<div class="flex items-baseline gap-1">
+<span class="font-display-lg text-display-lg-mobile text-primary">Free</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-4">Essential tools for individual thinkers.</p>
+</div>
+<ul class="space-y-6 flex-grow mb-12">
+<li class="flex items-center gap-4 font-body-md text-body-md text-on-surface">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'opsz' 20">check</span>
+                            Unlimited local notes
+                        </li>
+<li class="flex items-center gap-4 font-body-md text-body-md text-on-surface">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'opsz' 20">check</span>
+                            Markdown support
+                        </li>
+<li class="flex items-center gap-4 font-body-md text-body-md text-on-surface">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'opsz' 20">check</span>
+                            Standard community access
+                        </li>
+</ul>
+<button class="w-full py-4 px-8 border border-outline-variant font-body-md text-body-md rounded-lg hover:bg-surface-container-low transition-colors">
+                        Start for free
+                    </button>
+</div>
+<!-- Pro Tier -->
+<div class="pricing-card bg-surface-container-lowest p-12 rounded-xl flex flex-col h-full relative overflow-hidden">
+<div class="absolute top-6 right-6">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-mono text-[10px] uppercase tracking-tighter">Lifetime</span>
+</div>
+<div class="mb-10">
+<h2 class="font-headline-md text-headline-md mb-2">Pro</h2>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg-mobile text-primary">$99</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">One-time payment</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-4">For the serious knowledge worker.</p>
+</div>
+<ul class="space-y-6 flex-grow mb-12">
+<li class="flex items-center gap-4 font-body-md text-body-md text-on-surface">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'opsz' 20, 'FILL' 1">star</span>
+                            Everything in Personal
+                        </li>
+<li class="flex items-center gap-4 font-body-md text-body-md text-on-surface">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'opsz' 20, 'FILL' 1">star</span>
+                            End-to-end encrypted cloud sync
+                        </li>
+<li class="flex items-center gap-4 font-body-md text-body-md text-on-surface">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'opsz' 20, 'FILL' 1">star</span>
+                            Advanced graph visualization
+                        </li>
+<li class="flex items-center gap-4 font-body-md text-body-md text-on-surface">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'opsz' 20, 'FILL' 1">star</span>
+                            Priority support &amp; Beta access
+                        </li>
+</ul>
+<button class="w-full py-4 px-8 bg-secondary text-on-secondary font-body-md text-body-md rounded-lg hover:opacity-90 active:scale-[0.98] transition-all">
+                        Get Pro Lifetime
+                    </button>
+</div>
+</div>
+</section>
+<!-- Community Section -->
+<section class="max-w-[1280px] mx-auto px-page-margin-desktop py-stack-xl">
+<div class="bg-surface-container-low rounded-3xl p-16 md:p-24 text-center border border-on-surface/[0.03]">
+<h2 class="font-headline-md text-headline-md mb-6">Join the collective</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mx-auto mb-12">
+                    Jenn is more than a tool; it's a growing sanctuary for thinkers. Connect with others who value clarity and focused deep work.
+                </p>
+<div class="flex flex-col md:flex-row justify-center gap-gutter">
+<a class="flex items-center justify-center gap-4 group" href="#">
+<div class="w-14 h-14 rounded-full bg-surface-container-lowest border border-outline-variant flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-primary">groups</span>
+</div>
+<div class="text-left">
+<p class="font-body-md text-body-md text-primary font-medium">Discord</p>
+<p class="font-label-mono text-[12px] text-on-surface-variant">Join the conversation</p>
+</div>
+</a>
+<div class="w-px h-12 bg-outline-variant/30 hidden md:block"></div>
+<a class="flex items-center justify-center gap-4 group" href="#">
+<div class="w-14 h-14 rounded-full bg-surface-container-lowest border border-outline-variant flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-primary">campaign</span>
+</div>
+<div class="text-left">
+<p class="font-body-md text-body-md text-primary font-medium">Twitter</p>
+<p class="font-label-mono text-[12px] text-on-surface-variant">Latest updates</p>
+</div>
+</a>
+</div>
+</div>
+</section>
+<!-- Editorial Image Section -->
+<section class="max-w-[1280px] mx-auto px-page-margin-desktop mb-stack-xl">
+<div class="relative h-[600px] rounded-3xl overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105" data-alt="A cinematic, high-key photograph of a minimalist wooden desk in a sunlit room. A premium open notebook and a sleek metallic pen sit next to a high-end monitor displaying a clean, text-heavy workspace interface. The lighting is soft and warm, suggesting a quiet morning of deep focus. The aesthetic is profoundly serene, drawing from Japanese minimalism and Swiss functionalism." src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg">
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+<div class="absolute bottom-12 left-12 text-on-primary">
+<p class="font-headline-md text-headline-md mb-2">Built for the next hundred years.</p>
+<p class="font-body-md text-body-md opacity-80">Local-first software that stays with you.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-xl bg-surface-container-low border-t border-on-surface/[0.05]">
+<div class="max-w-[1280px] mx-auto px-page-margin-desktop flex flex-col md:flex-row justify-between items-start gap-gutter">
+<div class="flex flex-col gap-6">
+<div class="font-headline-md text-headline-md text-primary">Jenn</div>
+<p class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant max-w-xs">
+                    © 2024 Jenn Workspace. All rights reserved.
+                </p>
+</div>
+<div class="grid grid-cols-2 md:flex gap-12">
+<div class="flex flex-col gap-4">
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary hover:underline decoration-on-surface-variant/30 underline-offset-4 transition-all" href="#">Privacy Policy</a>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary hover:underline decoration-on-surface-variant/30 underline-offset-4 transition-all" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col gap-4">
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary hover:underline decoration-on-surface-variant/30 underline-offset-4 transition-all" href="#">Twitter</a>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary hover:underline decoration-on-surface-variant/30 underline-offset-4 transition-all" href="#">Changelog</a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction: Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-[0_4px_24px_rgba(0,0,0,0.02)]');
+            } else {
+                header.classList.remove('shadow-[0_4px_24px_rgba(0,0,0,0.02)]');
+            }
+        });
+    </script>
+</body></html>

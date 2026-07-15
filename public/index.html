@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jenn - Stop thinking about where to save. Just capture.</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700;800&amp;family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "tertiary-fixed": "#e3e2e0",
+                "on-surface-variant": "#444748",
+                "primary-container": "#1c1b1b",
+                "on-primary-container": "#858383",
+                "on-error": "#ffffff",
+                "primary": "#000000",
+                "on-tertiary-fixed-variant": "#464746",
+                "primary-fixed-dim": "#c8c6c5",
+                "tertiary-fixed-dim": "#c7c6c5",
+                "error-container": "#ffdad6",
+                "outline-variant": "#c4c7c7",
+                "on-error-container": "#93000a",
+                "inverse-surface": "#31302e",
+                "on-secondary-fixed": "#221b09",
+                "tertiary-container": "#1a1c1b",
+                "inverse-primary": "#c8c6c5",
+                "surface": "#fcf9f5",
+                "surface-container-high": "#eae8e4",
+                "secondary": "#D16FFF",
+                "secondary-fixed-dim": "#d4c5a9",
+                "on-secondary-fixed-variant": "#504630",
+                "surface-bright": "#fcf9f5",
+                "surface-container-highest": "#e5e2de",
+                "outline": "#747878",
+                "on-background": "#1c1c1a",
+                "surface-tint": "#5f5e5e",
+                "surface-container-lowest": "#ffffff",
+                "on-primary": "#ffffff",
+                "on-primary-fixed": "#1c1b1b",
+                "on-tertiary-container": "#838482",
+                "tertiary": "#000000",
+                "surface-container": "#f0ede9",
+                "on-tertiary": "#ffffff",
+                "on-surface": "#1c1c1a",
+                "on-primary-fixed-variant": "#474746",
+                "surface-dim": "#dcdad6",
+                "surface-variant": "#e5e2de",
+                "on-tertiary-fixed": "#1a1c1b",
+                "on-secondary": "#ffffff",
+                "background": "#fcf9f5",
+                "surface-container-low": "#f6f3ef",
+                "inverse-on-surface": "#f3f0ec",
+                "error": "#ba1a1a",
+                "secondary-fixed": "#f1e1c4",
+                "primary-fixed": "#e5e2e1",
+                "secondary-container": "#eedec1",
+                "on-secondary-container": "#6d614a"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "gutter": "32px",
+                "unit": "8px",
+                "page-margin-mobile": "24px",
+                "stack-md": "48px",
+                "stack-xl": "120px",
+                "page-margin-desktop": "80px"
+        },
+        "fontFamily": {
+                "headline-md": [
+                        "Inter"
+                ],
+                "body-lg": [
+                        "Inter"
+                ],
+                "display-lg": [
+                        "Inter"
+                ],
+                "label-mono": [
+                        "JetBrains Mono"
+                ],
+                "display-lg-mobile": [
+                        "Inter"
+                ],
+                "body-md": [
+                        "Inter"
+                ]
+        },
+        "fontSize": {
+                "headline-md": [
+                        "32px",
+                        {
+                                "lineHeight": "1.3",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-lg": [
+                        "20px",
+                        {
+                                "lineHeight": "1.6",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "400"
+                        }
+                ],
+                "display-lg": [
+                        "64px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.04em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-mono": [
+                        "13px",
+                        {
+                                "lineHeight": "1.5",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "display-lg-mobile": [
+                        "40px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.03em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.6",
+                                "letterSpacing": "0",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        
+        body {
+            background-color: #fcf9f5;
+            color: #1c1c1a;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .glass-nav {
+            background: rgba(252, 249, 245, 0.8);
+            backdrop-filter: blur(20px);
+            transition: background 0.4s ease;
+        }
+
+        .btn-hover-effect {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-hover-effect:active {
+            transform: scale(0.96);
+        }
+
+        /* Dusty Bubble Animations */
+        @keyframes pulse-soft {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(209, 111, 255, 0.1); }
+            50% { transform: scale(1.03); box-shadow: 0 0 70px rgba(209, 111, 255, 0.2); }
+        }
+        .animate-pulse-soft { animation: pulse-soft 6s ease-in-out infinite; }
+
+        @keyframes drift {
+            0%, 100% { transform: translateY(0) rotate(var(--rot)); }
+            50% { transform: translateY(-10px) rotate(calc(var(--rot) + 2deg)); }
+        }
+        .animate-drift { animation: drift 4s ease-in-out infinite; }
+        
+        .card-stack-item {
+            --rot: 0deg;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .card-stack-item:hover {
+            transform: translateY(-15px) scale(1.05) rotate(0deg) !important;
+            z-index: 50 !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        /* Flow Lines Animation */
+        .flow-line {
+            stroke-dasharray: 8;
+            animation: flow-dash 3s linear infinite;
+        }
+        @keyframes flow-dash {
+            to { stroke-dashoffset: -48; }
+        }
+
+        @keyframes stream-progress {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .animate-pulse-soft, .animate-drift, .flow-line, .stream-progress {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* Glassmorphism Layers */
+        .glass-layer-1 {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .glass-layer-2 {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 30px 60px -12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8);
+        }
+        
+        .glass-inner-panel {
+            background: rgba(240, 237, 233, 0.4);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        html.dark body { background-color: #1a1a1a; color: #f0ede9; }
+        html.dark .glass-nav { background: rgba(26, 26, 26, 0.85); border-color: rgba(255,255,255,0.06); }
+        html.dark .glass-card { background: rgba(40,40,42,0.6); border-color: rgba(255,255,255,0.08); box-shadow: 0 30px 60px -12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05); }
+        html.dark .glass-layer-1 { background: rgba(40,40,42,0.5); border-color: rgba(255,255,255,0.06); }
+        html.dark .glass-layer-2 { background: rgba(30,30,32,0.4); border-color: rgba(255,255,255,0.04); }
+        html.dark .glass-inner-panel { background: rgba(20,20,22,0.5); border-color: rgba(255,255,255,0.04); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+        html.dark .card-stack-item:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+
+        html.dark .bg-surface { background-color: #1a1a1a !important; }
+        html.dark .bg-background { background-color: #1a1a1a !important; }
+        html.dark .bg-surface-container { background-color: #242426 !important; }
+        html.dark .bg-surface-container-high { background-color: #2e2e30 !important; }
+        html.dark .bg-surface-container-low { background-color: #202022 !important; }
+        html.dark .bg-surface-container-highest { background-color: #383838 !important; }
+        html.dark .bg-surface-container-lowest { background-color: #141414 !important; }
+        html.dark .bg-surface-variant { background-color: #2e2e30 !important; }
+        html.dark .bg-primary-container { background-color: #2a2a2c !important; }
+        html.dark .bg-secondary-container { background-color: #3d3520 !important; }
+        html.dark .bg-surface-dim { background-color: #141414 !important; }
+
+        html.dark .text-primary { color: #f0ede9 !important; }
+        html.dark .text-on-surface { color: #f0ede9 !important; }
+        html.dark .text-on-surface-variant { color: #9CA3AF !important; }
+        html.dark .text-on-background { color: #f0ede9 !important; }
+        html.dark .text-outline { color: #747878 !important; }
+        html.dark .text-inverse-primary { color: #1a1a1a !important; }
+
+        html.dark .border-outline-variant { border-color: rgba(255,255,255,0.08) !important; }
+        html.dark .border-outline { border-color: rgba(255,255,255,0.15) !important; }
+
+        html.dark .hover\:text-primary:hover { color: #f0ede9 !important; }
+        html.dark .hover\:bg-surface-container:hover { background-color: #2e2e30 !important; }
+
+        html.dark .shadow-lg { --tw-shadow-color: rgba(0,0,0,0.3) !important; }
+        html.dark .shadow-2xl { --tw-shadow-color: rgba(0,0,0,0.4) !important; }
+
+        html.dark .selection\:bg-secondary\/30::selection { background-color: rgba(209,111,255,0.2) !important; }
+
+        .theme-toggle, .lang-toggle {
+            width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            transition: all 0.3s ease; background: transparent;
+        }
+        .theme-toggle:hover, .lang-toggle:hover { background: rgba(0,0,0,0.05); }
+        html.dark .theme-toggle, html.dark .lang-toggle { border-color: rgba(255,255,255,0.12); color: #f0ede9; }
+        html.dark .theme-toggle:hover, html.dark .lang-toggle:hover { background: rgba(255,255,255,0.08); }
+    </style>
+</head>
+<body class="selection:bg-secondary/30 selection:text-primary overflow-x-hidden">
+<!-- TopNavBar Component -->
+<header class="fixed top-0 w-full z-50 glass-nav border-b border-outline-variant/30 shadow-[0_32px_64px_-15px_rgba(0,0,0,0.03)]">
+<div class="max-w-[1280px] mx-auto px-page-margin-desktop md:px-page-margin-desktop flex justify-between items-center h-20">
+<a class="font-headline-md text-3xl font-bold tracking-tight text-primary" href="#">Jenn</a>
+<nav class="hidden md:flex items-center gap-gutter">
+<a class="font-body-md text-body-md text-primary font-medium border-b border-primary pb-1" href="#" data-i18n="nav.product">Product</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#" data-i18n="nav.pipeline">Pipeline</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#" data-i18n="nav.faq">FAQ (Ответы на вопросы)</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#" data-i18n="nav.docs">Documentation</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="lang-toggle" onclick="toggleLang()" title="RU / EN"><span class="font-label-mono text-[11px] font-bold" data-i18n="nav.lang">RU</span></button>
+<button class="theme-toggle" onclick="toggleTheme()" title="Theme"><span class="material-symbols-outlined text-[18px]" id="theme-icon">dark_mode</span></button>
+<button class="hidden md:block font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" data-i18n="nav.signin">Sign in</button>
+<button class="bg-secondary text-white px-6 py-2.5 rounded-full font-body-md text-body-md font-medium btn-hover-effect hover:bg-[#b05ee6] transition-colors shadow-lg shadow-secondary/20" data-i18n="nav.cta">Get Jenn</button>
+</div>
+</div>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative pt-stack-xl pb-stack-md md:pt-[120px]">
+<div class="max-w-[1280px] mx-auto px-page-margin-mobile md:px-page-margin-desktop relative z-10">
+<div class="flex flex-col items-center text-center max-w-5xl mx-auto">
+<div class="mb-4 inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant text-on-surface-variant">
+<span class="font-label-mono text-[11px] uppercase tracking-widest font-bold" data-i18n="hero.badge">Альфа-тестирование</span>
+</div>
+<div class="mb-8 inline-flex items-center px-4 py-1 rounded-full bg-surface-container-high border border-outline-variant text-on-surface">
+</div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-8 tracking-tighter leading-none" data-i18n="hero.title">Stop thinking about where to save. <span class="italic text-[#B8860B]" style="font-family: 'Cormorant Garamond', serif;">Just capture.</span></h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mb-stack-md leading-relaxed" data-i18n="hero.subtitle">
+                        Information overload is real. Notion is slow and laggy. Your brain is exhausted by decision fatigue. Jenn is the instant, open-source buffer that captures chaos and routes it perfectly. You control the engine.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 mb-32">
+<button class="bg-primary text-white px-10 py-4 rounded-full font-body-lg text-body-lg font-medium btn-hover-effect hover:bg-on-surface-variant transition-colors shadow-lg shadow-primary/20" data-i18n="hero.cta1">Начать использовать</button>
+<button class="bg-transparent text-primary px-10 py-4 rounded-full font-body-lg text-body-lg font-medium btn-hover-effect border border-outline hover:bg-surface-container" data-i18n="hero.cta2">Self-host решение</button>
+</div>
+</div>
+<!-- Reimaged Pipeline Section -->
+<div class="relative w-full max-w-[1200px] mx-auto min-h-[600px] flex flex-col xl:flex-row items-center justify-between gap-16 xl:gap-8">
+<!-- Animated Flow Lines -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none -z-10 opacity-60 text-secondary" preserveaspectratio="none" viewbox="0 0 1200 600">
+<path class="flow-line" d="M 250 300 Q 450 260, 600 300" fill="none" stroke="currentColor" stroke-width="2.5"></path>
+<path class="flow-line" d="M 250 300 Q 450 340, 600 300" fill="none" stroke="currentColor" stroke-width="2.5" style="animation-delay: -1.5s"></path>
+<path class="flow-line" d="M 600 300 Q 750 260, 950 300" fill="none" stroke="currentColor" stroke-width="2.5"></path>
+<path class="flow-line" d="M 600 300 Q 750 340, 950 300" fill="none" stroke="currentColor" stroke-width="2.5" style="animation-delay: -1.5s"></path>
+</svg>
+<!-- Inputs Side -->
+<div class="flex flex-col items-center gap-10 relative">
+<span class="font-label-mono text-label-mono uppercase tracking-[0.3em] text-outline/80 font-bold" data-i18n="pipeline.inputs">Input Stream</span>
+<div class="relative w-[340px] h-[320px]">
+<div class="card-stack-item absolute inset-0 glass-card p-6 rounded-2xl animate-drift flex flex-col gap-5" style="--rot: -2deg; z-index: 30; transform: rotate(-2deg);">
+<div class="flex items-center justify-between border-b border-outline-variant/40 pb-4">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-xl bg-surface-container-high border border-white/60 shadow-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl">extension</span>
+</div>
+<div>
+<div class="text-lg font-bold text-primary" data-i18n="pipeline.chrome">Chrome Extension</div>
+<div class="text-[11px] font-label-mono text-[#B8860B] uppercase tracking-widest flex items-center gap-2 mt-1"><span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Active</div>
+</div>
+</div>
+</div>
+<div class="flex-1 glass-inner-panel rounded-xl p-4 font-label-mono text-[11px] text-on-surface-variant overflow-hidden relative flex flex-col gap-2">
+<div class="flex justify-between items-center"><span class="text-outline">Latency</span> <span class="font-medium text-primary">12ms</span></div>
+<div class="flex justify-between items-center"><span class="text-outline">Throughput</span> <span class="font-medium text-primary">2.4 MB/s</span></div>
+<div class="flex justify-between items-center mt-2 border-t border-outline-variant/30 pt-2">
+<span class="text-secondary/80">[REQ] /capture/clip</span>
+<span class="text-green-600 font-bold">200 OK</span>
+</div>
+<div class="text-outline mt-1 truncate">Payload: {"url":"github.com/...", "type":"code"}</div>
+</div>
+<div class="w-full bg-surface-variant/50 h-2 rounded-full overflow-hidden mt-auto border border-outline-variant/20">
+<div class="bg-gradient-to-r from-transparent via-secondary to-transparent h-full w-[200%] animate-[stream-progress_2s_linear_infinite]"></div>
+</div>
+</div>
+<div class="card-stack-item absolute inset-0 glass-card p-6 rounded-2xl animate-drift opacity-60 scale-95" style="--rot: 4deg; z-index: 20; transform: rotate(4deg) translate(10px, 15px); animation-delay: -1s;">
+<div class="flex items-center gap-4 border-b border-outline-variant/40 pb-4">
+<div class="w-14 h-14 rounded-xl bg-surface-container-high border border-white/60 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl">send</span>
+</div>
+<div>
+<div class="text-lg font-bold text-primary" data-i18n="pipeline.telegram">Telegram Bot</div>
+<div class="text-[11px] font-label-mono text-outline uppercase tracking-widest mt-1">Standby</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Jenn Core (Dusty Bubble) -->
+<div class="relative flex items-center justify-center w-96 h-96">
+<!-- Glow / Halo -->
+<div class="absolute inset-0 bg-secondary/10 rounded-full blur-[100px]"></div>
+<!-- Layered Glass Sphere -->
+<div class="animate-pulse-soft relative w-72 h-72 rounded-full glass-layer-1 flex items-center justify-center overflow-hidden shadow-2xl border-2 border-white/40">
+<div class="absolute inset-0 glass-layer-2 rounded-full m-6"></div>
+<!-- Internal Content -->
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="mb-5 inline-flex items-center px-4 py-2 rounded-full bg-surface-container-high/80 backdrop-blur-md border border-white/50 text-on-surface-variant shadow-inner">
+<span class="material-symbols-outlined text-primary text-4xl">bubble_chart</span>
+</div>
+<div class="text-2xl font-bold tracking-tight text-primary" data-i18n="pipeline.core">Jenn Core</div>
+<div class="text-[11px] font-label-mono uppercase tracking-[0.3em] text-[#B8860B] mt-2 font-medium" data-i18n="pipeline.neural">Neural Processing</div>
+</div>
+<!-- "Dusty" Particles -->
+<div class="absolute inset-0 pointer-events-none">
+<div class="absolute top-1/4 left-1/4 w-1.5 h-1.5 bg-secondary/60 rounded-full blur-[1px]"></div>
+<div class="absolute bottom-1/3 right-1/4 w-2.5 h-2.5 bg-secondary/80 rounded-full blur-[2px]"></div>
+<div class="absolute top-1/2 right-8 w-2 h-2 bg-secondary/50 rounded-full"></div>
+<div class="absolute top-10 left-1/2 w-1.5 h-1.5 bg-secondary/70 rounded-full"></div>
+<div class="absolute bottom-10 left-1/3 w-1 h-1 bg-primary/40 rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Outputs Side -->
+<div class="flex flex-col items-center gap-10 relative">
+<span class="font-label-mono text-label-mono uppercase tracking-[0.3em] text-outline/80 font-bold" data-i18n="pipeline.outputs">Output Nodes</span>
+<div class="relative w-[340px] h-[320px]">
+<div class="card-stack-item absolute inset-0 glass-card p-6 rounded-2xl animate-drift flex flex-col gap-5" style="--rot: 3deg; z-index: 30; transform: rotate(3deg);">
+<div class="flex items-center justify-between border-b border-outline-variant/40 pb-4">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-xl bg-surface-container-high border border-white/60 shadow-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl">sticky_note_2</span>
+</div>
+<div>
+<div class="text-lg font-bold text-primary" data-i18n="pipeline.notes">Jenn Notes</div>
+<div class="text-[11px] font-label-mono text-[#B8860B] uppercase tracking-widest flex items-center gap-2 mt-1"><span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span> Syncing</div>
+</div>
+</div>
+</div>
+<div class="flex-1 glass-inner-panel rounded-xl p-4 font-label-mono text-[11px] text-on-surface-variant overflow-hidden relative flex flex-col gap-2">
+<div class="flex justify-between items-center"><span class="text-outline">Blocks Written</span> <span class="font-medium text-primary">1,402</span></div>
+<div class="flex justify-between items-center"><span class="text-outline">Sync State</span> <span class="font-medium text-primary">Real-time</span></div>
+<div class="flex justify-between items-center mt-2 border-t border-outline-variant/30 pt-2">
+<span class="text-secondary/80">Writing to index...</span>
+<span class="text-primary font-bold animate-pulse">_</span>
+</div>
+<div class="text-outline mt-1 truncate">ID: jn_8f2a9b • 12kb</div>
+</div>
+<div class="w-full bg-surface-variant/50 h-2 rounded-full overflow-hidden mt-auto border border-outline-variant/20 flex justify-end">
+<div class="bg-gradient-to-l from-transparent via-secondary to-transparent h-full w-[200%] animate-[stream-progress_2.5s_linear_infinite_reverse]"></div>
+</div>
+</div>
+<div class="card-stack-item absolute inset-0 glass-card p-6 rounded-2xl animate-drift opacity-60 scale-95" style="--rot: -5deg; z-index: 20; transform: rotate(-5deg) translate(-10px, 15px); animation-delay: -0.5s;">
+<div class="flex items-center gap-4 border-b border-outline-variant/40 pb-4">
+<div class="w-14 h-14 rounded-xl bg-surface-container-high border border-white/60 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl">edit_document</span>
+</div>
+<div>
+<div class="text-lg font-bold text-primary" data-i18n="pipeline.obsidian">Obsidian Vault</div>
+<div class="text-[11px] font-label-mono text-outline uppercase tracking-widest mt-1">Local Mode</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Open Source Architecture Showcase -->
+<section class="max-w-[1280px] mx-auto px-page-margin-desktop py-stack-xl relative z-10"><div class="bg-surface-container-low border border-outline-variant rounded-3xl p-8 md:p-12 overflow-hidden relative shadow-sm"><div class="relative z-10 flex flex-col lg:flex-row items-center gap-12"><div class="lg:w-1/2 space-y-6"><span class="font-label-mono text-label-mono text-on-surface-variant mb-2 block font-bold uppercase tracking-widest" data-i18n="oss.label">The Modular Ecosystem</span><h3 class="font-headline-md text-headline-md text-[#B8860B] italic" style="font-family: 'Cormorant Garamond', serif;" data-i18n="oss.title">Build your own nodes.</h3><p class="font-body-md text-body-md text-on-surface-variant" data-i18n="oss.desc">Jenn is built on a plug-and-play architecture. Anyone can build their own input or output nodes using the Jenn API. Our developer-first approach ensures that your workflow is never limited by our integrations.</p><button class="font-label-mono text-label-mono uppercase tracking-widest flex items-center gap-2 hover:gap-4 transition-all text-primary hover:text-on-surface-variant mt-4"><span data-i18n="oss.cta">Explore API Docs</span> <span class="material-symbols-outlined text-[16px]">arrow_forward</span></button></div><div class="lg:w-1/2 w-full bg-primary-container p-6 rounded-2xl border border-outline/30 font-label-mono text-sm text-outline font-medium shadow-2xl"><div class="flex items-center justify-between mb-4 pb-2 border-b border-outline/20 text-on-surface-variant"><span class="text-xs tracking-widest uppercase">node_definition.ts</span></div><pre class="text-xs leading-relaxed overflow-x-auto text-inverse-primary"><code><span class="text-secondary">export</span> <span class="text-secondary">const</span> <span class="text-white">myCustomNode</span> = <span class="text-white">describe</span>({
+  id: <span class="text-secondary-fixed">"custom-input"</span>,
+  type: <span class="text-secondary-fixed">"SOURCE"</span>,
+  schema: { ... },
+  handler: <span class="text-secondary">async</span> (data) =&gt; {
+    <span class="text-outline">// Your logic here</span>
+  }
+});</code></pre></div></div></div></section>
+</main>
+<!-- Footer Component -->
+<footer class="w-full py-stack-xl mt-stack-xl bg-surface-container-low border-t border-outline-variant">
+<div class="max-w-[1280px] mx-auto px-page-margin-desktop flex flex-col md:flex-row justify-between items-start gap-gutter">
+<div class="space-y-4">
+<span class="font-headline-md text-3xl font-bold text-primary">Jenn</span>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs" data-i18n="footer.desc">The instant, open-source buffer for your chaotic mind.</p>
+</div>
+<div class="flex flex-wrap gap-x-12 gap-y-6">
+<div class="flex flex-col gap-3">
+<span class="font-label-mono text-label-mono uppercase tracking-widest text-secondary mb-2">Product</span>
+<a class="font-label-mono text-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">Changelog</a>
+<a class="font-label-mono text-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">Plugins</a>
+<a class="font-label-mono text-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">FAQ</a>
+</div>
+<div class="flex flex-col gap-3">
+<span class="font-label-mono text-label-mono uppercase tracking-widest text-secondary mb-2">Community</span>
+<a class="font-label-mono text-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">Twitter</a>
+<a class="font-label-mono text-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">Discord</a>
+<a class="font-label-mono text-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">GitHub</a>
+</div>
+</div>
+<div class="w-full md:w-auto pt-8 md:pt-0">
+<p class="font-label-mono text-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant">© 2024 Jenn Workspace. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<script>
+const I18N = {
+  ru: {
+    'nav.lang': 'EN',
+    'nav.product': 'Продукт',
+    'nav.pipeline': 'Конвейер',
+    'nav.faq': 'FAQ',
+    'nav.docs': 'Документация',
+    'nav.signin': 'Войти',
+    'nav.cta': 'Скачать Jenn',
+    'hero.badge': 'Альфа-тестирование',
+    'hero.title': 'Хватит думать, куда сохранить. <span class="italic text-[#B8860B]" style="font-family: \'Cormorant Garamond\', serif;">Просто собирай.</span>',
+    'hero.subtitle': 'Информационная перегрузка — реальность. Notion медленный. Ваш мозг устал от принятия решений. Jenn — мгновенный буфер с открытым кодом, который принимает хаос и маршрутизирует его идеально. Вы контролируете движок.',
+    'hero.cta1': 'Начать использовать',
+    'hero.cta2': 'Self-host решение',
+    'pipeline.inputs': 'Поток ввода',
+    'pipeline.outputs': 'Узлы вывода',
+    'pipeline.chrome': 'Chrome Расширение',
+    'pipeline.telegram': 'Telegram Бот',
+    'pipeline.core': 'Jenn Ядро',
+    'pipeline.neural': 'Нейрообработка',
+    'pipeline.notes': 'Jenn Заметки',
+    'pipeline.obsidian': 'Obsidian Хранилище',
+    'oss.label': 'Модульная экосистема',
+    'oss.title': 'Создавайте свои узлы.',
+    'oss.desc': 'Jenn построен на plug-and-play архитектуре. Любой может создать свои узлы ввода или вывода через Jenn API. Наш developer-first подход гарантирует, что ваш рабочий процесс никогда не ограничен нашими интеграциями.',
+    'oss.cta': 'Документация API',
+    'footer.desc': 'Мгновенный буфер с открытым кодом для хаотичного разума.'
+  },
+  en: {
+    'nav.lang': 'RU',
+    'nav.product': 'Product',
+    'nav.pipeline': 'Pipeline',
+    'nav.faq': 'FAQ',
+    'nav.docs': 'Documentation',
+    'nav.signin': 'Sign in',
+    'nav.cta': 'Get Jenn',
+    'hero.badge': 'Alpha Testing',
+    'hero.title': 'Stop thinking about where to save. <span class="italic text-[#B8860B]" style="font-family: \'Cormorant Garamond\', serif;">Just capture.</span>',
+    'hero.subtitle': 'Information overload is real. Notion is slow and laggy. Your brain is exhausted by decision fatigue. Jenn is the instant, open-source buffer that captures chaos and routes it perfectly. You control the engine.',
+    'hero.cta1': 'Get Started',
+    'hero.cta2': 'Self-host',
+    'pipeline.inputs': 'Input Stream',
+    'pipeline.outputs': 'Output Nodes',
+    'pipeline.chrome': 'Chrome Extension',
+    'pipeline.telegram': 'Telegram Bot',
+    'pipeline.core': 'Jenn Core',
+    'pipeline.neural': 'Neural Processing',
+    'pipeline.notes': 'Jenn Notes',
+    'pipeline.obsidian': 'Obsidian Vault',
+    'oss.label': 'The Modular Ecosystem',
+    'oss.title': 'Build your own nodes.',
+    'oss.desc': 'Jenn is built on a plug-and-play architecture. Anyone can build their own input or output nodes using the Jenn API. Our developer-first approach ensures that your workflow is never limited by our integrations.',
+    'oss.cta': 'Explore API Docs',
+    'footer.desc': 'The instant, open-source buffer for your chaotic mind.'
+  }
+}
+
+let currentLang = localStorage.getItem('jenn-lang') || 'ru'
+let currentTheme = localStorage.getItem('jenn-theme') || 'light'
+
+function applyLang(lang) {
+  currentLang = lang
+  document.documentElement.lang = lang
+  const dict = I18N[lang]
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n')
+    if (dict[key] !== undefined) el.innerHTML = dict[key]
+  })
+  localStorage.setItem('jenn-lang', lang)
+}
+
+function applyTheme(theme) {
+  currentTheme = theme
+  const html = document.documentElement
+  if (theme === 'dark') {
+    html.classList.remove('light')
+    html.classList.add('dark')
+  } else {
+    html.classList.remove('dark')
+    html.classList.add('light')
+  }
+  const icon = document.getElementById('theme-icon')
+  if (icon) icon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode'
+  localStorage.setItem('jenn-theme', theme)
+}
+
+function toggleTheme() {
+  applyTheme(currentTheme === 'light' ? 'dark' : 'light')
+}
+
+function toggleLang() {
+  applyLang(currentLang === 'ru' ? 'en' : 'ru')
+}
+
+applyTheme(currentTheme)
+applyLang(currentLang)
+</script>
+</body></html>

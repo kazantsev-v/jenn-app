@@ -1,0 +1,47 @@
+{
+  "ai": {
+    "providers": [
+      {
+        "name": "groq",
+        "key": "${GROQ_KEY}",
+        "model": "llama-3.3-70b-versatile"
+      },
+      {
+        "name": "openrouter",
+        "key": "${OPENROUTER_KEY}",
+        "model": "gpt-4o-mini"
+      },
+      {
+        "name": "gigachat",
+        "key": "${GIGACHAT_KEY}",
+        "model": "GigaChat"
+      }
+    ]
+  },
+  "skillsOutputs": {
+    "save_entry": "notion"
+  },
+  "skillsConfig": {
+    "save_entry": {
+      "output": "notion",
+      "destination": "incoming"
+    }
+  },
+  "fallbackOutput": "notion",
+  "defaultOutput": null,
+  "outputs": {
+    "notion": {
+      "api_key": "${NOTION_API_KEY}",
+      "database_id": "${NOTION_DATABASE_ID}"
+    },
+    "google_sheets": {
+      "client_email": "${GSHEETS_CLIENT_EMAIL}",
+      "private_key": "${GSHEETS_PRIVATE_KEY}",
+      "sheet_id": "${GSHEETS_SHEET_ID}"
+    },
+    "telegram": {
+      "bot_token": "${TG_BOT_TOKEN}",
+      "chat_id": "${TG_CHAT_ID}"
+    }
+  }
+}

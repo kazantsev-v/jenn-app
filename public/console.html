@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Jenn Console</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🧠</text></svg>">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "outline": "#747878",
+        "on-primary-fixed-variant": "#474746",
+        "surface-container-lowest": "#0E0E0F",
+        "surface": "#0E0E0F",
+        "on-error": "#ffffff",
+        "on-surface-variant": "#9CA3AF",
+        "surface-container-low": "#161618",
+        "on-tertiary-container": "#DCC7A1",
+        "on-background": "#F9F8F6",
+        "on-error-container": "#93000a",
+        "tertiary-container": "#2A2A2D",
+        "surface-container": "#1C1C1E",
+        "on-secondary-fixed-variant": "#504630",
+        "tertiary-fixed": "#e3e2e0",
+        "outline-variant": "#2D2D30",
+        "secondary-fixed-dim": "#d4c5a9",
+        "error": "#ba1a1a",
+        "surface-variant": "#1C1C1E",
+        "surface-container-high": "#232326",
+        "on-tertiary": "#0E0E0F",
+        "on-primary-fixed": "#F9F8F6",
+        "inverse-primary": "#c8c6c5",
+        "on-secondary": "#0E0E0F",
+        "primary-container": "#DCC7A1",
+        "on-primary": "#0E0E0F",
+        "on-primary-container": "#1C1C1E",
+        "on-tertiary-fixed": "#1a1c1b",
+        "on-surface": "#F9F8F6",
+        "primary-fixed": "#e5e2e1",
+        "surface-dim": "#0E0E0F",
+        "primary": "#DCC7A1",
+        "on-secondary-container": "#DCC7A1",
+        "error-container": "#ffdad6",
+        "inverse-on-surface": "#1c1c1a",
+        "surface-tint": "#DCC7A1",
+        "on-tertiary-fixed-variant": "#464746",
+        "on-secondary-fixed": "#221b09",
+        "inverse-surface": "#F9F8F6",
+        "surface-container-highest": "#2D2D30",
+        "tertiary": "#DCC7A1",
+        "surface-bright": "#1C1C1E",
+        "secondary-container": "#2A2620",
+        "background": "#0E0E0F",
+        "tertiary-fixed-dim": "#c7c6c5",
+        "primary-fixed-dim": "#c8c6c5",
+        "secondary": "#DCC7A1",
+        "lavender": "#C3B1E1",
+        "turquoise": "#87C5C5",
+        "sand": "#E8D5B5",
+        "gold": "#DCC7A1"
+      },
+      borderRadius: { "DEFAULT": "12px", "lg": "14px", "xl": "18px", "full": "9999px" },
+      spacing: { "unit": "8px", "stack-xl": "120px", "gutter": "32px", "stack-md": "48px", "page-margin-desktop": "80px", "page-margin-mobile": "24px" },
+      fontFamily: {
+        "headline-md": ["Instrument Serif", "serif"],
+        "body-md": ["Inter", "sans-serif"],
+        "label-mono": ["JetBrains Mono", "monospace"],
+        "body-lg": ["Inter", "sans-serif"],
+        "display-lg-mobile": ["Instrument Serif", "serif"],
+        "display-lg": ["Instrument Serif", "serif"]
+      },
+      fontSize: {
+        "headline-md": ["32px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "400" }],
+        "body-md": ["14px", { lineHeight: "1.6", letterSpacing: "0", fontWeight: "400" }],
+        "label-mono": ["11px", { lineHeight: "1.5", letterSpacing: "0.1em", fontWeight: "500" }],
+        "body-lg": ["18px", { lineHeight: "1.6", letterSpacing: "-0.01em", fontWeight: "400" }],
+        "display-lg-mobile": ["40px", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "400" }],
+        "display-lg": ["56px", { lineHeight: "1.05", letterSpacing: "-0.03em", fontWeight: "400" }]
+      }
+    }
+  }
+}
+</script>
+<style>
+  body { background-color: #0E0E0F; color: #F9F8F6; -webkit-font-smoothing: antialiased; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+  .glass-panel { background: rgba(28,28,30,0.4); backdrop-filter: blur(20px); border: 1px solid rgba(220,199,161,0.08); transition: all 0.3s ease; }
+  .glass-panel:hover { border-color: rgba(220,199,161,0.15); }
+  .pipeline-line { background: linear-gradient(90deg, transparent, rgba(220,199,161,0.2), transparent); height: 1px; }
+  .pulse-gold { box-shadow: 0 0 0 0 rgba(220,199,161,0.4); animation: pulse 2s infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(220,199,161,0.4); } 70% { box-shadow: 0 0 0 15px rgba(220,199,161,0); } 100% { box-shadow: 0 0 0 0 rgba(220,199,161,0); } }
+  .sidebar-active { color: #DCC7A1 !important; background: rgba(220,199,161,0.05); }
+  .scroll-hide::-webkit-scrollbar { display: none; }
+  .hidden { display: none !important; }
+  .toast { position: fixed; bottom: 24px; right: 24px; padding: 10px 18px; border-radius: 12px; font-size: 13px; z-index: 1000; opacity: 0; transition: opacity 0.3s; pointer-events: none; background: rgba(28,28,30,0.9); border: 1px solid rgba(220,199,161,0.15); color: #F9F8F6; }
+  .toast.show { opacity: 1; }
+  .toast-success { border-color: rgba(135,197,197,0.4); }
+  .toast-error { border-color: rgba(186,26,26,0.4); color: #ffb4ab; }
+  .logs-console { background: #0a0a0b; border: 1px solid #2D2D30; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 13px; height: 60vh; overflow-y: auto; padding: 12px; white-space: pre-wrap; word-break: break-all; }
+  .logs-console .log-entry { padding: 3px 0; line-height: 1.6; display: flex; gap: 6px; }
+  .logs-console .log-time { color: #9CA3AF; flex-shrink: 0; }
+  .logs-console .log-icon { flex-shrink: 0; width: 20px; text-align: center; }
+  .logs-console .log-text { color: #F9F8F6; }
+  .logs-console .log-detail { color: #9CA3AF; font-size: 11px; }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 500; }
+  .modal { background: #1C1C1E; border: 1px solid #2D2D30; border-radius: 18px; width: 600px; max-width: 90vw; max-height: 85vh; overflow-y: auto; }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid #2D2D30; }
+  .modal-body { padding: 24px; }
+  .modal-footer { display: flex; justify-content: flex-end; gap: 8px; padding: 16px 24px; border-top: 1px solid #2D2D30; }
+  .form-group { margin-bottom: 14px; }
+  .form-group label { display: block; font-size: 12px; color: #9CA3AF; margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; }
+  .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; background: #0E0E0F; border: 1px solid #2D2D30; border-radius: 12px; color: #F9F8F6; font-size: 14px; font-family: 'Inter', sans-serif; outline: none; transition: border 0.2s; }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: #DCC7A1; }
+</style>
+</head>
+<body class="font-body-md text-body-md overflow-hidden">
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen" class="flex items-center justify-center h-screen w-screen">
+  <div class="glass-panel p-10 rounded-2xl w-[400px] text-center">
+    <h1 class="font-headline-md text-4xl text-primary italic mb-2">Jenn</h1>
+    <p class="text-on-surface-variant text-sm mb-8" id="auth-subtitle">Sign in to your console</p>
+    <div id="auth-alert"></div>
+    <div id="login-form">
+      <div class="form-group text-left">
+        <label>Username</label>
+        <input type="text" id="login-username" placeholder="your_username" autocomplete="username">
+      </div>
+      <div class="form-group text-left">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••" autocomplete="current-password">
+      </div>
+      <button onclick="login()" class="w-full py-3 bg-primary text-on-primary rounded-xl font-medium hover:opacity-90 transition-all mt-2">Sign in</button>
+      <p class="text-on-surface-variant text-xs mt-4">No account? <a onclick="showRegister()" class="text-primary cursor-pointer hover:underline">Register</a></p>
+    </div>
+    <div id="register-form" class="hidden">
+      <div class="form-group text-left">
+        <label>Username</label>
+        <input type="text" id="reg-username" placeholder="your_username" autocomplete="off">
+      </div>
+      <div class="form-group text-left">
+        <label>Password</label>
+        <input type="password" id="reg-password" placeholder="••••" autocomplete="new-password">
+      </div>
+      <button onclick="register()" class="w-full py-3 bg-primary text-on-primary rounded-xl font-medium hover:opacity-90 transition-all mt-2">Create account</button>
+      <p class="text-on-surface-variant text-xs mt-4">Have an account? <a onclick="showLogin()" class="text-primary cursor-pointer hover:underline">Sign in</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- APP LAYOUT -->
+<div id="app" class="flex h-screen w-full hidden">
+  <!-- Sidebar -->
+  <aside class="w-64 border-r border-outline-variant flex flex-col p-6 space-y-6 bg-surface-container-lowest flex-shrink-0">
+    <div class="flex items-center space-x-3 px-2">
+      <span class="font-headline-md text-2xl text-primary tracking-tighter italic">Jenn</span>
+      <span class="font-label-mono text-label-mono text-on-surface-variant uppercase bg-surface-container-high px-2 py-0.5 rounded">Console</span>
+    </div>
+    <nav class="flex-1 space-y-1" id="sidebar-nav">
+      <a onclick="navigate('dashboard')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="dashboard">
+        <span class="material-symbols-outlined text-[20px]">dashboard</span>
+        <span class="font-medium">Dashboard</span>
+      </a>
+      <a onclick="navigate('pipeline')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="pipeline">
+        <span class="material-symbols-outlined text-[20px]">account_tree</span>
+        <span class="font-medium">Pipeline</span>
+      </a>
+      <a onclick="navigate('activity')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="activity">
+        <span class="material-symbols-outlined text-[20px]">inbox</span>
+        <span class="font-medium">Activity</span>
+      </a>
+      <a onclick="navigate('logs')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="logs">
+        <span class="material-symbols-outlined text-[20px]">terminal</span>
+        <span class="font-medium">Logs</span>
+      </a>
+      <a onclick="navigate('apikeys')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="apikeys">
+        <span class="material-symbols-outlined text-[20px]">key</span>
+        <span class="font-medium">API Keys</span>
+      </a>
+      <a onclick="navigate('settings')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="settings" id="settings-nav">
+        <span class="material-symbols-outlined text-[20px]">settings</span>
+        <span class="font-medium">Settings</span>
+      </a>
+      <div id="dev-nav" class="hidden">
+        <a onclick="navigate('test')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-lavender hover:text-lavender transition-all duration-300 cursor-pointer" data-page="test">
+          <span class="material-symbols-outlined text-[20px]">bug_report</span>
+          <span class="font-medium text-lavender">Dev Test</span>
+        </a>
+      </div>
+    </nav>
+    <div class="pt-4 border-t border-outline-variant">
+      <button onclick="logout()" class="flex items-center space-x-3 px-3 py-2.5 w-full rounded-lg text-on-surface-variant hover:text-error transition-all duration-300">
+        <span class="material-symbols-outlined text-[20px]">logout</span>
+        <span class="font-medium">Sign out</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 overflow-y-auto scroll-hide p-10 space-y-10" id="main-content">
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<!-- Debug Log Panel (Dev Mode) -->
+<div id="debug-log" style="display:none;position:fixed;bottom:0;left:0;right:0;height:200px;z-index:99999;background:#0a0a0b;border-top:1px solid #2D2D30;flex-direction:column">
+  <div style="flex-shrink:0;padding:6px 12px;background:#161618;border-bottom:1px solid #2D2D30;color:#9CA3AF;font:13px 'JetBrains Mono',monospace;display:flex;justify-content:space-between;align-items:center">
+    <span>🛠 Developer Log</span>
+    <span>
+      <button onclick="document.getElementById('debug-log-content').textContent=''" style="background:#2D2D30;color:#F9F8F6;border:none;padding:2px 8px;cursor:pointer;font-size:11px;border-radius:4px">Clear</button>
+      <button onclick="document.getElementById('debug-log').style.display='none'" style="background:#2D2D30;color:#F9F8F6;border:none;padding:2px 8px;cursor:pointer;font-size:11px;margin-left:4px;border-radius:4px">✕</button>
+    </span>
+  </div>
+  <div id="debug-log-content" style="flex:1;overflow:auto;color:#87C5C5;font:12px 'JetBrains Mono',monospace;padding:8px;white-space:pre-wrap"></div>
+</div>
+
+<script>
+const API = '/v1/admin';
+let token = null;
+let devMode = false;
+let settingsClicks = 0;
+let cachedConfig = {};
+let logsEventSource = null;
+
+// ── Debug Log ──
+const _dbg = (msg) => {
+  const el = document.getElementById('debug-log-content');
+  if (el) { el.textContent += `[${new Date().toLocaleTimeString()}] ${msg}\n`; el.scrollTop = el.scrollHeight; }
+};
+const _dbgErr = (msg) => { _dbg('❌ ' + msg); console.error(msg); };
+
+// ── API ──
+function getHeaders() {
+  return { 'Content-Type': 'application/json', ...(token ? { 'Authorization': `Bearer ${token}` } : {}) };
+}
+
+async function api(method, path, body) {
+  const opts = { method, headers: getHeaders() };
+  if (body) opts.body = JSON.stringify(body);
+  _dbg(`${method} ${API}${path}`);
+  const res = await fetch(`${API}${path}`, opts);
+  const data = await res.json();
+  _dbg(`  → ${res.status}: ${JSON.stringify(data).slice(0, 200)}`);
+  return { status: res.status, ok: res.ok, data };
+}
+
+function toast(msg, type = 'info') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast show ${type === 'success' ? 'toast-success' : type === 'error' ? 'toast-error' : ''}`;
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+// ── Auth ──
+function showLogin() {
+  document.getElementById('login-form').classList.remove('hidden');
+  document.getElementById('register-form').classList.add('hidden');
+  document.getElementById('auth-alert').innerHTML = '';
+  document.getElementById('auth-subtitle').textContent = 'Sign in to your console';
+}
+function showRegister() {
+  document.getElementById('login-form').classList.add('hidden');
+  document.getElementById('register-form').classList.remove('hidden');
+  document.getElementById('auth-alert').innerHTML = '';
+  document.getElementById('auth-subtitle').textContent = 'Create your account';
+}
+
+async function login() {
+  const username = document.getElementById('login-username').value.trim();
+  const password = document.getElementById('login-password').value;
+  const { status, data } = await api('POST', '/login', { username, password });
+  if (status !== 200) {
+    document.getElementById('auth-alert').innerHTML = `<div class="text-error text-sm mb-3">${data.message || 'Login failed'}</div>`;
+    return;
+  }
+  token = data.token;
+  localStorage.setItem('jenn-console-token', token);
+  document.getElementById('auth-screen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  navigate('dashboard');
+}
+
+async function register() {
+  const username = document.getElementById('reg-username').value.trim();
+  const password = document.getElementById('reg-password').value;
+  const { status, data } = await api('POST', '/register', { username, password });
+  if (status !== 201) {
+    document.getElementById('auth-alert').innerHTML = `<div class="text-error text-sm mb-3">${data.message || 'Registration failed'}</div>`;
+    return;
+  }
+  token = data.token;
+  localStorage.setItem('jenn-console-token', token);
+  document.getElementById('auth-screen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  navigate('dashboard');
+}
+
+async function logout() {
+  await api('POST', '/logout');
+  token = null;
+  localStorage.removeItem('jenn-console-token');
+  if (logsEventSource) { logsEventSource.close(); logsEventSource = null; }
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('auth-screen').classList.remove('hidden');
+}
+
+// Auto-login: restore token from localStorage, or get fresh token from cookie
+token = localStorage.getItem('jenn-console-token');
+api('GET', '/config').then(async ({ status }) => {
+  if (status === 200) {
+    if (!token) {
+      const { data } = await api('GET', '/token');
+      if (data?.token) {
+        token = data.token;
+        localStorage.setItem('jenn-console-token', token);
+      }
+    }
+    document.getElementById('auth-screen').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    navigate('dashboard');
+  } else {
+    token = null;
+    localStorage.removeItem('jenn-console-token');
+  }
+});
+
+// ── Navigation ──
+function navigate(page) {
+  document.querySelectorAll('.sidebar-nav-item').forEach(el => el.classList.remove('sidebar-active'));
+  const navEl = document.querySelector(`.sidebar-nav-item[data-page="${page}"]`);
+  if (navEl) navEl.classList.add('sidebar-active');
+  const main = document.getElementById('main-content');
+  if (logsEventSource) { logsEventSource.close(); logsEventSource = null; }
+  switch(page) {
+    case 'dashboard': renderDashboard(main); break;
+    case 'pipeline': renderPipeline(main); break;
+    case 'activity': renderActivity(main); break;
+    case 'logs': renderLogs(main); break;
+    case 'apikeys': renderApiKeys(main); break;
+    case 'settings': renderSettings(main); break;
+    case 'test': renderTest(main); break;
+  }
+}
+
+// ── Developer Mode ──
+document.getElementById('settings-nav').addEventListener('click', () => {
+  settingsClicks++;
+  if (settingsClicks >= 10 && !devMode) {
+    devMode = true;
+    settingsClicks = 0;
+    document.getElementById('dev-nav').classList.remove('hidden');
+    document.getElementById('debug-log').style.display = 'flex';
+    toast('Developer mode activated', 'success');
+    _dbg('Developer mode activated');
+  }
+});
+
+// ── Modals ──
+function showModal(title, bodyHtml, footerHtml = '') {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+  overlay.innerHTML = `<div class="modal"><div class="modal-header"><h2 class="font-medium text-on-surface text-lg">${title}</h2><button onclick="this.closest('.modal-overlay').remove()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">close</span></button></div><div class="modal-body">${bodyHtml}</div>${footerHtml ? `<div class="modal-footer">${footerHtml}</div>` : ''}</div>`;
+  document.body.appendChild(overlay);
+  return overlay;
+}
+function closeModal() { const el = document.querySelector('.modal-overlay'); if (el) el.remove(); }
+
+// ── Dashboard ──
+async function renderDashboard(el) {
+  const [cfgRes, inRes, outRes, msgRes, capRes] = await Promise.all([
+    api('GET', '/config'), api('GET', '/inputs'), api('GET', '/outputs'), api('GET', '/messages?limit=5'), api('GET', '/capabilities')
+  ]);
+  cachedConfig = cfgRes.data?.config || {};
+  const inputs = inRes.data?.inputs || [];
+  const outputs = outRes.data?.outputs || [];
+  const messages = msgRes.data?.messages || [];
+  const caps = capRes.data?.capabilities || [];
+
+  el.innerHTML = `
+    <header class="flex justify-between items-end">
+      <div>
+        <h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">System Overview</h1>
+        <div class="flex items-center space-x-2 text-on-surface-variant">
+          <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span>
+          <span class="font-label-mono text-label-mono uppercase tracking-widest">Neural Buffer: Active</span>
+        </div>
+      </div>
+    </header>
+    <section class="grid grid-cols-4 gap-6">
+      <div class="glass-panel p-6 rounded-xl">
+        <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">Inputs</h4>
+        <span class="text-3xl font-headline-md italic text-primary">${inputs.length}</span>
+        <p class="text-xs text-on-surface-variant mt-1">Active sources</p>
+      </div>
+      <div class="glass-panel p-6 rounded-xl">
+        <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">Outputs</h4>
+        <span class="text-3xl font-headline-md italic text-primary">${outputs.length}</span>
+        <p class="text-xs text-on-surface-variant mt-1">Configured targets</p>
+      </div>
+      <div class="glass-panel p-6 rounded-xl">
+        <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">Skills</h4>
+        <span class="text-3xl font-headline-md italic text-primary">${caps.length}</span>
+        <p class="text-xs text-on-surface-variant mt-1">Capabilities</p>
+      </div>
+      <div class="glass-panel p-6 rounded-xl">
+        <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">Messages</h4>
+        <span class="text-3xl font-headline-md italic text-primary">${messages.length}</span>
+        <p class="text-xs text-on-surface-variant mt-1">Recent entries</p>
+      </div>
+    </section>
+    <section class="grid grid-cols-12 gap-8">
+      <div class="col-span-8">
+        <h3 class="font-headline-md text-2xl italic mb-6">Recent Activity</h3>
+        <div class="space-y-3">
+          ${messages.length ? messages.map(m => `
+            <div class="flex items-center justify-between p-4 glass-panel rounded-xl">
+              <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center border border-primary/10">
+                  <span class="material-symbols-outlined text-primary text-[20px]">arrow_forward</span>
+                </div>
+                <div>
+                  <p class="text-on-surface font-medium text-sm">${escapeHtml((m.text || '').slice(0, 60))}</p>
+                  <p class="text-xs text-on-surface-variant">${escapeHtml(m.source || 'unknown')} → ${m.result?.output || 'processed'}</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="font-label-mono text-[10px] text-primary uppercase">Success</span>
+                <p class="text-xs text-on-surface-variant">${timeAgo(m.receivedAt)}</p>
+              </div>
+            </div>
+          `).join('') : '<p class="text-on-surface-variant text-sm glass-panel p-6 rounded-xl text-center">No messages yet</p>'}
+        </div>
+      </div>
+      <div class="col-span-4 space-y-6">
+        <div class="glass-panel p-6 rounded-xl">
+          <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-4">Inputs</h4>
+          <div class="space-y-3">
+            ${inputs.map(i => `<div class="flex items-center justify-between"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary text-[18px]">${i.icon || 'plug'}</span><span class="text-sm text-on-surface">${escapeHtml(i.title)}</span></div><span class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase">Active</span></div>`).join('') || '<p class="text-xs text-on-surface-variant">None installed</p>'}
+          </div>
+        </div>
+        <div class="glass-panel p-6 rounded-xl">
+          <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-4">Outputs</h4>
+          <div class="space-y-3">
+            ${outputs.map(o => `<div class="flex items-center justify-between"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary text-[18px]">${o.icon || 'description'}</span><span class="text-sm text-on-surface">${escapeHtml(o.title)}</span></div><span class="material-symbols-outlined text-primary text-sm">sync</span></div>`).join('') || '<p class="text-xs text-on-surface-variant">None installed</p>'}
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+// ── Pipeline ──
+async function renderPipeline(el) {
+  const [inRes, outRes, capRes, cfgRes] = await Promise.all([
+    api('GET', '/inputs'), api('GET', '/outputs'), api('GET', '/capabilities'), api('GET', '/config')
+  ]);
+  cachedConfig = cfgRes.data?.config || {};
+  const inputs = inRes.data?.inputs || [];
+  const outputs = outRes.data?.outputs || [];
+  const caps = capRes.data?.capabilities || [];
+
+  el.innerHTML = `
+    <header>
+      <h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">Pipeline</h1>
+      <div class="flex items-center space-x-2 text-on-surface-variant">
+        <span class="font-label-mono text-label-mono uppercase tracking-widest">Inputs → Core → Outputs</span>
+      </div>
+    </header>
+    <section class="grid grid-cols-12 gap-6 relative">
+      <div class="absolute inset-0 flex items-center justify-around pointer-events-none px-20">
+        <div class="pipeline-line flex-1"></div><div class="w-48"></div><div class="pipeline-line flex-1"></div>
+      </div>
+      <div class="col-span-4 space-y-4 relative z-10">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-label-mono text-label-mono uppercase text-on-surface-variant">Active Inputs</h3>
+          <button onclick="openInputsLibrary()" class="text-primary hover:underline text-sm flex items-center space-x-1"><span class="material-symbols-outlined text-sm">add</span><span>Add</span></button>
+        </div>
+        ${inputs.map(i => `
+          <div class="glass-panel p-5 rounded-xl cursor-pointer" onclick="openInputConfig('${escapeHtml(i.name)}')">
+            <div class="flex items-center justify-between mb-3">
+              <div class="bg-surface-container-high p-2.5 rounded-lg"><span class="material-symbols-outlined text-primary">${i.icon || 'plug'}</span></div>
+              <span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase tracking-wider">Active</span>
+            </div>
+            <h4 class="font-medium text-on-surface mb-1">${escapeHtml(i.title)}</h4>
+            <p class="text-xs text-on-surface-variant font-label-mono">${i.token ? 'ID: ' + i.token.slice(0,16) + '…' : 'No token'}</p>
+          </div>
+        `).join('') || '<div class="glass-panel p-5 rounded-xl text-center text-on-surface-variant text-sm">No inputs installed</div>'}
+      </div>
+      <div class="col-span-4 flex flex-col items-center justify-center relative z-20 pt-10">
+        <div class="w-48 h-48 rounded-full border border-primary/20 flex items-center justify-center pulse-gold relative bg-surface-container-low shadow-[0_0_80px_rgba(220,199,161,0.1)]">
+          <div class="text-center z-10">
+            <span class="material-symbols-outlined text-primary text-4xl mb-2" style="font-variation-settings:'FILL' 1;">hub</span>
+            <div class="font-headline-md text-2xl italic">Jenn Core</div>
+          </div>
+        </div>
+        <div class="mt-8 text-center max-w-[200px]">
+          <p class="text-sm text-on-surface-variant leading-relaxed">${caps.length} skill${caps.length !== 1 ? 's' : ''} routed through <span class="text-primary italic">Lumina Engine</span></p>
+        </div>
+        <div class="mt-6 space-y-2 w-full max-w-[240px]">
+          ${caps.map(c => `
+            <div class="glass-panel p-3 rounded-xl cursor-pointer text-center" onclick="openSkillConfig('${escapeHtml(c.name)}')">
+              <span class="text-sm text-on-surface">${escapeHtml(c.icon || '⚡')} ${escapeHtml(c.title)}</span>
+            </div>
+          `).join('') || '<p class="text-xs text-on-surface-variant text-center">No skills</p>'}
+        </div>
+      </div>
+      <div class="col-span-4 space-y-4 relative z-10">
+        <div class="flex justify-between items-center mb-4 flex-row-reverse">
+          <h3 class="font-label-mono text-label-mono uppercase text-on-surface-variant">Outputs</h3>
+          <button onclick="openOutputsLibrary()" class="text-primary hover:underline text-sm flex items-center space-x-1"><span class="material-symbols-outlined text-sm">add</span><span>Add</span></button>
+        </div>
+        ${outputs.map(o => `
+          <div class="glass-panel p-5 rounded-xl cursor-pointer text-right" onclick="openOutputConfig('${escapeHtml(o.name)}')">
+            <div class="flex items-center justify-between mb-3">
+              <div class="bg-surface-container-high p-2.5 rounded-lg"><span class="material-symbols-outlined text-primary">${o.icon || 'description'}</span></div>
+              <span class="material-symbols-outlined text-primary text-sm">sync</span>
+            </div>
+            <h4 class="font-medium text-on-surface mb-1">${escapeHtml(o.title)}</h4>
+            <p class="text-xs text-on-surface-variant font-label-mono">${cachedConfig?.outputs?.[o.name]?.api_key ? 'Connected' : 'Not configured'}</p>
+          </div>
+        `).join('') || '<div class="glass-panel p-5 rounded-xl text-center text-on-surface-variant text-sm">No outputs installed</div>'}
+      </div>
+    </section>
+  `;
+}
+
+// ── Activity ──
+async function renderActivity(el) {
+  const { data } = await api('GET', '/messages?limit=50');
+  const messages = data?.messages || [];
+  el.innerHTML = `
+    <header><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">Activity</h1><p class="text-on-surface-variant text-sm">Recent messages processed by Jenn</p></header>
+    <div class="space-y-3">
+      ${messages.length ? messages.map(m => `
+        <div class="flex items-center justify-between p-4 glass-panel rounded-xl">
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center border border-primary/10">
+              <span class="material-symbols-outlined text-primary text-[20px]">${m.result?.success !== false ? 'check_circle' : 'error'}</span>
+            </div>
+            <div>
+              <p class="text-on-surface font-medium text-sm">${escapeHtml((m.text || '').slice(0, 80))}</p>
+              <p class="text-xs text-on-surface-variant">Source: ${escapeHtml(m.source || 'unknown')}${m.result?.output ? ' → ' + escapeHtml(m.result.output) : ''}</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="font-label-mono text-[10px] ${m.result?.success !== false ? 'text-primary' : 'text-error'} uppercase">${m.result?.success !== false ? 'Success' : 'Failed'}</span>
+            <p class="text-xs text-on-surface-variant">${timeAgo(m.receivedAt)}</p>
+          </div>
+        </div>
+      `).join('') : '<p class="text-on-surface-variant glass-panel p-8 rounded-xl text-center">No messages yet. Send a message through an input to see it here.</p>'}
+    </div>
+  `;
+}
+
+// ── Logs ──
+async function renderLogs(el) {
+  el.innerHTML = `
+    <header class="flex justify-between items-end">
+      <div><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">Logs</h1><p class="text-on-surface-variant text-sm">Real-time processing logs</p></div>
+      <button onclick="document.getElementById('logs-content').textContent=''" class="px-4 py-2 glass-panel rounded-full text-on-surface border border-outline-variant hover:border-primary transition-all text-sm">Clear</button>
+    </header>
+    <div id="logs-content" class="logs-console"></div>
+  `;
+  const { data } = await api('GET', '/logs/recent');
+  const logsEl = document.getElementById('logs-content');
+  (data?.logs || []).forEach(e => appendLog(logsEl, e));
+  logsEventSource = new EventSource(`${API}/logs/stream${token ? '?token=' + token : ''}`, { withCredentials: true });
+  logsEventSource.onmessage = (e) => { try { appendLog(logsEl, JSON.parse(e.data)); } catch {} };
+}
+
+function appendLog(el, entry) {
+  const icons = { info: 'ℹ️', warn: '⚠️', error: '❌', success: '✅', route: '🔀', process: '⚙️' };
+  const colors = { error: '#ffb4ab', warn: '#DCC7A1', success: '#87C5C5' };
+  const time = entry.time ? new Date(entry.time).toLocaleTimeString() : new Date().toLocaleTimeString();
+  const div = document.createElement('div');
+  div.className = 'log-entry';
+  div.innerHTML = `<span class="log-time">${time}</span><span class="log-icon">${icons[entry.level] || '•'}</span><span class="log-text" style="color:${colors[entry.level] || '#F9F8F6'}">${escapeHtml(entry.msg || entry.message || JSON.stringify(entry))}</span>`;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+}
+
+// ── API Keys ──
+async function renderApiKeys(el) {
+  const { data } = await api('GET', '/sources');
+  const sources = data?.sources || [];
+  el.innerHTML = `
+    <header class="flex justify-between items-end">
+      <div><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">API Keys</h1><p class="text-on-surface-variant text-sm">Manage source tokens for input connections</p></div>
+      <button onclick="createSource()" class="px-6 py-2.5 bg-primary text-on-primary rounded-full hover:opacity-90 transition-all font-medium">Create Key</button>
+    </header>
+    <div class="glass-panel rounded-xl overflow-hidden">
+      <div class="grid grid-cols-12 gap-4 px-8 py-4 border-b border-outline-variant/30 bg-surface-container/50">
+        <div class="col-span-4 font-label-mono text-[11px] uppercase tracking-[0.2em] text-on-surface-variant">Source</div>
+        <div class="col-span-5 font-label-mono text-[11px] uppercase tracking-[0.2em] text-on-surface-variant">Token</div>
+        <div class="col-span-3 font-label-mono text-[11px] uppercase tracking-[0.2em] text-on-surface-variant text-right">Actions</div>
+      </div>
+      ${sources.map(s => `
+        <div class="grid grid-cols-12 gap-4 px-8 py-5 items-center border-b border-outline-variant/10 hover:bg-surface-container/30 transition-colors">
+          <div class="col-span-4 font-medium text-on-surface italic">${escapeHtml(s.source)}</div>
+          <div class="col-span-5 font-label-mono text-[13px] text-on-surface-variant">${escapeHtml(s.token.slice(0,12))}••••••</div>
+          <div class="col-span-3 flex justify-end items-center gap-3">
+            <button onclick="copyText('${escapeHtml(s.token)}')" class="p-2 hover:bg-white/5 rounded-full text-on-surface-variant transition-colors" title="Copy"><span class="material-symbols-outlined text-[18px]">content_copy</span></button>
+            <button onclick="deleteSource('${escapeHtml(s.source)}')" class="p-2 hover:bg-error/10 hover:text-error rounded-full text-on-surface-variant transition-colors" title="Delete"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+          </div>
+        </div>
+      `).join('') || '<div class="px-8 py-8 text-center text-on-surface-variant text-sm">No API keys yet</div>'}
+    </div>
+  `;
+}
+
+async function createSource() {
+  const name = prompt('Source name:');
+  if (!name) return;
+  const { status, data } = await api('POST', '/sources', { source: name });
+  if (status === 201) { toast('Key created', 'success'); navigate('apikeys'); }
+  else toast(data?.message || 'Failed', 'error');
+}
+
+async function deleteSource(name) {
+  if (!confirm(`Delete key "${name}"?`)) return;
+  await api('DELETE', '/sources/' + encodeURIComponent(name));
+  toast('Key deleted', 'success');
+  navigate('apikeys');
+}
+
+// ── Settings ──
+async function renderSettings(el) {
+  const { data } = await api('GET', '/config');
+  cachedConfig = data?.config || {};
+  el.innerHTML = `
+    <header><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">Settings</h1><p class="text-on-surface-variant text-sm">Configure your Jenn instance</p></header>
+    <div class="glass-panel p-8 rounded-xl space-y-6">
+      <div>
+        <h3 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-4">User Config</h3>
+        <div class="form-group">
+          <label>Raw Configuration (JSON)</label>
+          <textarea id="config-editor" style="min-height:300px;font-family:'JetBrains Mono',monospace;font-size:12px">${escapeHtml(JSON.stringify(cachedConfig, null, 2))}</textarea>
+        </div>
+        <button onclick="saveConfigRaw()" class="px-6 py-2.5 bg-primary text-on-primary rounded-full hover:opacity-90 transition-all font-medium">Save Config</button>
+      </div>
+    </div>
+  `;
+}
+
+async function saveConfigRaw() {
+  try {
+    const config = JSON.parse(document.getElementById('config-editor').value);
+    const { status } = await api('PUT', '/config', { config });
+    if (status === 200) { cachedConfig = config; toast('Config saved', 'success'); }
+    else toast('Failed', 'error');
+  } catch(e) { toast('Invalid JSON', 'error'); }
+}
+
+// ── Dev Test ──
+function renderTest(el) {
+  el.innerHTML = `
+    <header><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">Dev Test</h1><p class="text-on-surface-variant text-sm">Send test messages through the processor</p></header>
+    <div class="glass-panel p-8 rounded-xl space-y-4">
+      <div class="form-group"><label>Test Message</label><textarea id="test-text" placeholder="Type a test message..." style="min-height:120px"></textarea></div>
+      <button onclick="sendTest()" class="px-6 py-2.5 bg-lavender text-on-primary rounded-full hover:opacity-90 transition-all font-medium">Send Test</button>
+      <div id="test-result" class="mt-4"></div>
+    </div>
+  `;
+}
+
+async function sendTest() {
+  const text = document.getElementById('test-text').value.trim();
+  if (!text) return;
+  const el = document.getElementById('test-result');
+  el.innerHTML = '<p class="text-on-surface-variant text-sm">Processing...</p>';
+  const { status, data } = await api('POST', '/test-message', { text });
+  if (status === 201) {
+    el.innerHTML = `<div class="glass-panel p-4 rounded-xl"><p class="text-primary text-sm font-medium mb-2">Success</p><pre class="text-xs text-on-surface-variant overflow-x-auto font-label-mono">${escapeHtml(JSON.stringify(data.result, null, 2))}</pre></div>`;
+  } else {
+    el.innerHTML = `<p class="text-error text-sm">${data?.message || 'Failed'}</p>`;
+  }
+}
+
+// ── Input/Output/Skill Config Modals ──
+async function openInputConfig(name) {
+  const { data } = await api('GET', '/inputs/' + encodeURIComponent(name) + '/config');
+  const fields = data.configFields || [];
+  const config = data.config || {};
+  let html = '';
+  for (const f of fields) {
+    const val = config[f.key] || '';
+    html += `<div class="form-group"><label>${escapeHtml(f.label)}</label><input type="${f.secret ? 'password' : 'text'}" value="${escapeHtml(val)}" data-key="${escapeHtml(f.key)}" class="input-cfg-field"></div>`;
+  }
+  if (data.token) html += `<div class="form-group"><label>Source Token</label><input type="text" value="${data.token}" readonly style="font-family:'JetBrains Mono';font-size:12px"></div>`;
+  showModal(data.title || name, html, `<button onclick="saveInputConfig('${escapeHtml(name)}')" class="px-5 py-2 bg-primary text-on-primary rounded-full text-sm">Save</button><button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">Cancel</button><button onclick="deleteInput('${escapeHtml(name)}')" class="px-5 py-2 text-error text-sm">Delete</button>`);
+}
+
+async function saveInputConfig(name) {
+  const fields = document.querySelectorAll('.input-cfg-field');
+  const config = {};
+  fields.forEach(f => config[f.dataset.key] = f.value);
+  const { status } = await api('PUT', '/inputs/' + encodeURIComponent(name) + '/config', { config });
+  if (status === 200) { toast('Saved', 'success'); closeModal(); navigate('pipeline'); }
+  else toast('Failed', 'error');
+}
+
+async function deleteInput(name) {
+  if (!confirm(`Remove input "${name}"?`)) return;
+  await api('DELETE', '/inputs/' + encodeURIComponent(name));
+  closeModal(); toast('Removed', 'success'); navigate('pipeline');
+}
+
+async function openOutputConfig(name) {
+  const { data: cfgData } = await api('GET', '/outputs/' + encodeURIComponent(name) + '/config');
+  const { data: libData } = await api('GET', '/outputs/library');
+  const meta = (libData?.library || []).find(o => o.name === name) || {};
+  const authFields = meta.authFields || [];
+  const config = cfgData?.config || cachedConfig?.outputs?.[name] || {};
+  let html = '';
+  for (const f of authFields) {
+    html += `<div class="form-group"><label>${escapeHtml(f.label)}</label><input type="${f.secret ? 'password' : 'text'}" value="${escapeHtml(config[f.key] || '')}" data-key="${escapeHtml(f.key)}" class="output-cfg-field"></div>`;
+  }
+  showModal(meta.title || name, html, `<button onclick="saveOutputConfig('${escapeHtml(name)}')" class="px-5 py-2 bg-primary text-on-primary rounded-full text-sm">Save</button><button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">Cancel</button><button onclick="deleteOutput('${escapeHtml(name)}')" class="px-5 py-2 text-error text-sm">Delete</button>`);
+}
+
+async function saveOutputConfig(name) {
+  const fields = document.querySelectorAll('.output-cfg-field');
+  const config = {};
+  fields.forEach(f => config[f.dataset.key] = f.value);
+  const cfg = JSON.parse(JSON.stringify(cachedConfig || {}));
+  if (!cfg.outputs) cfg.outputs = {};
+  cfg.outputs[name] = { ...(cfg.outputs[name] || {}), ...config };
+  const { status } = await api('PUT', '/config', { config: cfg });
+  if (status === 200) { cachedConfig = cfg; toast('Saved', 'success'); closeModal(); navigate('pipeline'); }
+  else toast('Failed', 'error');
+}
+
+async function deleteOutput(name) {
+  if (!confirm(`Remove output "${name}"?`)) return;
+  await api('DELETE', '/outputs/' + encodeURIComponent(name));
+  closeModal(); toast('Removed', 'success'); navigate('pipeline');
+}
+
+async function openSkillConfig(name) {
+  const { data } = await api('GET', '/skills/' + encodeURIComponent(name) + '/config');
+  if (!data) { toast('Failed to load', 'error'); return; }
+  const { schema, config, outputs, outputDestinations } = data;
+  let html = '';
+  for (const [key, field] of Object.entries(schema || {})) {
+    let val = config[key] !== undefined ? config[key] : (field.default || '');
+    if (field.type === 'output') {
+      html += `<div class="form-group"><label>${escapeHtml(field.label || key)}</label><select data-field="${key}">${(outputs||[]).map(o => `<option value="${o}"${val===o?' selected':''}>${o}</option>`).join('')}</select></div>`;
+    } else if (field.type === 'boolean') {
+      html += `<div class="form-group"><label>${escapeHtml(field.label || key)}</label><select data-field="${key}"><option value="true"${val?'  selected':''}>Yes</option><option value="false"${!val?' selected':''}>No</option></select></div>`;
+    } else {
+      html += `<div class="form-group"><label>${escapeHtml(field.label || key)}</label><input type="text" data-field="${key}" value="${escapeHtml(String(val))}"></div>`;
+    }
+  }
+  showModal(name, html || '<p class="text-on-surface-variant text-sm">No configuration</p>', `<button onclick="saveSkillConfig('${escapeHtml(name)}')" class="px-5 py-2 bg-primary text-on-primary rounded-full text-sm">Save</button><button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">Cancel</button>`);
+}
+
+async function saveSkillConfig(name) {
+  const config = {};
+  document.querySelectorAll('[data-field]').forEach(el => {
+    let val = el.value;
+    if (el.tagName === 'SELECT' && val === 'true') val = true;
+    else if (el.tagName === 'SELECT' && val === 'false') val = false;
+    config[el.dataset.field] = val;
+  });
+  await api('POST', '/skills/' + encodeURIComponent(name) + '/config', { config });
+  toast('Saved', 'success'); closeModal(); navigate('pipeline');
+}
+
+// ── Libraries ──
+async function openInputsLibrary() {
+  const { data: libData } = await api('GET', '/inputs/library');
+  const { data: instData } = await api('GET', '/inputs');
+  const installed = new Set((instData?.inputs || []).map(s => s.name));
+  const library = libData?.library || [];
+  showModal('Inputs Library', `<div class="space-y-3">${library.map(inp => `
+    <div class="flex items-center justify-between p-4 glass-panel rounded-xl">
+      <div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">${inp.icon || 'plug'}</span><div><p class="text-on-surface font-medium text-sm">${escapeHtml(inp.title || inp.name)}</p><p class="text-xs text-on-surface-variant">${escapeHtml((inp.description||'').slice(0,60))}</p></div></div>
+      ${installed.has(inp.name) ? `<button onclick="uninstallInput('${inp.name}')" class="px-4 py-1.5 glass-panel rounded-full text-xs text-on-surface-variant">Remove</button>` : `<button onclick="installInput('${inp.name}')" class="px-4 py-1.5 bg-primary text-on-primary rounded-full text-xs">Install</button>`}
+    </div>
+  `).join('') || '<p class="text-on-surface-variant text-sm text-center p-4">No inputs available</p>'}</div>`, `<button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">Close</button>`);
+}
+
+async function installInput(name) { await api('POST', '/inputs/' + encodeURIComponent(name) + '/install'); closeModal(); navigate('pipeline'); toast('Installed', 'success'); }
+async function uninstallInput(name) { if (!confirm(`Remove "${name}"?`)) return; await api('DELETE', '/inputs/' + encodeURIComponent(name)); closeModal(); navigate('pipeline'); toast('Removed', 'success'); }
+
+async function openOutputsLibrary() {
+  const { data: libData } = await api('GET', '/outputs/library');
+  const { data: instData } = await api('GET', '/outputs');
+  const installed = new Set((instData?.outputs || []).map(s => s.name));
+  const library = libData?.library || [];
+  showModal('Outputs Library', `<div class="space-y-3">${library.map(out => `
+    <div class="flex items-center justify-between p-4 glass-panel rounded-xl">
+      <div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">${out.icon || 'description'}</span><div><p class="text-on-surface font-medium text-sm">${escapeHtml(out.title || out.name)}</p><p class="text-xs text-on-surface-variant">${escapeHtml((out.description||'').slice(0,60))}</p></div></div>
+      ${installed.has(out.name) ? `<button onclick="uninstallOutput('${out.name}')" class="px-4 py-1.5 glass-panel rounded-full text-xs text-on-surface-variant">Remove</button>` : `<button onclick="installOutput('${out.name}')" class="px-4 py-1.5 bg-primary text-on-primary rounded-full text-xs">Install</button>`}
+    </div>
+  `).join('') || '<p class="text-on-surface-variant text-sm text-center p-4">No outputs available</p>'}</div>`, `<button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">Close</button>`);
+}
+
+async function installOutput(name) { await api('POST', '/outputs/' + encodeURIComponent(name) + '/install'); closeModal(); navigate('pipeline'); toast('Installed', 'success'); }
+async function uninstallOutput(name) { if (!confirm(`Remove "${name}"?`)) return; await api('DELETE', '/outputs/' + encodeURIComponent(name)); closeModal(); navigate('pipeline'); toast('Removed', 'success'); }
+
+// ── Helpers ──
+function escapeHtml(s) { if (!s) return ''; const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function timeAgo(dateStr) { if (!dateStr) return ''; const d = new Date(dateStr); const diff = (Date.now() - d.getTime()) / 1000; if (diff < 60) return 'just now'; if (diff < 3600) return Math.floor(diff/60) + 'm ago'; if (diff < 86400) return Math.floor(diff/3600) + 'h ago'; return Math.floor(diff/86400) + 'd ago'; }
+function copyText(text) { navigator.clipboard.writeText(text).then(() => toast('Copied', 'success')); }
+</script>
+</body>
+</html>

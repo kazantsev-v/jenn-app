@@ -1,0 +1,348 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Jenn - Your knowledge. Beautifully connected.</title>
+<!-- Google Fonts: Inter and JetBrains Mono -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Design System Tokens -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#eae8e4",
+                    "on-secondary": "#ffffff",
+                    "on-surface-variant": "#444748",
+                    "on-secondary-fixed": "#221b09",
+                    "on-error-container": "#93000a",
+                    "on-surface": "#1c1c1a",
+                    "tertiary-fixed": "#e3e2e0",
+                    "surface-bright": "#fcf9f5",
+                    "inverse-on-surface": "#f3f0ec",
+                    "background": "#fcf9f5",
+                    "outline": "#747878",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed-variant": "#474746",
+                    "tertiary-fixed-dim": "#c7c6c5",
+                    "on-primary-fixed": "#1c1b1b",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed": "#f1e1c4",
+                    "surface-tint": "#5f5e5e",
+                    "on-tertiary-fixed-variant": "#464746",
+                    "surface": "#fcf9f5",
+                    "on-tertiary": "#ffffff",
+                    "secondary-container": "#eedec1",
+                    "on-tertiary-fixed": "#1a1c1b",
+                    "tertiary-container": "#1a1c1b",
+                    "outline-variant": "#c4c7c7",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed-variant": "#504630",
+                    "on-background": "#1c1c1a",
+                    "tertiary": "#000000",
+                    "secondary": "#685d46",
+                    "inverse-primary": "#c8c6c5",
+                    "surface-container-low": "#f6f3ef",
+                    "on-primary-container": "#858383",
+                    "inverse-surface": "#31302e",
+                    "primary-fixed-dim": "#c8c6c5",
+                    "on-secondary-container": "#6d614a",
+                    "surface-dim": "#dcdad6",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#1c1b1b",
+                    "on-tertiary-container": "#838482",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#f0ede9",
+                    "secondary-fixed-dim": "#d4c5a9",
+                    "surface-container-highest": "#e5e2de",
+                    "primary": "#000000",
+                    "surface-variant": "#e5e2de",
+                    "primary-fixed": "#e5e2e1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "32px",
+                    "unit": "8px",
+                    "stack-xl": "120px",
+                    "stack-md": "48px",
+                    "page-margin-desktop": "80px",
+                    "page-margin-mobile": "24px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "label-mono": ["JetBrains Mono"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                    "label-mono": ["13px", {"lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "600"}],
+                    "body-lg": ["20px", {"lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        
+        body {
+            background-color: #fcf9f5;
+            color: #1c1c1a;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .glass-nav {
+            background: rgba(252, 249, 245, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .ambient-glow {
+            box-shadow: 0 32px 64px -15px rgba(0,0,0,0.03);
+        }
+
+        .app-mockup-border {
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Micro-interactions */
+        .btn-hover-effect {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-hover-effect:active {
+            transform: scale(0.96);
+        }
+    </style>
+</head>
+<body class="selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- TopNavBar Component -->
+<header class="fixed top-0 w-full z-50 glass-nav border-b border-on-surface/[0.05] shadow-[0_32px_64px_-15px_rgba(0,0,0,0.03)]">
+<div class="max-w-[1280px] mx-auto px-page-margin-desktop md:px-page-margin-desktop flex justify-between items-center h-20">
+<!-- Brand Logo -->
+<a class="font-headline-md text-headline-md font-semibold tracking-tight text-primary" href="#">
+                Jenn
+            </a>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-gutter">
+<a class="font-body-md text-body-md text-primary font-medium border-b border-primary" href="#">Product</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Features</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Pricing</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Documentation</a>
+</nav>
+<!-- Trailing Action -->
+<div class="flex items-center gap-6">
+<button class="hidden md:block font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors">Sign in</button>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-body-md text-body-md font-medium btn-hover-effect hover:opacity-90">
+                    Download Jenn
+                </button>
+</div>
+</div>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative overflow-hidden pt-stack-xl pb-stack-md md:pt-[160px]">
+<div class="max-w-[1280px] mx-auto px-page-margin-mobile md:px-page-margin-desktop relative z-10">
+<div class="flex flex-col items-center text-center max-w-4xl mx-auto">
+<!-- Subtle Chip -->
+<div class="mb-stack-md inline-flex items-center px-4 py-1 rounded-full bg-secondary-container/30 border border-secondary-container text-on-secondary-container">
+<span class="font-label-mono text-label-mono uppercase tracking-widest">Version 2.0 now available</span>
+</div>
+<!-- Headline -->
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-8 tracking-tighter">
+                        Your knowledge. Beautifully connected.
+                    </h1>
+<!-- Subheading -->
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-stack-md leading-relaxed">
+                        Jenn combines Markdown, AI, knowledge graphs and plugins into one elegant local-first workspace where your knowledge stays private, organized and always under your control.
+                    </p>
+<!-- CTAs -->
+<div class="flex flex-col sm:flex-row gap-4 mb-stack-xl">
+<button class="bg-secondary text-on-secondary px-10 py-4 rounded-full font-body-lg text-body-lg font-medium btn-hover-effect hover:opacity-90 shadow-sm">
+                            Download Jenn
+                        </button>
+<button class="bg-transparent text-primary px-10 py-4 rounded-full font-body-lg text-body-lg font-medium btn-hover-effect border border-outline/20 hover:bg-surface-container-low">
+                            View on GitHub
+                        </button>
+</div>
+</div>
+<!-- Premium App Mockup Container -->
+<div class="relative w-full max-w-[1120px] mx-auto group">
+<!-- Ambient Glow Background -->
+<div class="absolute -inset-4 bg-gradient-to-tr from-secondary-fixed/20 to-transparent blur-3xl opacity-50 -z-10 group-hover:opacity-70 transition-opacity duration-700"></div>
+<!-- The Mockup -->
+<div class="bg-surface-container-lowest rounded-xl p-2 md:p-3 app-mockup-border shadow-[0_40px_100px_-20px_rgba(0,0,0,0.06)] overflow-hidden">
+<div class="rounded-lg bg-surface flex h-[400px] md:h-[680px] overflow-hidden border border-on-surface/[0.03]">
+<!-- Sidebar -->
+<aside class="w-16 md:w-64 border-r border-on-surface/[0.05] bg-surface-container-low/50 flex flex-col p-4 shrink-0">
+<div class="flex items-center gap-2 mb-8 px-2">
+<div class="w-3 h-3 rounded-full bg-error/20 border border-error/10"></div>
+<div class="w-3 h-3 rounded-full bg-secondary-container border border-secondary/10"></div>
+<div class="w-3 h-3 rounded-full bg-surface-container-highest border border-outline/10"></div>
+</div>
+<div class="space-y-4">
+<div class="h-4 w-3/4 bg-surface-container-high rounded animate-pulse"></div>
+<div class="h-4 w-1/2 bg-surface-container-high rounded opacity-60"></div>
+<div class="h-4 w-2/3 bg-surface-container-high rounded opacity-40"></div>
+</div>
+<div class="mt-auto space-y-4 px-2">
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="hidden md:block font-body-md text-body-md">Settings</span>
+</div>
+</div>
+</aside>
+<!-- Content Canvas -->
+<div class="flex-1 flex">
+<!-- Editor Area -->
+<section class="flex-1 p-8 md:p-12 overflow-y-auto">
+<div class="max-w-2xl mx-auto space-y-6">
+<div class="space-y-2 mb-12">
+<div class="font-label-mono text-label-mono text-secondary uppercase">2024-10-24</div>
+<h2 class="font-headline-md text-headline-md text-primary">Philosophy of Digital Architecture</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                                            Architecture is not merely about physical structures; it is about the spaces where human interaction flourishes. In the digital realm, this manifests as the interface—the bridge between consciousness and silicon.
+                                        </p>
+<div class="p-6 bg-surface-container rounded-lg border border-on-surface/[0.03]">
+<p class="font-label-mono text-label-mono text-on-surface-variant italic">
+                                                [[Spatial Informatics]] refers to the way we map conceptual nodes to physical-like environments.
+                                            </p>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                                            When knowledge is atomized into blocks, the relationships between these atoms form a higher-order structure: the <span class="bg-secondary-fixed/50 px-1 rounded">Knowledge Graph</span>.
+                                        </p>
+</div>
+</section>
+<!-- Visual Knowledge Graph Side -->
+<section class="hidden lg:block w-72 border-l border-on-surface/[0.05] bg-surface-container-low/30 relative">
+<div class="absolute inset-0 overflow-hidden flex items-center justify-center">
+<!-- Mock Graph Visualization -->
+<div class="relative w-full h-full">
+<!-- Simple SVG Connections (Visual Only) -->
+<svg class="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 300 600">
+<line stroke="currentColor" stroke-width="0.5" x1="150" x2="100" y1="200" y2="300"></line>
+<line stroke="currentColor" stroke-width="0.5" x1="150" x2="200" y1="200" y2="280"></line>
+<line stroke="currentColor" stroke-width="0.5" x1="100" x2="150" y1="300" y2="400"></line>
+<line stroke="currentColor" stroke-width="0.5" x1="200" x2="150" y1="280" y2="400"></line>
+<line stroke="currentColor" stroke-width="0.5" x1="150" x2="250" y1="200" y2="150"></line>
+</svg>
+<!-- Floating Nodes -->
+<div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary border-4 border-surface shadow-sm"></div>
+<div class="absolute top-[280px] left-[100px] w-3 h-3 rounded-full bg-secondary-fixed-dim border-2 border-surface"></div>
+<div class="absolute top-[260px] right-[60px] w-3 h-3 rounded-full bg-secondary-fixed-dim border-2 border-surface"></div>
+<div class="absolute bottom-1/3 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-secondary-fixed-dim border-2 border-surface"></div>
+</div>
+</div>
+<div class="absolute bottom-6 right-6 font-label-mono text-[10px] uppercase text-on-surface-variant/40 tracking-widest vertical-rl">
+                                        Graph View v0.8.2
+                                    </div>
+</section>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Background Texture / Ambient Elements -->
+<div class="absolute top-0 left-0 w-full h-full -z-20 opacity-[0.03] pointer-events-none">
+<div class="absolute inset-0" style="background-image: radial-gradient(#000 0.5px, transparent 0.5px); background-size: 32px 32px;"></div>
+</div>
+</section>
+<!-- Bento Features Teaser -->
+<section class="max-w-[1280px] mx-auto px-page-margin-desktop py-stack-xl">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Large Card -->
+<div class="md:col-span-8 bg-surface-container-low rounded-xl p-stack-md flex flex-col justify-between border border-on-surface/[0.05] group overflow-hidden">
+<div class="max-w-md">
+<span class="font-label-mono text-label-mono text-secondary mb-4 block">Privacy First</span>
+<h3 class="font-headline-md text-headline-md text-primary mb-4">Your brain is not for sale.</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Jenn is 100% local-first. Your files never leave your device unless you choose to sync them via your own encrypted provider. No tracking, no data mining.
+                        </p>
+</div>
+<div class="mt-stack-md transform translate-y-8 group-hover:translate-y-4 transition-transform duration-500">
+<div class="flex gap-4">
+<div class="w-32 h-20 bg-surface-container-highest rounded-lg border border-on-surface/[0.05]"></div>
+<div class="w-32 h-20 bg-surface-container-highest rounded-lg border border-on-surface/[0.05]"></div>
+<div class="w-32 h-20 bg-surface-container-highest rounded-lg border border-on-surface/[0.05]"></div>
+</div>
+</div>
+</div>
+<!-- Small Card -->
+<div class="md:col-span-4 bg-primary text-on-primary rounded-xl p-stack-md flex flex-col border border-primary/10 shadow-xl shadow-primary/10">
+<div class="bg-on-primary/10 w-12 h-12 rounded-lg flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-[28px]">electric_bolt</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Blazing Speed.</h3>
+<p class="font-body-md text-body-md text-on-primary/70 leading-relaxed">
+                        Built with a custom Rust-based engine, Jenn handles thousands of notes with zero latency. Search instantly across your entire history.
+                    </p>
+<div class="mt-auto pt-8">
+<a class="font-label-mono text-label-mono uppercase tracking-widest flex items-center gap-2 hover:gap-4 transition-all" href="#">
+                            Performance Benchmarks <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="w-full py-stack-xl mt-stack-xl bg-surface-container-low border-t border-on-surface/[0.05]">
+<div class="max-w-[1280px] mx-auto px-page-margin-desktop flex flex-col md:flex-row justify-between items-start gap-gutter">
+<div class="space-y-4">
+<span class="font-headline-md text-headline-md text-primary">Jenn</span>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">The editorial workspace for focused minds.</p>
+</div>
+<div class="flex flex-wrap gap-x-12 gap-y-6">
+<div class="flex flex-col gap-3">
+<span class="font-label-mono text-label-mono uppercase tracking-widest text-primary mb-2">Product</span>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:underline underline-offset-4 decoration-on-surface-variant/30" href="#">Changelog</a>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:underline underline-offset-4 decoration-on-surface-variant/30" href="#">Plugins</a>
+</div>
+<div class="flex flex-col gap-3">
+<span class="font-label-mono text-label-mono uppercase tracking-widest text-primary mb-2">Community</span>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:underline underline-offset-4 decoration-on-surface-variant/30" href="#">Twitter</a>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:underline underline-offset-4 decoration-on-surface-variant/30" href="#">Discord</a>
+</div>
+<div class="flex flex-col gap-3">
+<span class="font-label-mono text-label-mono uppercase tracking-widest text-primary mb-2">Legal</span>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:underline underline-offset-4 decoration-on-surface-variant/30" href="#">Privacy Policy</a>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:underline underline-offset-4 decoration-on-surface-variant/30" href="#">Terms of Service</a>
+</div>
+</div>
+<div class="w-full md:w-auto pt-8 md:pt-0">
+<p class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant">© 2024 Jenn Workspace. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<script>
+        // Subtle micro-interaction for the graph nodes
+        document.addEventListener('mousemove', (e) => {
+            const nodes = document.querySelectorAll('.bg-secondary-fixed-dim');
+            const x = (e.clientX - window.innerWidth / 2) / 100;
+            const y = (e.clientY - window.innerHeight / 2) / 100;
+            
+            nodes.forEach((node, i) => {
+                const factor = (i + 1) * 0.5;
+                node.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jenn | Settings</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface": "#1c1c1a",
+                    "surface-container": "#f0ede9",
+                    "tertiary-fixed-dim": "#c7c6c5",
+                    "surface-container-low": "#f6f3ef",
+                    "tertiary-fixed": "#e3e2e0",
+                    "on-secondary-container": "#6d614a",
+                    "on-primary-container": "#858383",
+                    "on-surface-variant": "#444748",
+                    "surface-bright": "#fcf9f5",
+                    "secondary-fixed": "#f1e1c4",
+                    "secondary-fixed-dim": "#d4c5a9",
+                    "error-container": "#ffdad6",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#e5e2de",
+                    "secondary-container": "#eedec1",
+                    "surface-dim": "#dcdad6",
+                    "on-secondary-fixed": "#221b09",
+                    "on-tertiary-container": "#838482",
+                    "tertiary": "#000000",
+                    "background": "#fcf9f5",
+                    "surface-container-high": "#eae8e4",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#464746",
+                    "surface-container-highest": "#e5e2de",
+                    "on-secondary-fixed-variant": "#504630",
+                    "outline-variant": "#c4c7c7",
+                    "primary-fixed-dim": "#c8c6c5",
+                    "inverse-primary": "#c8c6c5",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed-variant": "#474746",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed": "#1a1c1b",
+                    "on-background": "#1c1c1a",
+                    "surface": "#fcf9f5",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#f3f0ec",
+                    "primary": "#000000",
+                    "outline": "#747878",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#1a1c1b",
+                    "primary-container": "#1c1b1b",
+                    "secondary": "#685d46",
+                    "inverse-surface": "#31302e",
+                    "primary-fixed": "#e5e2e1",
+                    "on-primary-fixed": "#1c1b1b",
+                    "surface-tint": "#5f5e5e",
+                    "on-error": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "4px",
+                    "lg": "8px",
+                    "xl": "12px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "48px",
+                    "page-margin-mobile": "24px",
+                    "stack-xl": "120px",
+                    "page-margin-desktop": "80px",
+                    "unit": "8px",
+                    "gutter": "32px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "label-mono": ["JetBrains Mono"],
+                    "display-lg-mobile": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "serif": ["Instrument Serif", "serif"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "body-lg": ["20px", {"lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "600"}],
+                    "label-mono": ["13px", {"lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "600"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .disappearing-layer {
+            background: rgba(252, 249, 245, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .disappearing-layer {
+            background: rgba(26, 26, 28, 0.8);
+            border: 1px solid rgba(62, 62, 68, 0.5);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 2px;
+            background: #e5e2de;
+            border-radius: 1px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #685d46;
+            cursor: pointer;
+            margin-top: -7px;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.05);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary-fixed selection:text-on-secondary-fixed antialiased overflow-hidden">
+<!-- WebGL Shader Background (Atmospheric) -->
+
+<div class="flex h-screen w-full relative z-10">
+<!-- Side Navigation - Styled per JSON & Design System -->
+<aside class="bg-surface-bright dark:bg-surface-dim h-screen w-80 fixed left-0 top-0 border-r border-on-surface/5 flex flex-col h-full py-stack-md px-8 z-50">
+<div class="mb-12 flex items-center gap-4">
+<div class="w-10 h-10 bg-primary-container rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">memory</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-tertiary leading-none">Jenn</h1>
+<p class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant opacity-60">Local-first Intelligence</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Navigation Items -->
+<button class="w-full flex items-center gap-4 py-3 px-4 rounded-lg group transition-all duration-200 hover:bg-surface-container-low text-on-surface-variant opacity-60 hover:opacity-100 font-label-mono text-label-mono uppercase tracking-widest" onclick="scrollToSection('profile')">
+<span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">person</span>
+<span>Profile</span>
+</button>
+<button class="w-full flex items-center gap-4 py-3 px-4 rounded-lg group transition-all duration-200 hover:bg-surface-container-low text-on-surface-variant opacity-60 hover:opacity-100 font-label-mono text-label-mono uppercase tracking-widest" onclick="scrollToSection('general')">
+<span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">settings</span>
+<span>General</span>
+</button>
+<button class="w-full flex items-center gap-4 py-3 px-4 rounded-lg group transition-all duration-200 hover:bg-surface-container-low text-secondary border-r-2 border-secondary font-bold font-label-mono text-label-mono uppercase tracking-widest bg-surface-container-low" onclick="scrollToSection('ai-config')">
+<span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform" style="font-variation-settings: 'FILL' 1;">memory</span>
+<span>AI Configuration</span>
+</button>
+<button class="w-full flex items-center gap-4 py-3 px-4 rounded-lg group transition-all duration-200 hover:bg-surface-container-low text-on-surface-variant opacity-60 hover:opacity-100 font-label-mono text-label-mono uppercase tracking-widest" onclick="scrollToSection('data-management')">
+<span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">database</span>
+<span>Data Management</span>
+</button>
+</nav>
+<div class="mt-auto pt-8 border-t border-on-surface/5 space-y-4">
+<button class="w-full flex items-center gap-4 py-2 px-4 rounded-lg group text-on-surface-variant opacity-60 hover:opacity-100 font-label-mono text-label-mono uppercase tracking-widest transition-all">
+<span class="material-symbols-outlined text-[18px]">contact_support</span>
+<span>Support</span>
+</button>
+<button class="w-full flex items-center gap-4 py-2 px-4 rounded-lg group text-on-surface-variant opacity-60 hover:opacity-100 font-label-mono text-label-mono uppercase tracking-widest transition-all">
+<span class="material-symbols-outlined text-[18px]">history</span>
+<span>Release Notes</span>
+</button>
+<div class="mt-6">
+<button class="w-full py-3 bg-secondary text-on-secondary rounded-lg font-label-mono text-label-mono uppercase tracking-widest hover:opacity-90 transition-opacity active:scale-[0.98]">
+                        Export Data
+                    </button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-80 overflow-y-auto custom-scroll h-screen bg-background/50">
+<!-- Top App Bar - Fixed per JSON -->
+<header class="fixed top-0 right-0 left-80 z-50 flex justify-between items-center px-12 py-6 backdrop-blur-xl border-b border-on-surface/5 bg-background/80">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-body-lg font-medium text-primary">Settings</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant opacity-40 text-[18px]">search</span>
+<input class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-sm w-64 focus:ring-1 focus:ring-secondary/20 font-body-md" placeholder="Search parameters..." type="text"/>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">settings</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">help_outline</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden border border-on-surface/10 cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A refined, close-up studio portrait of a professional woman with a soft, minimalist aesthetic. The lighting is diffused and warm, reflecting a serene and intelligent persona. The background is a clean, neutral taupe that aligns with the premium Lumina design language. High resolution and editorial photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKKtTa5r0QvwkmP-A47ctvcWje4sqisdljD_SfJwkToUW2UfRz2hdxJpQZInoDeN92L9Ww8FOus-gM0riNCFEl_Fk7AAcaBts5blyExK2cLmz79Ef4I6ZimW8CY4A3aPySP5OVFvM2SK5jvhWexlOjkmtlVejdIlUQQWgkAhj2-ryInIKzkWlZbCp03E3dJRuuJVc5_HUidlY_j0odJzbhIMjLr5oWhac0_zWbUMXcPZH_KWdupTBBCw"/>
+</div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="max-w-[900px] mx-auto px-page-margin-desktop pt-[120px] pb-stack-xl space-y-stack-md">
+<!-- Section: Profile -->
+<section class="space-y-gutter" id="profile">
+<h2 class="font-serif text-[48px] italic text-tertiary">Profile</h2>
+<div class="disappearing-layer p-10 rounded-xl space-y-8">
+<div class="flex items-center gap-8">
+<div class="relative group">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-on-surface/5">
+<img class="w-full h-full object-cover" data-alt="A crisp profile avatar placeholder showing a clean, architectural silhouette against a warm beige background. The style is minimalist and high-end, evoking a sense of refined identity in a digital workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAygYOgOkT96R76wA6ZCGcPR5WsX9wf2j0ejhfgf2KK79_16a9-rgBPiJHg5TdO_cyllAg6zuEedsvvn2HV_tItgphmEW-yFTxPrSIEgxzZxMld2Z8c3h8bKhUxXC7xux4Aiw1vmK9jfKomxGdQLvlgnfqRcIXQwNC8iOPy9RGcoDP1ztLYqDm5J5hqKTxNphx3dbwWx0BDDRpGXhRaURjokEwxT-YGKyx8wI4IMCdtJiH1XtxkYRkQRA"/>
+</div>
+<button class="absolute inset-0 bg-black/40 text-white flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-full">
+<span class="material-symbols-outlined text-[20px]">upload</span>
+<span class="text-[10px] font-label-mono uppercase tracking-tighter">Update</span>
+</button>
+</div>
+<div class="flex-1">
+<h3 class="font-body-lg text-body-lg font-medium text-on-surface mb-1">Account Identity</h3>
+<p class="text-on-surface-variant text-sm opacity-70">Manage your public presence and security credentials.</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="space-y-2">
+<label class="font-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant">Full Name</label>
+<input class="w-full bg-transparent border-b border-on-surface/10 py-2 focus:border-secondary focus:ring-0 font-body-md outline-none transition-colors" type="text" value="Julianne Vane"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant">Email Address</label>
+<input class="w-full bg-transparent border-b border-on-surface/10 py-2 focus:border-secondary focus:ring-0 font-body-md outline-none transition-colors" type="email" value="julianne.v@local.jenn"/>
+</div>
+</div>
+<div class="pt-4">
+<button class="px-6 py-3 border border-on-surface/10 rounded-lg font-label-mono text-label-mono uppercase tracking-widest hover:bg-surface-container transition-colors">
+                                Reset Password
+                            </button>
+</div>
+</div>
+</section>
+<!-- Section: General -->
+<section class="space-y-gutter" id="general">
+<h2 class="font-serif text-[48px] italic text-tertiary">General</h2>
+<div class="disappearing-layer p-10 rounded-xl space-y-10">
+<!-- Theme Selection -->
+<div class="flex justify-between items-center">
+<div class="space-y-1">
+<h3 class="font-body-md font-medium">Interface Theme</h3>
+<p class="text-xs text-on-surface-variant opacity-70">Adjust the visual atmosphere of your workspace.</p>
+</div>
+<div class="flex bg-surface-container rounded-full p-1 gap-1">
+<button class="px-5 py-2 rounded-full font-label-mono text-[11px] bg-white text-secondary shadow-sm">LIGHT</button>
+<button class="px-5 py-2 rounded-full font-label-mono text-[11px] hover:text-on-surface transition-colors">DARK</button>
+<button class="px-5 py-2 rounded-full font-label-mono text-[11px] hover:text-on-surface transition-colors">SYSTEM</button>
+</div>
+</div>
+<!-- Language -->
+<div class="flex justify-between items-center border-t border-on-surface/5 pt-10">
+<div class="space-y-1">
+<h3 class="font-body-md font-medium">Language Preference</h3>
+<p class="text-xs text-on-surface-variant opacity-70">Primary interaction language for the system.</p>
+</div>
+<select class="bg-transparent border border-on-surface/10 rounded-lg px-4 py-2 font-body-md text-sm outline-none focus:ring-1 focus:ring-secondary/20">
+<option>English (International)</option>
+<option>Japanese (Nihongo)</option>
+<option>German (Deutsch)</option>
+<option>French (Français)</option>
+</select>
+</div>
+<!-- Startup Toggle -->
+<div class="flex justify-between items-center border-t border-on-surface/5 pt-10">
+<div class="space-y-1">
+<h3 class="font-body-md font-medium">Auto-launch</h3>
+<p class="text-xs text-on-surface-variant opacity-70">Launch Jenn automatically when you log into your OS.</p>
+</div>
+<div class="relative inline-flex items-center cursor-pointer group">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-high rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: AI Configuration -->
+<section class="space-y-gutter" id="ai-config">
+<h2 class="font-serif text-[48px] italic text-tertiary">AI Configuration</h2>
+<div class="disappearing-layer p-10 rounded-xl space-y-12">
+<!-- Provider & Model -->
+<div class="grid grid-cols-2 gap-10">
+<div class="space-y-4">
+<div class="space-y-1">
+<label class="font-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant">Default Provider</label>
+<p class="text-[10px] text-on-surface-variant opacity-50 mb-4">Choose your primary LLM infrastructure.</p>
+</div>
+<select class="w-full bg-surface-container-lowest border border-on-surface/10 rounded-lg px-4 py-3 font-body-md text-sm outline-none focus:ring-1 focus:ring-secondary/20">
+<option>Groq</option>
+<option selected="">OpenRouter</option>
+<option>GigaChat</option>
+</select>
+</div>
+<div class="space-y-4">
+<div class="space-y-1">
+<label class="font-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant">Model Selection</label>
+<p class="text-[10px] text-on-surface-variant opacity-50 mb-4">Select the logic engine for your assistant.</p>
+</div>
+<select class="w-full bg-surface-container-lowest border border-on-surface/10 rounded-lg px-4 py-3 font-body-md text-sm outline-none focus:ring-1 focus:ring-secondary/20">
+<option>Claude 3.5 Sonnet</option>
+<option selected="">GPT-4o</option>
+<option>Llama 3 70B</option>
+<option>Mistral Large 2</option>
+</select>
+</div>
+</div>
+<!-- Temperature Slider -->
+<div class="space-y-6 pt-4">
+<div class="flex justify-between items-end">
+<div class="space-y-1">
+<label class="font-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant">Temperature</label>
+<p class="text-[10px] text-on-surface-variant opacity-50">Balance between deterministic accuracy and creative fluidity.</p>
+</div>
+<span class="font-label-mono text-secondary text-lg">0.7</span>
+</div>
+<input class="accent-secondary" max="1" min="0" step="0.1" type="range" value="0.7"/>
+<div class="flex justify-between text-[10px] font-label-mono text-on-surface-variant opacity-40 uppercase tracking-widest">
+<span>Precise</span>
+<span>Creative</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Data Management -->
+<section class="space-y-gutter" id="data-management">
+<h2 class="font-serif text-[48px] italic text-tertiary">Data Management</h2>
+<div class="disappearing-layer p-10 rounded-xl space-y-10">
+<!-- Local Knowledge Vault -->
+<div class="space-y-4">
+<div class="space-y-1">
+<label class="font-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant">Local Knowledge Vault</label>
+<p class="text-xs text-on-surface-variant opacity-70">The physical directory where your neural data and vector stores reside.</p>
+</div>
+<div class="flex gap-2">
+<input class="flex-1 bg-surface-container border border-on-surface/5 rounded-lg px-4 py-3 font-label-mono text-xs text-on-surface-variant outline-none" type="text" value="/Users/julianne/Documents/Jenn/Vault_01"/>
+<button class="px-4 py-3 border border-on-surface/10 rounded-lg hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">folder_open</span>
+</button>
+</div>
+</div>
+<!-- Actions Grid -->
+<div class="grid grid-cols-2 gap-8 pt-6 border-t border-on-surface/5">
+<div class="space-y-4">
+<h3 class="font-body-md font-medium">Export Intelligence</h3>
+<p class="text-xs text-on-surface-variant opacity-70">Download a full snapshot of your local model training data and chat logs in JSON format.</p>
+<button class="flex items-center gap-2 text-secondary font-label-mono text-[11px] uppercase tracking-widest group">
+                                    Begin Export
+                                    <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_right_alt</span>
+</button>
+</div>
+<div class="space-y-4">
+<h3 class="font-body-md font-medium text-error">Clear Neural Cache</h3>
+<p class="text-xs text-on-surface-variant opacity-70">Permanently delete current context memory and temporary vector indexes. This cannot be undone.</p>
+<button class="flex items-center gap-2 text-error font-label-mono text-[11px] uppercase tracking-widest group">
+                                    Destructive Action
+                                    <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">delete_forever</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<footer class="pt-12 text-center">
+<p class="font-label-mono text-[10px] uppercase tracking-[0.2em] text-on-surface-variant opacity-30">Jenn v4.2.0 • Secured by E2EE • Local First</p>
+</footer>
+</div>
+</main>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // Update navigation visual state
+                document.querySelectorAll('nav button').forEach(btn => {
+                    btn.classList.remove('text-secondary', 'border-r-2', 'border-secondary', 'font-bold', 'bg-surface-container-low');
+                    btn.classList.add('text-on-surface-variant', 'opacity-60');
+                });
+                
+                const activeBtn = Array.from(document.querySelectorAll('nav button')).find(btn => 
+                    btn.innerText.toLowerCase().includes(id.replace('-', ' '))
+                );
+                if (activeBtn) {
+                    activeBtn.classList.remove('text-on-surface-variant', 'opacity-60');
+                    activeBtn.classList.add('text-secondary', 'border-r-2', 'border-secondary', 'font-bold', 'bg-surface-container-low');
+                }
+            }
+        }
+
+        // Parallax effect on sections while scrolling
+        const mainContent = document.querySelector('main');
+        mainContent.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navButtons = document.querySelectorAll('nav button');
+            
+            sections.forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top >= 0 && rect.top <= 300) {
+                    navButtons.forEach(btn => {
+                        btn.classList.remove('text-secondary', 'border-r-2', 'border-secondary', 'font-bold', 'bg-surface-container-low');
+                        btn.classList.add('text-on-surface-variant', 'opacity-60');
+                    });
+                    navButtons[index].classList.remove('text-on-surface-variant', 'opacity-60');
+                    navButtons[index].classList.add('text-secondary', 'border-r-2', 'border-secondary', 'font-bold', 'bg-surface-container-low');
+                }
+            });
+        });
+    </script>
+</body></html>

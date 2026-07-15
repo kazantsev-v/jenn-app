@@ -1,0 +1,34 @@
+# Environment and secrets
+.env
+node_modules/
+
+# Playwright artifacts
+.playwright-mcp/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Database
+prisma/dev.db
+prisma/*.db-journal
+
+# User data (runtime-generated)
+data/configs/
+data/users.json
+
+# Obsidian vault data
+jenn-obsidian/
+
+# Screenshots (development artifacts)
+*.png
+
+# OpenCode configuration
+.opencode/
+
+# Compiled binaries
+examples/DesktopInput/bin/
+examples/DesktopInput/obj/

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jenn — Routing Logic Configuration</title>
+<!-- Material Symbols for high-fidelity iconography -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter and JetBrains Mono -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#eedec1",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#1a1c1b",
+                        "secondary-fixed": "#f1e1c4",
+                        "on-surface": "#1c1c1a",
+                        "surface-dim": "#dcdad6",
+                        "primary": "#000000",
+                        "on-primary-fixed-variant": "#474746",
+                        "background": "#fcf9f5",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "tertiary-fixed": "#e3e2e0",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#d4c5a9",
+                        "on-tertiary-fixed-variant": "#464746",
+                        "outline": "#747878",
+                        "on-background": "#1c1c1a",
+                        "surface": "#fcf9f5",
+                        "secondary": "#685d46",
+                        "primary-container": "#1c1b1b",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#221b09",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#6d614a",
+                        "on-secondary-fixed-variant": "#504630",
+                        "on-surface-variant": "#444748",
+                        "on-primary-fixed": "#1c1b1b",
+                        "surface-bright": "#fcf9f5",
+                        "inverse-primary": "#c8c6c5",
+                        "tertiary-fixed-dim": "#c7c6c5",
+                        "surface-container-low": "#f6f3ef",
+                        "on-tertiary-fixed": "#1a1c1b",
+                        "tertiary": "#000000",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f3f0ec",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#858383",
+                        "surface-variant": "#e5e2de",
+                        "outline-variant": "#c4c7c7",
+                        "on-tertiary-container": "#838482",
+                        "inverse-surface": "#31302e",
+                        "surface-container-high": "#eae8e4",
+                        "primary-fixed": "#e5e2e1",
+                        "surface-container-highest": "#e5e2de",
+                        "surface-tint": "#5f5e5e",
+                        "surface-container": "#f0ede9",
+                        "surface-container-lowest": "#ffffff",
+                        "lumina-black": "#0D0D0D",
+                        "lumina-gold": "#C5A059"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "modal": "12px"
+                    },
+                    "spacing": {
+                        "page-margin-desktop": "80px",
+                        "unit": "8px",
+                        "page-margin-mobile": "24px",
+                        "gutter": "32px",
+                        "stack-md": "48px",
+                        "stack-xl": "120px"
+                    },
+                    "fontFamily": {
+                        "label-mono": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-mono": ["13px", {"lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #F9F8F6;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .modal-blur {
+            backdrop-filter: blur(20px);
+            background-color: rgba(13, 13, 13, 0.96);
+        }
+        .ambient-glow {
+            box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.3);
+        }
+        .input-focus-ring:focus {
+            outline: none;
+            border-color: #C5A059;
+            box-shadow: 0 0 0 1px #C5A059;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        /* Custom scrollbar for the modal content */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-6">
+<!-- Modal Container -->
+<div class="relative w-full max-w-[560px] modal-blur text-white border border-white/10 rounded-modal overflow-hidden flex flex-col ambient-glow">
+<!-- Header -->
+<div class="flex items-center justify-between px-8 py-6 border-b border-white/5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-lumina-gold/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-lumina-gold text-[20px]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<h1 class="font-headline-md text-body-lg font-semibold tracking-tight">save_entry</h1>
+</div>
+<button class="text-white/40 hover:text-white transition-colors cursor-pointer">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Scrollable Content Area -->
+<div class="px-8 py-6 flex-1 overflow-y-auto custom-scrollbar space-y-8">
+<!-- Capability Indicator -->
+<div class="bg-white/[0.03] border border-white/5 rounded-xl p-4 flex items-center gap-4">
+<span class="material-symbols-outlined text-lumina-gold text-[18px]">info</span>
+<p class="font-label-mono text-[12px] uppercase tracking-wider text-white/60">
+                    Capability: <span class="text-white">knowledge.save_text</span>; function: <span class="text-white">saveText</span>
+</p>
+</div>
+<!-- Configuration Group 1 -->
+<section class="space-y-6">
+<div class="space-y-2">
+<label class="font-label-mono text-[11px] uppercase tracking-[0.1em] text-white/40 block">Output</label>
+<div class="relative">
+<select class="w-full bg-white/[0.02] border border-white/10 rounded-lg px-4 py-3 text-body-md appearance-none input-focus-ring cursor-pointer transition-all">
+<option value="notion">notion</option>
+<option value="obsidian">obsidian</option>
+<option value="logseq">logseq</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/30">expand_more</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-mono text-[11px] uppercase tracking-[0.1em] text-white/40 block">Destination</label>
+<input class="w-full bg-white/[0.02] border border-white/10 rounded-lg px-4 py-3 text-body-md font-label-mono text-[13px] input-focus-ring placeholder:text-white/10" placeholder="UUID or path..." type="text" value="517c9434-365c-499c-b180-0c55f8595240"/>
+<p class="text-[11px] text-white/30 mt-1 italic">Default storage location within selected output.</p>
+</div>
+</section>
+<!-- Separator -->
+<div class="h-px bg-white/5 w-full"></div>
+<!-- Configuration Group 2: Routing -->
+<section class="space-y-6 pb-4">
+<h3 class="font-label-mono text-[12px] font-bold text-lumina-gold tracking-widest uppercase">Routing Logic</h3>
+<div class="space-y-2">
+<label class="font-label-mono text-[11px] uppercase tracking-[0.1em] text-white/40 block">Routing Mode</label>
+<div class="relative">
+<select class="w-full bg-white/[0.02] border border-white/10 rounded-lg px-4 py-3 text-body-md appearance-none input-focus-ring cursor-pointer">
+<option>Jenn decides by destination descriptions</option>
+<option>Manual keyword mapping</option>
+<option>Strict category matching</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/30">expand_more</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-mono text-[11px] uppercase tracking-[0.1em] text-white/40 block">Fallback Destination</label>
+<div class="relative">
+<div class="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none">
+<span class="material-symbols-outlined text-[16px] text-lumina-gold" style="font-variation-settings: 'FILL' 1;">database</span>
+</div>
+<select class="w-full bg-white/[0.02] border border-white/10 rounded-lg pl-12 pr-4 py-3 text-body-md appearance-none input-focus-ring cursor-pointer">
+<option>Inbox (database)</option>
+<option>Unsorted Ideas</option>
+<option>Daily Log</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/30">expand_more</span>
+</div>
+</div>
+<!-- Descriptive Subtext -->
+<div class="flex items-start gap-3 p-4 bg-lumina-gold/[0.03] border border-lumina-gold/10 rounded-lg">
+<span class="material-symbols-outlined text-lumina-gold text-[18px]">auto_awesome</span>
+<p class="text-[12px] text-white/50 leading-relaxed">
+                        Jenn automatically parses incoming data using semantic understanding to choose the best destination. Ensure your database properties are clearly labeled.
+                    </p>
+</div>
+</section>
+</div>
+<!-- Footer Actions -->
+<div class="px-8 py-6 border-t border-white/5 bg-white/[0.01] flex items-center justify-end gap-3">
+<button class="px-6 py-2.5 rounded-lg font-label-mono text-[12px] uppercase tracking-wider text-white/60 hover:text-white hover:bg-white/5 transition-all cursor-pointer">
+                Cancel
+            </button>
+<button class="px-6 py-2.5 rounded-lg font-label-mono text-[12px] uppercase tracking-wider border border-error/30 text-error hover:bg-error/10 transition-all cursor-pointer">
+                Delete
+            </button>
+<button class="px-8 py-2.5 rounded-lg font-label-mono text-[12px] uppercase tracking-wider bg-lumina-gold text-lumina-black font-bold hover:brightness-110 active:scale-95 transition-all cursor-pointer shadow-lg shadow-lumina-gold/10">
+                Save Changes
+            </button>
+</div>
+</div>
+<!-- Atmospheric Micro-interaction Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const selects = document.querySelectorAll('select');
+            selects.forEach(select => {
+                select.addEventListener('change', () => {
+                    // Visual feedback for interaction
+                    select.parentElement.classList.add('scale-[0.99]');
+                    setTimeout(() => {
+                        select.parentElement.classList.remove('scale-[0.99]');
+                    }, 100);
+                });
+            });
+
+            // Gentle parallax movement for background (optional flair)
+            document.addEventListener('mousemove', (e) => {
+                const modal = document.querySelector('.modal-blur');
+                if (modal) {
+                    const x = (window.innerWidth / 2 - e.pageX) / 100;
+                    const y = (window.innerHeight / 2 - e.pageY) / 100;
+                    modal.style.transform = `translate(${x}px, ${y}px)`;
+                }
+            });
+        });
+    </script>
+</body></html>

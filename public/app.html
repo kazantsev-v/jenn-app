@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jenn — Admin</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🧠</text></svg>">
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface2: #21262d;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text2: #8b949e;
+  --accent: #58a6ff;
+  --accent-hover: #79c0ff;
+  --green: #3fb950;
+  --red: #f85149;
+  --yellow: #d29922;
+  --radius: 10px;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+
+#app { display: flex; height: 100vh; width: 100vw; }
+#auth-screen { display: flex; align-items: center; justify-content: center; height: 100vh; width: 100vw; }
+
+.sidebar {
+  width: 220px; flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  display: flex; flex-direction: column;
+}
+.sidebar .logo {
+  padding: 0 20px 20px; font-size: 20px; font-weight: 700;
+  letter-spacing: -0.3px; border-bottom: 1px solid var(--border); margin-bottom: 8px;
+}
+.sidebar .logo span { color: var(--accent); }
+.sidebar nav { flex: 1; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 20px; color: var(--text2); cursor: pointer;
+  font-size: 14px; transition: all .15s; border-left: 3px solid transparent;
+}
+.nav-item:hover { color: var(--text); background: var(--surface2); }
+.nav-item.active { color: var(--text); background: var(--surface2); border-left-color: var(--accent); }
+.nav-item .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+.main { flex: 1; padding: 32px 40px; overflow-y: auto; }
+.main-inner { max-width: 960px; }
+
+.page-title { font-size: 24px; font-weight: 600; margin-bottom: 24px; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.card-title {
+  font-size: 13px; font-weight: 600; color: var(--text2);
+  text-transform: uppercase; letter-spacing: .5px; margin-bottom: 12px;
+}
+
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; font-size: 13px; color: var(--text2); margin-bottom: 4px; }
+.form-group input, .form-group textarea, .form-group select {
+  width: 100%; padding: 9px 12px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--text); font-size: 14px; font-family: var(--font);
+  outline: none; transition: border .15s;
+}
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--accent); }
+.form-group textarea { min-height: 80px; resize: vertical; }
+.form-row { display: flex; gap: 12px; align-items: end; }
+
+.btn {
+  padding: 9px 18px; border: none; border-radius: 6px; font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: all .15s; font-family: var(--font);
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--border); }
+.btn-danger { background: transparent; color: var(--red); border: 1px solid var(--red); }
+.btn-danger:hover { background: var(--red); color: #fff; }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+.btn-group { display: flex; gap: 8px; margin-top: 12px; }
+.btn-icon { background: transparent; border: none; color: var(--text2); cursor: pointer; padding: 4px 6px; border-radius: 4px; font-size: 14px; }
+.btn-icon:hover { background: var(--surface2); color: var(--text); }
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; padding: 10px 12px; color: var(--text2); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid var(--border); }
+td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+tr:last-child td { border-bottom: none; }
+
+.alert { padding: 10px 14px; border-radius: 6px; font-size: 13px; margin-bottom: 12px; }
+.alert-success { background: rgba(63,185,80,.12); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+.alert-error { background: rgba(248,81,81,.12); color: var(--red); border: 1px solid rgba(248,81,81,.3); }
+.alert-info { background: rgba(88,166,255,.12); color: var(--accent); border: 1px solid rgba(88,166,255,.3); }
+
+.hidden { display: none !important; }
+
+.toast {
+  position: fixed; bottom: 24px; right: 24px;
+  padding: 10px 18px; border-radius: 6px; font-size: 13px;
+  z-index: 1000; opacity: 0; transition: opacity .3s; pointer-events: none;
+}
+.toast.show { opacity: 1; }
+
+/* Auth card */
+.auth-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 32px; width: 360px;
+}
+.auth-card h1 { font-size: 22px; margin-bottom: 4px; }
+.auth-card p { color: var(--text2); font-size: 14px; margin-bottom: 20px; }
+.auth-card .btn { width: 100%; margin-top: 4px; }
+.auth-switch { text-align: center; margin-top: 14px; font-size: 13px; color: var(--text2); }
+.auth-switch a { cursor: pointer; }
+
+/* Routes diagram */
+.routes-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 32px;
+  padding: 20px 0;
+  position: relative;
+}
+.routes-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  min-width: 200px;
+}
+.routes-column-label {
+  font-size: 12px;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.routes-arrow {
+  display: flex;
+  align-items: center;
+  color: var(--text2);
+  font-size: 24px;
+  margin-top: 40px;
+}
+.route-card {
+  width: 200px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+}
+.route-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.route-card-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.route-card-icon { font-size: 20px; vertical-align: middle; margin-right: 6px; }
+.route-card-status { font-size: 12px; color: var(--text2); }
+.route-card-status .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+.dot.green { background: var(--green); }
+.dot.red { background: var(--red); }
+.dot.yellow { background: var(--yellow); }
+.route-card-add {
+  border: 1px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  color: var(--text2);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.route-card-add:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 500;
+}
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 600px;
+  max-width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 0;
+}
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 24px; border-bottom: 1px solid var(--border);
+}
+.modal-header h2 { font-size: 18px; font-weight: 600; }
+.modal-body { padding: 24px; }
+.modal-footer {
+  display: flex; justify-content: flex-end; gap: 8px;
+  padding: 16px 24px; border-top: 1px solid var(--border);
+}
+
+/* Tag chips */
+.tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; background: var(--surface2); border-radius: 20px; font-size: 12px; margin: 3px; }
+.tag-remove { cursor: pointer; font-size: 14px; line-height: 1; color: var(--text2); }
+.tag-remove:hover { color: var(--red); }
+
+/* DB table */
+.db-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+.db-table th { font-size: 11px; padding: 8px 10px; }
+.db-table td { padding: 8px 10px; font-size: 13px; vertical-align: top; }
+.db-table td input, .db-table td select { font-size: 13px; padding: 5px 8px; }
+.db-table .options-list { margin-top: 4px; }
+
+/* Logs */
+.logs-console {
+  background: #0a0e14;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 13px;
+  height: 60vh;
+  overflow-y: auto;
+  padding: 12px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.logs-console .log-entry {
+  padding: 3px 0;
+  line-height: 1.6;
+  display: flex;
+  gap: 6px;
+}
+.logs-console .log-time { color: var(--text2); flex-shrink: 0; }
+.logs-console .log-icon { flex-shrink: 0; width: 20px; text-align: center; }
+.logs-console .log-text { color: var(--text); }
+.logs-console .log-detail { color: var(--text2); font-size: 11px; }
+.logs-empty { color: var(--text2); padding: 40px; text-align: center; }
+
+/* Skills Library */
+.modal-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); padding: 0 24px; }
+.tab-btn { padding: 12px 16px; font-size: 13px; background: none; border: none; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; padding: 20px 24px; }
+.skill-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; transition: all .2s; }
+.skill-card:hover { border-color: var(--accent); }
+.skill-card-icon { font-size: 28px; margin-bottom: 8px; }
+.skill-card-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.skill-card-desc { font-size: 12px; color: var(--text2); margin-bottom: 6px; line-height: 1.4; }
+.skill-card-meta { font-size: 11px; color: var(--text3); margin-bottom: 12px; }
+
+/* Create skill form */
+.create-skill-form { padding: 20px 24px; }
+.create-skill-form label { display: block; font-size: 12px; color: var(--text2); margin-bottom: 4px; margin-top: 12px; }
+.create-skill-form input, .create-skill-form textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface2); color: var(--text); font-size: 13px; }
+
+/* Skill config form */
+.config-form { padding: 16px 24px; }
+.config-form .field { margin-bottom: 16px; }
+.config-form .field label { display: block; font-size: 12px; color: var(--text2); margin-bottom: 4px; font-weight: 600; }
+.config-form .field .field-desc { font-size: 11px; color: var(--text3); margin-bottom: 6px; }
+.config-form .field select,
+.config-form .field input[type="text"],
+.config-form .field input[type="number"] { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface2); color: var(--text); font-size: 13px; }
+.config-form .field select { cursor: pointer; }
+.config-form .skill-header { padding: 16px 24px; border-bottom: 1px solid var(--border); }
+.config-form .skill-header h3 { margin: 0 0 4px; font-size: 16px; }
+.config-form .skill-header .meta { font-size: 12px; color: var(--text3); }
+
+@media (max-width: 700px) {
+  .sidebar { display: none; }
+  .main { padding: 20px; }
+  .routes-container { flex-direction: column; align-items: center; }
+  .routes-arrow { transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+
+<div id="auth-screen">
+  <div class="auth-card">
+    <h1>Jenn</h1>
+    <p>Sign in to your account</p>
+    <div id="auth-alert"></div>
+    <div id="login-form">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="login-username" placeholder="your_username" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••" autocomplete="current-password">
+      </div>
+      <button class="btn btn-primary" onclick="login()">Sign in</button>
+      <div class="auth-switch">Don't have an account? <a onclick="showRegister()">Register</a></div>
+    </div>
+    <div id="register-form" class="hidden">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="reg-username" placeholder="your_username" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="reg-password" placeholder="••••" autocomplete="new-password">
+      </div>
+      <button class="btn btn-primary" onclick="register()">Create account</button>
+      <div class="auth-switch">Already have an account? <a onclick="showAuth()">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <aside class="sidebar">
+    <div class="logo"><span>Jenn</span> Admin</div>
+    <nav>
+      <div class="nav-item active" data-page="routes" onclick="navigate('routes')">
+        <span class="nav-icon">🔀</span> Routes
+      </div>
+      <div class="nav-item" data-page="messages" onclick="navigate('messages')">
+        <span class="nav-icon">💬</span> Messages
+      </div>
+      <div class="nav-item" data-page="logs" onclick="navigate('logs')">
+        <span class="nav-icon">📋</span> Logs
+      </div>
+      <div class="nav-item" data-page="test" onclick="navigate('test')">
+        <span class="nav-icon">🧪</span> Test
+      </div>
+    </nav>
+    <div style="padding: 12px 20px; border-top: 1px solid var(--border);">
+      <div class="nav-item" onclick="logout()" style="border-left: none; padding: 8px 0;">
+        <span class="nav-icon">🚪</span> Sign out
+      </div>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="main-inner" id="content"></div>
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+<div id="debug-log" style="display:none;position:fixed;bottom:0;left:0;right:0;height:200px;z-index:99999;background:#1a1a2e;flex-direction:column">
+  <div style="flex-shrink:0;padding:6px 8px;background:#161b22;border-bottom:1px solid #333;color:#888;font:13px sans-serif">
+    📋 Debug Log
+    <span style="float:right">
+      <button onclick="document.getElementById('debug-log-content').textContent=''" style="background:#333;color:#fff;border:none;padding:2px 8px;cursor:pointer;font-size:11px">Clear</button>
+      <button onclick="document.getElementById('debug-log').style.display='none'" style="background:#333;color:#fff;border:none;padding:2px 8px;cursor:pointer;font-size:11px;margin-left:4px">✕</button>
+    </span>
+  </div>
+  <div id="debug-log-content" style="flex:1;overflow:auto;color:#0f0;font:12px monospace;padding:8px;white-space:pre-wrap"></div>
+</div>
+
+<script>
+const API = '/v1/admin'
+let token = null
+
+const _dbgEl = () => document.getElementById('debug-log')
+const _dbgToggle = (show) => { const el = _dbgEl(); if (el) { el.style.display = show !== undefined ? (show ? 'flex' : 'none') : (el.style.display === 'none' || el.style.display === '' ? 'flex' : 'none') } }
+const _dbg = (msg) => {
+  const el = document.getElementById('debug-log-content')
+  if (el) { el.textContent += `[${new Date().toLocaleTimeString()}] ${msg}\n`; el.scrollTop = el.scrollHeight }
+}
+const _dbgErr = (msg) => {
+  _dbg('❌ ' + msg); _dbgToggle(true)
+  console.error(msg)
+}
+console.log = (function(orig) { return function(...args) { _dbg(args.map(a=>typeof a==='object'?JSON.stringify(a):String(a)).join(' ')); orig.apply(console, args); } })(console.log)
+console.error = (function(orig) { return function(...args) { _dbg('❌ ' + args.map(a=>typeof a==='object'?JSON.stringify(a):String(a)).join(' ')); _dbgToggle(true); orig.apply(console, args); } })(console.error)
+window.onerror = (msg, url, line) => _dbgErr(`GLOBAL: ${msg} (${url}:${line})`)
+window.addEventListener('unhandledrejection', e => _dbgErr(`PROMISE: ${e.reason?.stack || e.reason}`))
+document.addEventListener('keydown', e => { if (e.ctrlKey && e.shiftKey && e.key === 'D') { e.preventDefault(); _dbgToggle() } })
+document.getElementById('toast')?.addEventListener('dblclick', () => _dbgToggle())
+_dbg('App started. Press Ctrl+Shift+D or double-click toast to toggle debug log.')
+
+function getHeaders() {
+  return { 'Content-Type': 'application/json', ...(token ? { 'Authorization': `Bearer ${token}` } : {}) }
+}
+
+async function api(method, path, body) {
+  const opts = { method, headers: getHeaders() }
+  if (body) opts.body = JSON.stringify(body)
+  const res = await fetch(`${API}${path}`, opts)
+  const data = await res.json()
+  return { status: res.status, ok: res.ok, data }
+}
+
+function toast(msg, type = 'info') {
+  const el = document.getElementById('toast')
+  el.textContent = msg
+  el.className = `toast alert-${type} show`
+  setTimeout(() => el.classList.remove('show'), 3000)
+}
+
+function showAuth() {
+  document.getElementById('login-form').classList.remove('hidden')
+  document.getElementById('register-form').classList.add('hidden')
+  document.getElementById('auth-alert').innerHTML = ''
+}
+function showRegister() {
+  document.getElementById('login-form').classList.add('hidden')
+  document.getElementById('register-form').classList.remove('hidden')
+  document.getElementById('auth-alert').innerHTML = ''
+}
+
+async function login() {
+  const username = document.getElementById('login-username').value.trim()
+  const password = document.getElementById('login-password').value
+  const { status, data } = await api('POST', '/login', { username, password })
+  if (status !== 200) {
+    document.getElementById('auth-alert').innerHTML = `<div class="alert alert-error">${data.message || 'Login failed'}</div>`
+    return
+  }
+  token = data.token
+  document.getElementById('auth-screen').classList.add('hidden')
+  document.getElementById('app').classList.remove('hidden')
+  navigate('routes')
+}
+
+async function register() {
+  const username = document.getElementById('reg-username').value.trim()
+  const password = document.getElementById('reg-password').value
+  const { status, data } = await api('POST', '/register', { username, password })
+  if (status !== 201) {
+    document.getElementById('auth-alert').innerHTML = `<div class="alert alert-error">${data.message || 'Registration failed'}</div>`
+    return
+  }
+  token = data.token
+  document.getElementById('auth-screen').classList.add('hidden')
+  document.getElementById('app').classList.remove('hidden')
+  navigate('routes')
+}
+
+async function logout() {
+  await api('POST', '/logout')
+  token = null
+  document.getElementById('app').classList.add('hidden')
+  document.getElementById('auth-screen').classList.remove('hidden')
+  document.getElementById('login-password').value = ''
+}
+
+api('GET', '/config').then(({ status }) => {
+  if (status === 200) {
+    document.getElementById('auth-screen').classList.add('hidden')
+    document.getElementById('app').classList.remove('hidden')
+    navigate('routes')
+  }
+})
+
+let logsEventSource = null
+
+function navigate(page) {
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'))
+  const navEl = document.querySelector(`.nav-item[data-page="${page}"]`)
+  if (navEl) navEl.classList.add('active')
+  const content = document.getElementById('content')
+  if (logsEventSource) { logsEventSource.close(); logsEventSource = null }
+  switch(page) {
+    case 'routes': renderRoutes(content); break
+    case 'messages': renderMessages(content); break
+    case 'test': renderTest(content); break
+    case 'logs': renderLogs(content); break
+  }
+}
+
+/* ─── Modals ─── */
+function showModal(title, bodyHtml, footerHtml = '') {
+  const overlay = document.createElement('div')
+  overlay.className = 'modal-overlay'
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove() }
+  overlay.innerHTML = `
+    <div class="modal">
+      <div class="modal-header">
+        <h2>${title}</h2>
+        <button class="btn-icon" onclick="this.closest('.modal-overlay').remove()">✕</button>
+      </div>
+      <div class="modal-body">${bodyHtml}</div>
+      ${footerHtml ? `<div class="modal-footer">${footerHtml}</div>` : ''}
+    </div>`
+  document.body.appendChild(overlay)
+  return overlay
+}
+
+function closeModal() {
+  const el = document.querySelector('.modal-overlay')
+  if (el) el.remove()
+}
+
+/* ─── Routes ─── */
+let cachedConfig = null
+async function renderRoutes(el) {
+  const { data: configData } = await api('GET', '/config')
+  const { data: inpData } = await api('GET', '/inputs')
+  const { data: outData } = await api('GET', '/outputs')
+  const { data: capsData } = await api('GET', '/capabilities')
+  cachedConfig = configData?.config || {}
+  const inputs = inpData?.inputs || []
+  const outputs = outData?.outputs || []
+  const caps = capsData?.capabilities || []
+
+  const inputCards = inputs.map(inp => `
+    <div class="route-card" onclick="openInputConfig('${inp.name}')">
+      <div class="route-card-title"><span class="route-card-icon">${inp.icon || '📥'}</span> ${inp.title || inp.name}</div>
+      <div class="route-card-status">${inp.token ? 'ID: ' + inp.token.slice(0,12) + '…' : 'No token'}</div>
+    </div>
+  `).join('')
+
+  const capCards = caps.map(cap => {
+    return `<div class="route-card" onclick="openSkillConfig('${cap.name}')">
+      <div class="route-card-title"><span class="route-card-icon">${cap.icon || '⚡'}</span> ${escapeHtml(cap.title || cap.name)}</div>
+      <div class="route-card-status">${escapeHtml((cap.description || '').slice(0, 70))}</div>
+    </div>`
+  }).join('')
+
+  const outputCards = outputs.map(out => {
+    const hasKey = !!(cachedConfig?.outputs?.[out.name]?.api_key)
+    const status = hasKey
+      ? '<span class="dot green"></span> Connected'
+      : '<span class="dot red"></span> Not configured'
+    return `<div class="route-card" onclick="openOutputConfig('${out.name}')">
+      <div class="route-card-title"><span class="route-card-icon">${out.icon || '📄'}</span> ${out.title || out.name}</div>
+      <div class="route-card-status">${status}</div>
+    </div>`
+  }).join('')
+
+  el.innerHTML = `
+    <div class="page-title">Routes</div>
+    <p style="color:var(--text2);margin-bottom:24px;font-size:14px">
+      Inputs → Jenn Brain → Outputs
+    </p>
+    <div class="routes-container">
+      <div class="routes-column">
+        <div class="routes-column-label">Inputs</div>
+        ${inputCards || '<div class="route-card" style="cursor:default"><div class="route-card-status">No inputs installed</div></div>'}
+        <div class="route-card-add" onclick="openInputsLibrary()">➕ Add input</div>
+      </div>
+      <div class="routes-column">
+        <div class="routes-column-label">Jenn</div>
+        ${capCards || '<div class="route-card" style="cursor:default"><div class="route-card-status">Install an output to see capabilities</div></div>'}
+      </div>
+      <div class="routes-column">
+        <div class="routes-column-label">Outputs</div>
+        ${outputCards || '<div class="route-card" style="cursor:default"><div class="route-card-status">No outputs installed</div></div>'}
+        <div class="route-card-add" onclick="openOutputsLibrary()">➕ Add output</div>
+      </div>
+    </div>
+  `
+}
+
+/* ─── Output Config Modal ─── */
+async function openOutputConfig(name) {
+  const { data: cfgData } = await api('GET', '/outputs/' + encodeURIComponent(name) + '/config').catch(() => ({}))
+  const { data: libData } = await api('GET', '/outputs/library')
+  const meta = (libData?.library || []).find(o => o.name === name) || {}
+  const authFields = meta.authFields || []
+  const config = cfgData?.config || cachedConfig?.outputs?.[name] || {}
+  const hasTest = meta.hasTest
+
+  let html = '<div style="padding:8px 0">'
+  for (const field of authFields) {
+    const val = config[field.key] || ''
+    const inputType = field.secret ? 'password' : 'text'
+    html += `<div class="form-group">
+      <label>${escapeHtml(field.label)}</label>
+      <input type="${inputType}" value="${escapeHtml(val)}" data-key="${escapeHtml(field.key)}" class="output-config-field">
+    </div>`
+  }
+  if (config.ws_url && config.api_key) {
+    html += `<div class="form-group">
+      <label>WebSocket URL</label>
+      <input type="text" value="${escapeHtml(config.ws_url)}" readonly class="ws-url-display" style="font-family:monospace;background:var(--bg2)">
+    </div>
+    <div class="form-group">
+      <label>API Key</label>
+      <div style="display:flex;gap:6px">
+        <input type="text" value="${escapeHtml(config.api_key)}" readonly class="ws-url-display" style="font-family:monospace;background:var(--bg2);flex:1">
+        <button class="btn btn-sm" onclick="copyText(this.previousElementSibling.value)" style="flex-shrink:0">📋</button>
+      </div>
+      <div style="font-size:12px;color:var(--text2);margin-top:4px">Copy this to the Obsidian plugin settings</div>
+    </div>
+    <input type="hidden" value="${escapeHtml(String(config.ws_port || 11235))}" data-key="ws_port" class="output-config-field">
+    <input type="hidden" value="${escapeHtml(config.ws_url)}" data-key="ws_url" class="output-config-field">
+    <input type="hidden" value="${escapeHtml(config.api_key)}" data-key="api_key" class="output-config-field">`
+  }
+  html += '<div id="output-test-result" style="margin-bottom:12px"></div>'
+  if (meta.hasDestinations) {
+    html += `<div style="border-top:1px solid var(--border);padding-top:14px;margin-top:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px">
+        <div class="card-title">Destinations</div>
+        <button class="btn btn-secondary btn-sm" onclick="syncOutputDestinations('${escapeHtml(name)}')">Sync from app</button>
+      </div>
+      <div id="output-destinations-list" style="font-size:13px;color:var(--text2)">Loading destinations…</div>
+    </div>`
+  }
+  html += '</div>'
+
+  const overlay = showModal('', `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <span style="font-size:24px">${meta.icon || '📄'}</span>
+      <span style="font-size:18px;font-weight:600">${escapeHtml(meta.title || name)}</span>
+    </div>
+    ${html}
+  `, `
+    ${hasTest ? `<button class="btn btn-secondary" onclick="testOutputConnection('${escapeHtml(name)}')">Test</button>` : ''}
+    <button class="btn btn-primary" onclick="saveOutputConfig('${escapeHtml(name)}')">Save</button>
+    <button class="btn btn-danger" onclick="deleteOutput('${escapeHtml(name)}')">Delete</button>
+    <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+  `)
+
+  if (meta.hasDestinations) showOutputDestinations(name)
+}
+
+async function testOutputConnection(name) {
+  const fields = document.querySelectorAll('.output-config-field')
+  const config = {}
+  for (const el of fields) {
+    config[el.dataset.key] = el.value
+  }
+  const resultEl = document.getElementById('output-test-result')
+  resultEl.innerHTML = '<div class="alert alert-info">Testing…</div>'
+  const { status, data } = await api('POST', '/outputs/' + encodeURIComponent(name) + '/test', { config })
+  if (status === 200) {
+    resultEl.innerHTML = '<div class="alert alert-success">✅ ' + escapeHtml(data.message || 'Connected') + '</div>'
+  } else {
+    resultEl.innerHTML = '<div class="alert alert-error">❌ ' + escapeHtml(data.message || 'Test failed') + '</div>'
+  }
+}
+
+function destinationLabel(d) {
+  return d.name || d.title || d.id || d.notion_id || 'Untitled'
+}
+
+function destinationSchemaSummary(d) {
+  const props = d.properties || {}
+  const bits = Object.entries(props).slice(0, 6).map(([name, p]) => {
+    const opts = p.options?.length ? ` [${p.options.slice(0, 4).join(', ')}${p.options.length > 4 ? '…' : ''}]` : ''
+    return `${name}:${p.type || '?'}${opts}`
+  })
+  return bits.length ? bits.join(' · ') : (d.type === 'page' ? 'plain page blocks' : 'schema not synced')
+}
+
+async function showOutputDestinations(name) {
+  const el = document.getElementById('output-destinations-list')
+  if (!el) return
+  const fields = document.querySelectorAll('.output-config-field')
+  const config = { ...(cachedConfig?.outputs?.[name] || {}) }
+  for (const field of fields) { config[field.dataset.key] = field.value }
+  const { status, data } = await api('POST', '/outputs/' + encodeURIComponent(name) + '/destinations', { config })
+  if (status !== 200) {
+    el.innerHTML = `<div class="alert alert-error">❌ ${escapeHtml(data?.message || 'Failed to load destinations')}</div>`
+    return
+  }
+  const destinations = data?.destinations || []
+  window._outputDestinations = window._outputDestinations || {}
+  window._outputDestinations[name] = destinations
+  if (!destinations.length) {
+    el.innerHTML = '<div class="alert alert-info">No destinations visible. Make sure the integration has access to Notion pages.</div>'
+    return
+  }
+  const rows = destinations.map((d, i) => {
+    const checked = d.enabled !== false && !d.missing
+    const missing = d.missing ? ' · no longer accessible' : ''
+    const typeIcon = d.type === 'page' ? '📄' : '🗃️'
+    return `<div style="display:block;padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:var(--surface2)">
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <input type="checkbox" class="output-destination-enabled" data-index="${i}" ${checked ? 'checked' : ''} style="margin-top:3px">
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:600;color:var(--text)">${typeIcon} ${escapeHtml(destinationLabel(d))}</div>
+          <div style="font-size:11px;color:var(--text3)">${escapeHtml(d.type || 'destination')} · ${escapeHtml(d.id || d.notion_id || '')}${escapeHtml(missing)}</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:4px">${escapeHtml(destinationSchemaSummary(d))}</div>
+          <textarea class="output-destination-description" data-index="${i}" placeholder="Что Jenn должен сохранять сюда? Например: все заметки, мысли, ссылки..." style="width:100%;min-height:52px;margin-top:8px;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:12px">${escapeHtml(d.description || '')}</textarea>
+        </div>
+      </div>
+    </div>`
+  }).join('')
+  el.innerHTML = rows
+}
+
+async function syncOutputDestinations(name) {
+  const el = document.getElementById('output-destinations-list')
+  if (el) el.innerHTML = '<div class="alert alert-info">Syncing destinations from app…</div>'
+  const fields = document.querySelectorAll('.output-config-field')
+  const config = { ...(cachedConfig?.outputs?.[name] || {}) }
+  for (const field of fields) { config[field.dataset.key] = field.value }
+  const { status, data } = await api('POST', '/outputs/' + encodeURIComponent(name) + '/sync-destinations', { config })
+  if (status === 200) {
+    cachedConfig = data?.destinations
+      ? { ...(cachedConfig || {}), outputs: { ...((cachedConfig || {}).outputs || {}), [name]: { ...((cachedConfig || {}).outputs?.[name] || {}), destinations: data.destinations, databases: data.databases || ((cachedConfig || {}).outputs?.[name] || {}).databases || [] } } }
+      : cachedConfig
+    const cfgResp = await api('GET', '/config')
+    cachedConfig = cfgResp.data?.config || cachedConfig
+    toast('Destinations synced', 'success')
+    showOutputDestinations(name)
+  } else {
+    if (el) el.innerHTML = `<div class="alert alert-error">❌ ${escapeHtml(data?.message || 'Sync failed')}</div>`
+  }
+}
+
+async function saveOutputConfig(name) {
+  const fields = document.querySelectorAll('.output-config-field')
+  const config = {}
+  for (const el of fields) { config[el.dataset.key] = el.value }
+  const currentDestinations = window._outputDestinations?.[name]
+  if (currentDestinations) {
+    const checks = document.querySelectorAll('.output-destination-enabled')
+    const descriptions = document.querySelectorAll('.output-destination-description')
+    config.destinations = currentDestinations.map((d, i) => ({
+      ...d,
+      enabled: [...checks].find(c => Number(c.dataset.index) === i)?.checked !== false,
+      description: [...descriptions].find(t => Number(t.dataset.index) === i)?.value || d.description || ''
+    }))
+    config.databases = config.destinations
+      .filter(d => d.type === 'database' && d.enabled !== false)
+      .map(d => ({
+        id: d.id,
+        name: d.name || d.title,
+        database_id: d.database_id || d.notion_id,
+        url: d.url || null,
+        properties: d.properties || {},
+        categories: d.categories || []
+      }))
+  }
+  const cfg = JSON.parse(JSON.stringify(cachedConfig || {}))
+  if (!cfg.outputs) cfg.outputs = {}
+  cfg.outputs[name] = { ...(cfg.outputs[name] || {}), ...config }
+  const { status } = await api('PUT', '/config', { config: cfg })
+  if (status === 200) {
+    cachedConfig = cfg
+    toast('Config saved', 'success')
+    closeModal()
+    navigate('routes')
+  }
+  else { toast('Failed to save', 'error') }
+}
+
+async function deleteOutput(name) {
+  if (!confirm('Delete output "' + name + '"?')) return
+  await api('DELETE', '/outputs/' + encodeURIComponent(name))
+  closeModal()
+  toast('Output "' + name + '" deleted', 'success')
+  navigate('routes')
+}
+
+/* ─── Skill Config Modal ─── */
+async function openSkillConfig(skillName) {
+  const { data } = await api('GET', '/skills/' + encodeURIComponent(skillName) + '/config')
+  if (!data) { toast('Failed to load skill config', 'error'); return }
+  const { schema, config, outputs, outputDestinations, skillOutputFunction, capability } = data
+
+  let fieldsHtml = '<div style="padding:8px 0">'
+
+  // Show which output function this skill uses (dev reference)
+  if (skillOutputFunction) {
+    fieldsHtml += `<div class="alert alert-info" style="font-size:12px;margin-bottom:12px">
+      ⚡ Capability: <strong>${escapeHtml(capability || 'custom')}</strong>; default function: <strong>${escapeHtml(skillOutputFunction)}</strong>
+    </div>`
+  }
+
+  // Build form fields from schema
+  for (const [key, field] of Object.entries(schema || {})) {
+    let val = config[key] !== undefined ? config[key] : (field.default !== undefined ? field.default : '')
+    let inputHtml = ''
+
+    if (field.type === 'output') {
+      const opts = (outputs || []).map(o =>
+        `<option value="${o}"${val === o ? ' selected' : ''}>${o}</option>`
+      ).join('')
+      inputHtml = `<select id="cfg-${key}" data-field="${key}">${opts}</select>`
+
+    } else if (field.type === 'boolean') {
+      inputHtml = `<select id="cfg-${key}" data-field="${key}">
+        <option value="true"${val === true || val === 'true' ? ' selected' : ''}>Yes</option>
+        <option value="false"${val === false || val === 'false' ? ' selected' : ''}>No</option>
+      </select>`
+    } else {
+      inputHtml = `<input type="text" id="cfg-${key}" data-field="${key}" value="${escapeHtml(String(val))}" />`
+    }
+
+    fieldsHtml += `<div class="form-group">
+      <label>${escapeHtml(field.label || key)}${field.required ? ' <span style="color:var(--red)">*</span>' : ''}</label>
+      ${field.description ? `<div style="font-size:11px;color:var(--text2);margin-bottom:4px">${escapeHtml(field.description)}</div>` : ''}
+      ${inputHtml}
+    </div>`
+  }
+
+  const selectedOutput = config.output || outputs?.[0] || ''
+  const destinations = outputDestinations?.[selectedOutput] || []
+  const selectedDestination = config.destination || config.database || destinations[0]?.id || ''
+
+  if (selectedOutput) {
+    const destinationOptions = destinations
+      .filter(d => d.enabled !== false)
+      .map(d => {
+        const label = `${d.type === 'page' ? '📄' : '🗃️'} ${destinationLabel(d)} (${d.type || 'destination'})`
+        return `<option value="${escapeHtml(d.id || d.name || d.notion_id)}"${selectedDestination === (d.id || d.name || d.notion_id) ? ' selected' : ''}>${escapeHtml(label)}</option>`
+      }).join('')
+    const selectedDestObj = destinations.find(d => (d.id || d.name || d.notion_id) === selectedDestination)
+    fieldsHtml += `<div style="border-top:1px solid var(--border);padding-top:14px;margin-top:8px">
+      <div class="card-title">Route</div>
+      <div class="form-group">
+        <label>Routing mode</label>
+        <select data-field="routingMode">
+          <option value="auto"${(config.routingMode || 'auto') === 'auto' ? ' selected' : ''}>Jenn decides by destination descriptions</option>
+          <option value="fixed"${config.routingMode === 'fixed' ? ' selected' : ''}>Always use selected destination</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Default destination</label>
+        <select data-field="destination">${destinationOptions || `<option value="${escapeHtml(selectedDestination)}">${escapeHtml(selectedDestination || 'No destinations synced')}</option>`}</select>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px">Категории и поля берутся автоматически из schema выбранной destination.</div>
+      </div>
+      ${selectedDestObj ? `<div style="font-size:11px;color:var(--text2);background:var(--surface2);border-radius:8px;padding:8px">${escapeHtml(destinationSchemaSummary(selectedDestObj))}</div>` : ''}
+    </div>`
+  }
+
+  fieldsHtml += '</div>'
+
+  showModal('', `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <span style="font-size:24px">⚡</span>
+      <span style="font-size:18px;font-weight:600">${escapeHtml(skillName)}</span>
+    </div>
+    ${fieldsHtml || '<p style="color:var(--text2)">No configuration fields</p>'}
+  `, `
+    <button class="btn btn-primary" onclick="saveSkillConfig('${escapeHtml(skillName)}')">Save</button>
+    <button class="btn btn-danger" onclick="uninstallSkill('${escapeHtml(skillName)}')">Delete</button>
+    <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>`)
+}
+
+async function saveSkillConfig(skillName) {
+  const form = document.querySelectorAll('[data-field]')
+  const config = {}
+  for (const el of form) {
+    let val = el.value
+    if (el.type === 'number') val = Number(val)
+    if (el.tagName === 'SELECT' && val === 'true') val = true
+    else if (el.tagName === 'SELECT' && val === 'false') val = false
+    config[el.dataset.field] = val
+  }
+  await api('POST', '/skills/' + encodeURIComponent(skillName) + '/config', { config })
+  toast('Config saved for ' + skillName, 'success')
+  closeModal()
+  navigate('routes')
+}
+
+async function installSkill(name) {
+  await api('POST', '/skills/' + encodeURIComponent(name) + '/install')
+  closeModal()
+  navigate('routes')
+}
+
+async function uninstallSkill(name) {
+  if (!confirm('Remove skill "' + name + '"?')) return
+  await api('DELETE', '/skills/' + encodeURIComponent(name))
+  closeModal()
+  navigate('routes')
+}
+
+async function createSkill() {
+  const name = document.getElementById('new-skill-name')?.value?.trim()
+  const description = document.getElementById('new-skill-desc')?.value?.trim()
+  const paramsRaw = document.getElementById('new-skill-params')?.value?.trim()
+  const code = document.getElementById('new-skill-code')?.value?.trim()
+  if (!name) { toast('Skill name required', 'error'); return }
+  if (!code) { toast('Code required', 'error'); return }
+  let params = {}
+  if (paramsRaw) { try { params = JSON.parse(paramsRaw) } catch { toast('Invalid params JSON', 'error'); return } }
+  await api('POST', '/skills/create', { name, description, params, code })
+  toast('Skill "' + name + '" created!', 'success')
+  closeModal()
+  navigate('routes')
+}
+
+/* ─── Inputs Library ─── */
+async function openInputsLibrary() {
+  const { data: libData } = await api('GET', '/inputs/library')
+  const { data: instData } = await api('GET', '/inputs')
+  const installed = instData?.inputs || []
+  const library = libData?.library || []
+  const installedNames = new Set(installed.map(s => s.name))
+  window._inputLibrary = library
+  window._inputInstalledNames = installedNames
+
+  showModal('Inputs Library', `
+    <div class="modal-tabs">
+      <button class="tab-btn active" onclick="switchInputTab(this,'all')">All (${library.length})</button>
+      <button class="tab-btn" onclick="switchInputTab(this,'installed')">Installed (${installed.length})</button>
+    </div>
+    <div id="input-list"></div>
+  `, '<button class="btn btn-secondary" onclick="this.closest(\'.modal-overlay\').remove()">Close</button>')
+
+  renderInputTab('all', library, installedNames)
+}
+
+function renderInputTab(tab, library, installedNames) {
+  const list = document.getElementById('input-list')
+  if (!list) return
+  let items = tab === 'installed' ? library.filter(s => installedNames.has(s.name)) : library
+  if (!items.length) { list.innerHTML = '<div style="padding:40px;text-align:center;color:var(--text2)">No inputs available</div>'; return }
+  list.innerHTML = `<div class="skill-grid">${
+    items.map(inp => {
+      const isInstalled = installedNames.has(inp.name)
+      return `<div class="skill-card">
+        <div class="skill-card-icon">${inp.icon || '📥'}</div>
+        <div class="skill-card-name">${escapeHtml(inp.title || inp.name)}</div>
+        <div class="skill-card-desc">${escapeHtml((inp.description || '').slice(0, 100))}</div>
+        <div class="skill-card-meta">${inp.author ? 'v' + (inp.version || '1.0.0') + ' · ' + escapeHtml(inp.author) : ''}</div>
+        ${isInstalled
+          ? `<button class="btn btn-secondary btn-sm" onclick="uninstallInput('${inp.name}')">Remove</button>`
+          : `<button class="btn btn-sm" onclick="installInput('${inp.name}')">Install</button>`
+        }
+      </div>`
+    }).join('')
+  }</div>`
+}
+
+function switchInputTab(btn, tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  renderInputTab(tab, window._inputLibrary || [], window._inputInstalledNames || new Set())
+}
+
+async function installInput(name) {
+  await api('POST', '/inputs/' + encodeURIComponent(name) + '/install')
+  closeModal()
+  navigate('routes')
+}
+
+async function uninstallInput(name) {
+  if (!confirm('Remove input "' + name + '"?')) return
+  await api('DELETE', '/inputs/' + encodeURIComponent(name))
+  closeModal()
+  navigate('routes')
+}
+
+/* ─── Outputs Library ─── */
+async function openOutputsLibrary() {
+  const { data: libData } = await api('GET', '/outputs/library')
+  const { data: instData } = await api('GET', '/outputs')
+  const installed = instData?.outputs || []
+  const library = libData?.library || []
+  const installedNames = new Set(installed.map(s => s.name))
+  window._outputLibrary = library
+  window._outputInstalledNames = installedNames
+
+  showModal('Outputs Library', `
+    <div class="modal-tabs">
+      <button class="tab-btn active" onclick="switchOutputTab(this,'all')">All (${library.length})</button>
+      <button class="tab-btn" onclick="switchOutputTab(this,'installed')">Installed (${installed.length})</button>
+    </div>
+    <div id="output-list"></div>
+  `, '<button class="btn btn-secondary" onclick="this.closest(\'.modal-overlay\').remove()">Close</button>')
+
+  renderOutputTab('all', library, installedNames)
+}
+
+function renderOutputTab(tab, library, installedNames) {
+  const list = document.getElementById('output-list')
+  if (!list) return
+  let items = tab === 'installed' ? library.filter(s => installedNames.has(s.name)) : library
+  if (!items.length) { list.innerHTML = '<div style="padding:40px;text-align:center;color:var(--text2)">No outputs available</div>'; return }
+  list.innerHTML = `<div class="skill-grid">${
+    items.map(out => {
+      const isInstalled = installedNames.has(out.name)
+      return `<div class="skill-card">
+        <div class="skill-card-icon">${out.icon || '📄'}</div>
+        <div class="skill-card-name">${escapeHtml(out.title || out.name)}</div>
+        <div class="skill-card-desc">${escapeHtml((out.description || '').slice(0, 100))}</div>
+        <div class="skill-card-meta">${out.author ? 'v' + (out.version || '1.0.0') + ' · ' + escapeHtml(out.author) : ''}</div>
+        ${isInstalled
+          ? `<button class="btn btn-secondary btn-sm" onclick="uninstallOutput('${out.name}')">Remove</button>`
+          : `<button class="btn btn-sm" onclick="installOutput('${out.name}')">Install</button>`
+        }
+      </div>`
+    }).join('')
+  }</div>`
+}
+
+function switchOutputTab(btn, tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  renderOutputTab(tab, window._outputLibrary || [], window._outputInstalledNames || new Set())
+}
+
+async function installOutput(name) {
+  await api('POST', '/outputs/' + encodeURIComponent(name) + '/install')
+  closeModal()
+  navigate('routes')
+}
+
+async function uninstallOutput(name) {
+  if (!confirm('Remove output "' + name + '"?')) return
+  await api('DELETE', '/outputs/' + encodeURIComponent(name))
+  closeModal()
+  navigate('routes')
+}
+
+/* ─── (skills config removed — outputs now expose functions directly) ─── */
+
+/* ─── Inputs Modal ─── */
+async function openInputConfig(name) {
+  const { data } = await api('GET', '/inputs/' + encodeURIComponent(name) + '/config')
+  const fields = data.configFields || []
+  const config = data.config || {}
+  if (config.bot_mode === undefined) config.bot_mode = 'self_hosted'
+  const token = data.token
+
+  let html = '<div style="padding:8px 0">'
+  if (data.instructions) {
+    html += data.instructions
+  }
+  for (const field of fields) {
+    const showIfAttr = field.showIf ? ` data-depends="${escapeHtml(Object.keys(field.showIf)[0])}" data-depval="${escapeHtml(Object.values(field.showIf)[0])}"` : ''
+    const shouldShow = !field.showIf || config[Object.keys(field.showIf)[0]] === Object.values(field.showIf)[0]
+    const styleAttr = shouldShow ? '' : ' style="display:none"'
+    const val = config[field.key] || ''
+    const inputType = field.secret ? 'password' : (field.type === 'number' ? 'number' : 'text')
+    if (field.type === 'select') {
+      const opts = (field.options || []).map(o => {
+        const optVal = typeof o === 'object' ? o.value : o
+        const optLabel = typeof o === 'object' ? o.label : o
+        return `<option value="${escapeHtml(optVal)}"${val === optVal ? ' selected' : ''}>${escapeHtml(optLabel)}</option>`
+      }).join('')
+      html += `<div class="form-group"${showIfAttr}${styleAttr}>
+        <label>${escapeHtml(field.label)}</label>
+        <select data-key="${escapeHtml(field.key)}" class="input-config-field">${opts}</select>
+      </div>`
+    } else {
+      html += `<div class="form-group"${showIfAttr}${styleAttr}>
+        <label>${escapeHtml(field.label)}</label>
+        <input type="${inputType}" value="${escapeHtml(val)}" data-key="${escapeHtml(field.key)}" class="input-config-field"${field.placeholder ? ' placeholder="' + escapeHtml(field.placeholder) + '"' : ''}>
+      </div>`
+    }
+  }
+  if (config.bot_mode === 'self_hosted') {
+    html += `<div class="form-group" style="background:var(--surface2);padding:12px;border-radius:6px;margin-bottom:14px;font-size:13px;color:var(--text2)">
+      <strong>Свой бот:</strong> запустите <code>examples/tg-bot.js</code> с этим токеном и вашим <code>BOT_TOKEN</code> от @BotFather.<br>
+      Белый список — ID или @username через запятую, от кого принимать сообщения
+    </div>`
+  }
+  if (token) {
+    html += `<div class="form-group">
+      <label>Source Token</label>
+      <div class="form-row">
+        <input type="text" value="${token}" readonly style="font-family:monospace;font-size:12px;flex:1">
+        <button class="btn btn-sm" onclick="copyText('${token}')">📋 Copy</button>
+      </div>
+    </div>`
+  }
+  html += '</div>'
+
+  html += `<div id="input-test-result" style="margin-bottom:12px"></div>`
+
+  const testBtn = data.hasTest ? `<button class="btn btn-secondary" onclick="testInputConnection('${escapeHtml(name)}')">Test</button>` : ''
+
+  showModal('', `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <span style="font-size:24px">${data.icon || '📥'}</span>
+      <span style="font-size:18px;font-weight:600">${escapeHtml(data.title || name)}</span>
+    </div>
+    ${html}
+  `, `
+    ${testBtn}
+    <button class="btn btn-primary" onclick="saveInputConfig('${escapeHtml(name)}')">Save</button>
+    <button class="btn btn-danger" onclick="deleteInput('${escapeHtml(name)}')">Delete</button>
+    <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+  `)
+
+  setTimeout(() => {
+    document.querySelectorAll('[data-key]').forEach(el => {
+      el.addEventListener('change', function () {
+        const key = this.dataset.key
+        document.querySelectorAll(`.form-group[data-depends="${key}"]`).forEach(group => {
+          group.style.display = this.value === group.dataset.depval ? '' : 'none'
+        })
+      })
+    })
+  }, 0)
+}
+
+async function testInputConnection(name) {
+  const fields = document.querySelectorAll('.input-config-field')
+  const config = {}
+  for (const el of fields) {
+    config[el.dataset.key] = el.value
+  }
+  const resultEl = document.getElementById('input-test-result')
+  resultEl.innerHTML = '<div class="alert alert-info">Testing…</div>'
+  const { status, data } = await api('POST', '/inputs/' + encodeURIComponent(name) + '/test', { config })
+  if (status === 200) {
+    resultEl.innerHTML = '<div class="alert alert-success">✅ ' + escapeHtml(data.message || 'Connected') + '</div>'
+  } else {
+    resultEl.innerHTML = '<div class="alert alert-error">❌ ' + escapeHtml(data.message || 'Test failed') + '</div>'
+  }
+}
+
+async function deleteInput(name) {
+  if (!confirm('Delete input "' + name + '"?')) return
+  await api('DELETE', '/inputs/' + encodeURIComponent(name))
+  closeModal()
+  toast('Input "' + name + '" deleted', 'success')
+  navigate('routes')
+}
+
+async function saveInputConfig(name) {
+  const fields = document.querySelectorAll('.input-config-field')
+  const config = {}
+  for (const el of fields) {
+    config[el.dataset.key] = el.value
+  }
+  const { status } = await api('PUT', '/inputs/' + encodeURIComponent(name) + '/config', { config })
+  if (status === 200) {
+    toast('Config saved', 'success')
+    closeModal()
+    navigate('routes')
+  } else {
+    toast('Failed to save', 'error')
+  }
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => toast('Copied!', 'success')).catch(() => toast('Copy failed', 'error'))
+}
+
+/* ─── Messages ─── */
+async function renderMessages(el) {
+  const { data } = await api('GET', '/messages?limit=50')
+  const messages = data?.messages || []
+
+  let html = `<div class="page-title">Messages</div>`
+  if (messages.length === 0) {
+    html += `<div class="card" style="text-align:center;color:var(--text2);padding:40px">No messages yet.</div>`
+  } else {
+    html += `<div class="card">`
+    for (const m of messages.slice().reverse()) {
+      html += `<div style="padding:10px 0;border-bottom:1px solid var(--border)">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:4px">
+          <span style="color:var(--accent)">${m.source}</span> · ${new Date(m.received_at).toLocaleString()} · ${m.user?.name || m.user?.id || ''}
+        </div>
+        <div style="font-size:14px">${m.text.replace(/</g,'&lt;')}</div>
+      </div>`
+    }
+    html += `</div>`
+  }
+  el.innerHTML = html
+}
+
+/* ─── Test ─── */
+function renderTest(el) {
+  el.innerHTML = `
+    <div class="page-title">Test</div>
+    <div class="card">
+      <div class="form-group">
+        <label>Message text</label>
+        <textarea id="test-msg" placeholder="e.g. remind me to buy milk" rows="3"></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="sendTest()">Send</button>
+    </div>
+    <div id="test-result" class="hidden">
+      <div class="card">
+        <div class="card-title">Result</div>
+        <pre id="test-result-json" style="font-size:13px;font-family:monospace;white-space:pre-wrap;color:var(--green)"></pre>
+      </div>
+    </div>`
+}
+
+async function sendTest() {
+  const text = document.getElementById('test-msg').value.trim()
+  if (!text) { toast('Enter some text', 'error'); return }
+  const el = document.getElementById('test-result')
+  const jsonEl = document.getElementById('test-result-json')
+  el.classList.add('hidden')
+  const { status, data } = await api('POST', '/test-message', { text })
+  el.classList.remove('hidden')
+  if (status === 201) {
+    jsonEl.textContent = JSON.stringify(data.result, null, 2)
+    toast('Message processed', 'success')
+  } else {
+    jsonEl.style.color = 'var(--red)'
+    jsonEl.textContent = JSON.stringify(data, null, 2)
+    toast('Error processing', 'error')
+  }
+}
+
+/* ─── Logs ─── */
+let logEntries = []
+let logsAutoScroll = true
+
+function renderLogs(el) {
+  logEntries = []
+  el.innerHTML = `
+    <div class="page-title">Logs <span class="sub">Real-time processing log</span></div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button class="btn btn-secondary btn-sm" onclick="clearLogs()">Clear</button>
+      <button class="btn btn-secondary btn-sm" id="logs-scroll-btn" onclick="toggleLogsScroll()">📜 Auto-scroll: ON</button>
+      <span style="flex:1"></span>
+      <span id="logs-count" style="font-size:12px;color:var(--text2);padding:4px 0">Loading…</span>
+    </div>
+    <div class="logs-console" id="logs-console">
+      <div class="logs-empty">Loading recent logs…</div>
+    </div>`
+  // Load recent logs from server buffer, then connect SSE
+  api('GET', '/logs/recent').then(({ status, data }) => {
+    _dbg(`renderLogs: /logs/recent → status=${status}, logs=${data?.logs?.length || 0}`)
+    const console = document.getElementById('logs-console')
+    if (!console) return
+    console.innerHTML = ''
+    const logs = data?.logs || []
+    if (logs.length === 0) {
+      console.innerHTML = '<div class="logs-empty">Waiting for events…</div>'
+    }
+    for (const entry of logs) {
+      logEntries.push(entry)
+      appendLogEntry(entry, false)
+    }
+    document.getElementById('logs-count').textContent = `${logEntries.length} events`
+    connectLogsSSE()
+  }).catch(e => {
+    _dbgErr(`renderLogs: ${e.message}`)
+    document.getElementById('logs-count').textContent = 'Error loading logs'
+    connectLogsSSE() // still connect SSE for new events
+  })
+}
+
+function connectLogsSSE() {
+  if (!token) return
+  const es = new EventSource(`${API}/logs/stream?token=${encodeURIComponent(token)}`)
+  es.onmessage = (event) => {
+    try {
+      const entry = JSON.parse(event.data)
+      logEntries.push(entry)
+      appendLogEntry(entry)
+    } catch {}
+  }
+  es.onerror = () => {
+    es.close()
+    setTimeout(connectLogsSSE, 3000)
+  }
+  logsEventSource = es
+}
+
+function appendLogEntry(entry) {
+  const console = document.getElementById('logs-console')
+  if (!console) return
+  const empty = console.querySelector('.logs-empty')
+  if (empty) empty.remove()
+  const div = document.createElement('div')
+  div.className = 'log-entry'
+  div.innerHTML = `<span class="log-time">${entry.time}</span><span class="log-icon">${entry.icon}</span><span class="log-text">${escapeHtml(entry.text)}</span>${entry.detail ? ` <span class="log-detail">${escapeHtml(entry.detail)}</span>` : ''}`
+  console.appendChild(div)
+  document.getElementById('logs-count').textContent = `${logEntries.length} events`
+  if (logsAutoScroll) console.scrollTop = console.scrollHeight
+}
+
+function clearLogs() {
+  logEntries = []
+  const console = document.getElementById('logs-console')
+  if (console) {
+    console.innerHTML = '<div class="logs-empty">Cleared</div>'
+    document.getElementById('logs-count').textContent = '0 events'
+  }
+}
+
+function toggleLogsScroll() {
+  logsAutoScroll = !logsAutoScroll
+  const btn = document.getElementById('logs-scroll-btn')
+  if (btn) btn.textContent = `📜 Auto-scroll: ${logsAutoScroll ? 'ON' : 'OFF'}`
+}
+
+function escapeHtml(text) {
+  if (!text) return ''
+  return text.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+}
+</script>
+</body>
+</html>

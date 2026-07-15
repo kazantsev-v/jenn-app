@@ -1,0 +1,20 @@
+[
+  {
+    "name": "notion",
+    "title": "Notion",
+    "description": "База знаний Notion — задачи, заметки, хранилище, буфер",
+    "icon": "📄",
+    "author": "Jenn Core",
+    "version": "1.0.0",
+    "local": true
+  },
+  {
+    "name": "obsidian",
+    "title": "Obsidian",
+    "description": "Vault Obsidian — заметки, хранилище, база знаний",
+    "icon": "🪨",
+    "author": "Jenn Core",
+    "version": "1.0.0",
+    "local": true
+  }
+]

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jenn | API Keys</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface": "#fcf9f5",
+              "primary": "#DCC7A1", // Warm Gold
+              "on-primary": "#0E0E0F",
+              "background": "#0E0E0F", // Deep near-black
+              "surface": "#1A1A1C", // Surface container
+              "surface-container": "#242427",
+              "outline": "#3E3E42",
+              "on-surface-variant": "#A1A1A5",
+              "secondary": "#685d46",
+              "tertiary": "#DCC7A1",
+              "error": "#ff4d4d",
+            },
+            borderRadius: {
+              "DEFAULT": "4px",
+              "lg": "8px",
+              "xl": "12px",
+              "full": "9999px"
+            },
+            spacing: {
+              "stack-xl": "120px",
+              "page-margin-mobile": "24px",
+              "stack-md": "48px",
+              "page-margin-desktop": "80px",
+              "gutter": "32px",
+              "unit": "8px"
+            },
+            fontFamily: {
+              "display-lg": ["Instrument Serif", "serif"],
+              "headline-md": ["Instrument Serif", "serif"],
+              "body-lg": ["Inter", "sans-serif"],
+              "body-md": ["Inter", "sans-serif"],
+              "label-mono": ["JetBrains Mono", "monospace"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+      body {
+        background-color: #0E0E0F;
+        color: #fcf9f5;
+        -webkit-font-smoothing: antialiased;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-nav {
+        backdrop-filter: blur(20px);
+        background: rgba(14, 14, 15, 0.8);
+      }
+      .warm-glow {
+        box-shadow: 0 0 40px rgba(220, 199, 161, 0.03);
+      }
+      .table-row-hover:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Top Navigation Anchor (Shared Component Mapping) -->
+<header class="fixed top-0 w-full h-20 flex justify-between items-center px-page-margin-desktop max-w-[1280px] mx-auto z-50 glass-nav border-b border-on-surface/[0.05]">
+<div class="font-headline-md text-headline-md font-semibold tracking-tighter text-primary">Jenn</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant/80 hover:text-primary transition-colors duration-300 font-body-md tracking-tight" href="#">Pipeline</a>
+<a class="text-on-surface-variant/80 hover:text-primary transition-colors duration-300 font-body-md tracking-tight" href="#">Ecosystem</a>
+<a class="text-on-surface-variant/80 hover:text-primary transition-colors duration-300 font-body-md tracking-tight" href="#">Security</a>
+<a class="text-on-surface-variant/80 hover:text-primary transition-colors duration-300 font-body-md tracking-tight" href="#">Enterprise</a>
+</nav>
+<button class="bg-primary text-on-primary px-6 py-2 font-medium hover:opacity-90 transition-opacity">Get Started</button>
+</header>
+<div class="flex min-h-screen pt-20 max-w-[1280px] mx-auto">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-on-surface/[0.05] py-stack-md hidden md:flex flex-col gap-2 px-6">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant/60 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-mono text-[14px] uppercase tracking-wider">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant/60 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-label-mono text-[14px] uppercase tracking-wider">Pipeline</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant/60 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined">book_4</span>
+<span class="font-label-mono text-[14px] uppercase tracking-wider">Library</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-primary bg-primary/5 font-medium border-r-2 border-primary" href="#">
+<span class="material-symbols-outlined">key</span>
+<span class="font-label-mono text-[14px] uppercase tracking-wider">API Keys</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant/60 hover:text-on-surface transition-all duration-300" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-mono text-[14px] uppercase tracking-wider">Settings</span>
+</a>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-page-margin-desktop py-12">
+<!-- Header Section -->
+<div class="flex justify-between items-end mb-16">
+<div class="max-w-xl">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-4">API Keys</h1>
+<p class="font-body-lg text-on-surface-variant leading-relaxed">Manage your authentication tokens for secure message routing. Ensure keys are rotated regularly to maintain system integrity.</p>
+</div>
+<button class="bg-primary text-on-primary px-8 py-4 flex items-center gap-2 hover:brightness-110 transition-all font-medium rounded-lg">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                    Generate New Key
+                </button>
+</div>
+<!-- API Keys List -->
+<div class="bg-surface border border-outline/20 rounded-xl overflow-hidden warm-glow mb-12">
+<div class="grid grid-cols-12 gap-4 px-8 py-5 border-b border-outline/10 bg-surface-container/50">
+<div class="col-span-4 font-label-mono text-[11px] uppercase tracking-[0.2em] text-on-surface-variant">Key Name</div>
+<div class="col-span-4 font-label-mono text-[11px] uppercase tracking-[0.2em] text-on-surface-variant">Token Identifier</div>
+<div class="col-span-2 font-label-mono text-[11px] uppercase tracking-[0.2em] text-on-surface-variant">Last Active</div>
+<div class="col-span-2 font-label-mono text-[11px] uppercase tracking-[0.2em] text-on-surface-variant text-right">Status &amp; Actions</div>
+</div>
+<!-- Row 1 -->
+<div class="grid grid-cols-12 gap-4 px-8 py-6 items-center table-row-hover border-b border-outline/5 transition-colors">
+<div class="col-span-4 font-body-md font-medium text-on-surface italic">Telegram Bot</div>
+<div class="col-span-4 font-label-mono text-[13px] text-on-surface-variant">jenn_live_••••••••••••x7a2</div>
+<div class="col-span-2 font-body-md text-on-surface-variant/70">2 hours ago</div>
+<div class="col-span-2 flex justify-end items-center gap-4">
+<span class="px-2 py-0.5 bg-primary/10 text-primary font-label-mono text-[10px] uppercase rounded">Active</span>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-white/5 rounded-full text-on-surface-variant transition-colors" title="Copy Key">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+<button class="p-2 hover:bg-error/10 hover:text-error rounded-full text-on-surface-variant transition-colors" title="Revoke Key">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-12 gap-4 px-8 py-6 items-center table-row-hover border-b border-outline/5 transition-colors">
+<div class="col-span-4 font-body-md font-medium text-on-surface italic">Desktop CLI</div>
+<div class="col-span-4 font-label-mono text-[13px] text-on-surface-variant">jenn_live_••••••••••••r8w1</div>
+<div class="col-span-2 font-body-md text-on-surface-variant/70">Yesterday</div>
+<div class="col-span-2 flex justify-end items-center gap-4">
+<span class="px-2 py-0.5 bg-primary/10 text-primary font-label-mono text-[10px] uppercase rounded">Active</span>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-white/5 rounded-full text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+<button class="p-2 hover:bg-error/10 hover:text-error rounded-full text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="grid grid-cols-12 gap-4 px-8 py-6 items-center table-row-hover transition-colors">
+<div class="col-span-4 font-body-md font-medium text-on-surface italic">Chrome Extension</div>
+<div class="col-span-4 font-label-mono text-[13px] text-on-surface-variant">jenn_live_••••••••••••m9q0</div>
+<div class="col-span-2 font-body-md text-on-surface-variant/70">Never</div>
+<div class="col-span-2 flex justify-end items-center gap-4">
+<span class="px-2 py-0.5 bg-on-surface-variant/10 text-on-surface-variant font-label-mono text-[10px] uppercase rounded">Revoked</span>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-white/5 rounded-full text-on-surface-variant transition-colors opacity-30 cursor-not-allowed">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+<button class="p-2 hover:bg-error/10 hover:text-error rounded-full text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]">restore_from_trash</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Security Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Security Best Practices -->
+<div class="p-8 bg-surface border border-outline/10 rounded-xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity duration-700">
+<span class="material-symbols-outlined text-[120px]">shield_lock</span>
+</div>
+<h3 class="font-headline-md text-[24px] mb-6 text-primary italic">Security Protocol</h3>
+<ul class="space-y-4">
+<li class="flex gap-4 items-start">
+<span class="material-symbols-outlined text-primary text-[20px] mt-1">check_circle</span>
+<p class="font-body-md text-on-surface-variant leading-relaxed">Store keys in environment variables. Never commit them directly to version control systems.</p>
+</li>
+<li class="flex gap-4 items-start">
+<span class="material-symbols-outlined text-primary text-[20px] mt-1">check_circle</span>
+<p class="font-body-md text-on-surface-variant leading-relaxed">Implement IP whitelisting for production keys to restrict access to trusted origins.</p>
+</li>
+<li class="flex gap-4 items-start">
+<span class="material-symbols-outlined text-primary text-[20px] mt-1">check_circle</span>
+<p class="font-body-md text-on-surface-variant leading-relaxed">Rotate your keys every 90 days to minimize the window of vulnerability.</p>
+</li>
+</ul>
+</div>
+<!-- Rate Limiting Card -->
+<div class="p-8 bg-surface-container border border-outline/5 rounded-xl flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-[24px] mb-2 text-on-surface italic">Usage Limits</h3>
+<p class="font-body-md text-on-surface-variant mb-8">Your account is currently on the <span class="text-primary font-medium">Standard Tier</span>.</p>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between text-[12px] font-label-mono mb-2 uppercase tracking-widest text-on-surface-variant">
+<span>Daily Requests</span>
+<span>8,432 / 10,000</span>
+</div>
+<div class="h-1 bg-outline/20 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 84%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[12px] font-label-mono mb-2 uppercase tracking-widest text-on-surface-variant">
+<span>Throughput (Req/Sec)</span>
+<span>12 / 50</span>
+</div>
+<div class="h-1 bg-outline/20 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 24%"></div>
+</div>
+</div>
+</div>
+</div>
+<a class="mt-8 text-primary font-label-mono text-[12px] uppercase tracking-widest flex items-center gap-2 hover:gap-3 transition-all duration-300" href="#">
+                        Upgrade Tier Limits
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer (Shared Component Mapping) -->
+<footer class="mt-stack-xl border-t border-on-surface/[0.05] bg-background py-stack-md">
+<div class="max-w-[1280px] mx-auto px-page-margin-desktop flex flex-col md:flex-row justify-between items-center gap-gutter">
+<div class="font-headline-md text-headline-md text-primary tracking-tighter">Jenn</div>
+<div class="flex gap-8">
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity" href="#">Documentation</a>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity" href="#">Privacy Policy</a>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity" href="#">Terms of Service</a>
+<a class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity" href="#">System Status</a>
+</div>
+<p class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant opacity-40">
+                © 2024 Jenn Intelligence. Engineered for Precision.
+            </p>
+</div>
+</footer>
+<!-- Atmosphere Script -->
+<script>
+        // Subtle hover effect for the key rows
+        document.querySelectorAll('.table-row-hover').forEach(row => {
+            row.addEventListener('mousemove', (e) => {
+                const rect = row.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                row.style.setProperty('--mouse-x', `${x}px`);
+                row.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // Simple Copy Notification Simulation
+        const copyButtons = document.querySelectorAll('button[title="Copy Key"]');
+        copyButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const originalIcon = btn.innerHTML;
+                btn.innerHTML = '<span class="material-symbols-outlined text-[18px] text-primary">done</span>';
+                btn.classList.add('scale-110');
+                setTimeout(() => {
+                    btn.innerHTML = originalIcon;
+                    btn.classList.remove('scale-110');
+                }, 2000);
+            });
+        });
+    </script>
+</body></html>

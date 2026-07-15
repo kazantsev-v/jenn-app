@@ -1,0 +1,20 @@
+[
+  {
+    "name": "tg_bot",
+    "title": "Telegram Bot",
+    "description": "Получать сообщения из Telegram",
+    "icon": "🤖",
+    "author": "Jenn Core",
+    "version": "1.0.0",
+    "local": true
+  },
+  {
+    "name": "desktop",
+    "title": "Desktop Input",
+    "description": "Отправка сообщений с рабочего стола через Alt+Space",
+    "icon": "💻",
+    "author": "Jenn Core",
+    "version": "1.0.0",
+    "local": true
+  }
+]
