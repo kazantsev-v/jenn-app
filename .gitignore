@@ -14,7 +14,10 @@ Thumbs.db
 
 # Database
 prisma/dev.db
+prisma/prisma/dev.db
+prisma/*.db
 prisma/*.db-journal
+prisma/prisma/*.db
 
 # User data (runtime-generated)
 data/configs/
