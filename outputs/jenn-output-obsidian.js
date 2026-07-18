@@ -41,16 +41,26 @@ module.exports = {
     const port = parseInt(config?.ws_port) || 11235
     const host = process.env.DOMAIN || 'localhost'
     const protocol = host === 'localhost' ? 'ws' : 'wss'
-    const wsUrl = `${protocol}://${host}:${port}`
+    const wsUrl = host === 'localhost'
+      ? `${protocol}://${host}:${port}`
+      : `${protocol}://${host}`
     return { ws_port: port, ws_url: wsUrl }
   },
 
-  async init(config) {
+  async init(config, options = {}) {
     stop()
     const cfg = this.getConfig(config)
-    _port = cfg.ws_port
 
-    _wss = new WebSocketServer({ port: _port })
+    // Если передан wss сервер (через HTTPS) — используем его
+    if (options.wss) {
+      _wss = options.wss
+      console.log(`[Obsidian] Using shared WebSocket server (HTTPS)`)
+    } else {
+      // Иначе создаём свой сервер (для localhost/dev)
+      _port = cfg.ws_port
+      _wss = new WebSocketServer({ port: _port, host: '0.0.0.0' })
+      console.log(`[Obsidian] Server listening on port ${_port}`)
+    }
 
     _wss.on('connection', (ws) => {
       const authTimeout = setTimeout(() => { try { ws.close() } catch {} }, 5000)

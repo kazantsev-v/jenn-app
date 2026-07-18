@@ -4,6 +4,7 @@ const path = require('path')
 const http = require('http')
 const https = require('https')
 const express = require('express')
+const { WebSocketServer } = require('ws')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const { loadConfig, initConfigCache } = require('./config')
@@ -56,8 +57,7 @@ async function start() {
   await store.seedTestToken()
 
   if (obsidianOut?.init) {
-    await obsidianOut.init(loadConfig().outputs?.obsidian || {}).catch(err =>
-      console.error('[Obsidian] Init error:', err.message))
+    // init вызывается после создания HTTPS сервера (внутри listen callback)
   }
 
   const app = express()
@@ -102,8 +102,15 @@ async function start() {
       cert: fs.readFileSync(sslCert),
     }
 
-    https.createServer(sslOpts, app).listen(443, '0.0.0.0', () => {
+    const httpsServer = https.createServer(sslOpts, app)
+    const wss = new WebSocketServer({ server: httpsServer })
+
+    httpsServer.listen(443, '0.0.0.0', () => {
       console.log(`[Core] HTTPS on https://${domain || 'localhost'}`)
+      if (obsidianOut?.init) {
+        obsidianOut.init(loadConfig().outputs?.obsidian || {}, { wss }).catch(err =>
+          console.error('[Obsidian] Init error:', err.message))
+      }
     })
 
     const redirectApp = express()
@@ -121,6 +128,10 @@ async function start() {
     const port = process.env.PORT || 3000
     app.listen(port, '0.0.0.0', () => {
       console.log(`[Core] HTTP on http://localhost:${port}`)
+      if (obsidianOut?.init) {
+        obsidianOut.init(loadConfig().outputs?.obsidian || {}).catch(err =>
+          console.error('[Obsidian] Init error:', err.message))
+      }
     }).on('error', (err) => {
       console.error('Server error:', err.message)
     })
