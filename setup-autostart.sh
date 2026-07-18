@@ -6,7 +6,15 @@ set -e
 
 APP_DIR="${1:-$(pwd)}"
 SERVICE_DIR="/etc/systemd/system"
+NODE_PATH=$(which node)
 
+if [ -z "$NODE_PATH" ]; then
+  echo "[!] Error: node not found in PATH"
+  echo "    Please install Node.js or specify path manually"
+  exit 1
+fi
+
+echo "[*] Using node at: $NODE_PATH"
 echo "[*] Creating jenn-core.service..."
 cat > "$SERVICE_DIR/jenn-core.service" << EOF
 [Unit]
@@ -19,7 +27,7 @@ User=$SUDO_USER
 WorkingDirectory=$APP_DIR
 EnvironmentFile=$APP_DIR/.env
 EnvironmentFile=$APP_DIR/.env.production
-ExecStart=/usr/bin/node $APP_DIR/jenn-core.js
+ExecStart=$NODE_PATH $APP_DIR/jenn-core.js
 Restart=always
 RestartSec=5
 
@@ -40,7 +48,7 @@ User=$SUDO_USER
 WorkingDirectory=$APP_DIR
 EnvironmentFile=$APP_DIR/.env
 Environment=JENN_URL=http://localhost:3000
-ExecStart=/usr/bin/node $APP_DIR/jenn-bot.js
+ExecStart=$NODE_PATH $APP_DIR/jenn-bot.js
 Restart=always
 RestartSec=5
 
