@@ -2,13 +2,32 @@
 set -e
 
 # ponytail: production launcher with Let's Encrypt.
-# Asks for domain + email, installs certbot if missing, gets cert, starts HTTPS.
+# First run: asks domain + email, saves to .env.production
+# Subsequent runs: reads from .env.production
 
-read -rp "Domain (e.g. example.com): " DOMAIN
-[ -z "$DOMAIN" ] && { echo "Domain required"; exit 1; }
+ENV_PROD=".env.production"
 
-read -rp "Email for Let's Encrypt: " EMAIL
-[ -z "$EMAIL" ] && { echo "Email required"; exit 1; }
+if [ -f "$ENV_PROD" ]; then
+  echo "[*] Loading config from $ENV_PROD..."
+  set -a
+  source "$ENV_PROD"
+  set +a
+else
+  read -rp "Domain (e.g. example.com): " DOMAIN
+  [ -z "$DOMAIN" ] && { echo "Domain required"; exit 1; }
+
+  read -rp "Email for Let's Encrypt: " EMAIL
+  [ -z "$EMAIL" ] && { echo "Email required"; exit 1; }
+
+  echo "[*] Saving config to $ENV_PROD..."
+  cat > "$ENV_PROD" << EOF
+DOMAIN=$DOMAIN
+EMAIL=$EMAIL
+SSL_KEY=/etc/letsencrypt/live/$DOMAIN/privkey.pem
+SSL_CERT=/etc/letsencrypt/live/$DOMAIN/fullchain.pem
+EOF
+  chmod 600 "$ENV_PROD"
+fi
 
 CERT_DIR="/etc/letsencrypt/live/$DOMAIN"
 
@@ -24,15 +43,27 @@ else
   echo "[*] Certificate already exists at $CERT_DIR"
 fi
 
-export SSL_KEY="$CERT_DIR/privkey.pem"
-export SSL_CERT="$CERT_DIR/fullchain.pem"
-export DOMAIN
+export SSL_KEY SSL_CERT DOMAIN
 
 echo "[*] Installing dependencies..."
 npm install --production
 
 echo "[*] Running migrations..."
+set -a
+[ -f .env ] && source .env
+set +a
 npx prisma migrate deploy
 
-echo "[*] Starting HTTPS server on $DOMAIN..."
-exec node index.js
+echo "[*] Starting core..."
+node jenn-core.js &
+CORE_PID=$!
+
+echo "[*] Starting bot..."
+node jenn-bot.js &
+BOT_PID=$!
+
+echo "[*] Jenn running (core=$CORE_PID, bot=$BOT_PID)"
+echo "    Press Ctrl+C to stop"
+
+trap "kill $CORE_PID $BOT_PID 2>/dev/null; exit 0" INT TERM
+wait

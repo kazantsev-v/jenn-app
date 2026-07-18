@@ -5,6 +5,9 @@
   "scripts": {
     "start": "node index.js",
     "start:prod": "bash start.sh",
+    "start:core": "node jenn-core.js",
+    "start:bot": "node jenn-bot.js",
+    "setup:autostart": "sudo bash setup-autostart.sh",
     "migrate:dev": "prisma migrate dev --schema prisma/schema.prisma",
     "migrate:files": "node scripts/migrate-from-files.js",
     "studio": "prisma studio --schema prisma/schema.prisma",

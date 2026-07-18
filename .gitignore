@@ -1,5 +1,6 @@
 # Environment and secrets
 .env
+.env.production
 node_modules/
 
 # Playwright artifacts
