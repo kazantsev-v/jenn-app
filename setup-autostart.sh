@@ -6,6 +6,11 @@ set -e
 
 APP_DIR="${1:-$(pwd)}"
 SERVICE_DIR="/etc/systemd/system"
+
+# Load nvm if available (for sudo context)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
 NODE_PATH=$(which node)
 
 if [ -z "$NODE_PATH" ]; then
