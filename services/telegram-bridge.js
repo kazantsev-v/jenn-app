@@ -1,6 +1,5 @@
 const { TelegramBot } = require('node-telegram-bot-api')
 const { prisma } = require('../db')
-const { loadConfigRaw } = require('../config')
 
 let sharedBot = null
 let sharedUsers = []
@@ -10,7 +9,6 @@ const JENN_URL = process.env.JENN_URL || 'http://localhost:3000'
 async function start(store) {
   const sharedToken = process.env.BOT_TOKEN
 
-  // ponytail: pull all user configs from DB, filter those with built_in tg_bot input
   const rows = await prisma.userConfig.findMany({
     include: { user: { select: { username: true } } },
   })
@@ -57,6 +55,15 @@ function startSharedBot(sharedToken) {
   console.log(`[TG Bridge] Shared bot for ${sharedUsers.length} user(s): ${sharedUsers.map(u => u.username).join(', ')}`)
 }
 
+async function isCoreReachable() {
+  try {
+    const res = await fetch(`${JENN_URL}/health`, { signal: AbortSignal.timeout(3000) })
+    return res.ok
+  } catch {
+    return false
+  }
+}
+
 async function handleMessage(bot, msg, username, sourceToken) {
   if (!msg.text) return
 
@@ -70,6 +77,14 @@ async function handleMessage(bot, msg, username, sourceToken) {
       '• Любую информацию\n\n' +
       'Попробуй: "Запомни идею про запуск канала"\n' +
       'Или просто напиши что угодно — я разберусь 🙌'
+    )
+  }
+
+  const coreUp = await isCoreReachable()
+  if (!coreUp) {
+    return bot.sendMessage(msg.chat.id,
+      '⚠️ Jenn сейчас недоступна.\n\n' +
+      'Попробуй написать позже — я сохраню всё когда система снова заработает.'
     )
   }
 

@@ -4,12 +4,6 @@ const path = require('path')
 const http = require('http')
 const https = require('https')
 const express = require('express')
-
-console.log('[DEBUG] SSL_KEY:', process.env.SSL_KEY)
-console.log('[DEBUG] SSL_CERT:', process.env.SSL_CERT)
-console.log('[DEBUG] DOMAIN:', process.env.DOMAIN)
-console.log('[DEBUG] SSL_KEY exists:', process.env.SSL_KEY && fs.existsSync(process.env.SSL_KEY))
-console.log('[DEBUG] SSL_CERT exists:', process.env.SSL_CERT && fs.existsSync(process.env.SSL_CERT))
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const { loadConfig, initConfigCache } = require('./config')
@@ -117,6 +111,10 @@ async function start() {
     })
     http.createServer(redirectApp).listen(80, '0.0.0.0', () => {
       console.log('[Core] HTTP→HTTPS redirect on port 80')
+    })
+
+    app.listen(3000, '127.0.0.1', () => {
+      console.log('[Core] Internal API on http://127.0.0.1:3000')
     })
   } else {
     const port = process.env.PORT || 3000
