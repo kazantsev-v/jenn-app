@@ -68,11 +68,14 @@ npx prisma migrate deploy
 
 if [ "$MODE" = "core" ]; then
   echo "[*] Starting core only..."
+  export SSL_KEY SSL_CERT DOMAIN
   exec node jenn-core.js
 elif [ "$MODE" = "bot" ]; then
   echo "[*] Starting bot only..."
+  export JENN_URL
   exec node jenn-bot.js
 else
+  export SSL_KEY SSL_CERT DOMAIN
   echo "[*] Starting core..."
   node jenn-core.js &
   CORE_PID=$!
