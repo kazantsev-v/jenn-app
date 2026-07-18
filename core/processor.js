@@ -99,7 +99,7 @@ class Processor extends EventEmitter {
       return {
         output: directCall.output,
         function: directCall.function || directCall.name,
-        params: directCall.params || selected.params || {},
+        params: { ...(selected.params || {}), ...(directCall.params || {}) },
         source: 'ai_call'
       }
     }

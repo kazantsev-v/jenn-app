@@ -50,14 +50,16 @@ tailwind.config = {
 </script>
 <style>
 body { background-color: #0e0e0f; color: #e5e2e3; -webkit-font-smoothing: antialiased; }
+html { scroll-behavior: smooth; }
 html.light body { background-color: #f9f8f6; color: #1c1c1a; }
 .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
 
 .glass-panel { background: rgba(30, 30, 33, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(220, 199, 161, 0.1); }
 html.light .glass-panel { background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(0, 0, 0, 0.08); }
 
-.code-block { background: #0a0a0b; border: 1px solid #2D2D30; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 13px; overflow-x: auto; }
+.code-block { background: #0a0a0b; border: 1px solid #2D2D30; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 13px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 html.light .code-block { background: #f5f5f5; border-color: #e0e0e0; color: #1c1c1a; }
+.docs-code-block { font-size: 11px; }
 
 .method-badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; }
 .method-get { background: rgba(135, 197, 197, 0.15); color: #87C5C5; }
@@ -79,11 +81,24 @@ html.light .sidebar-link.active { color: #8e7953; background: rgba(142, 121, 83,
 
 @media (max-width: 1024px) {
   .docs-sidebar { display: none; }
+  .docs-mobile-toc { display: block; }
 }
 @media (max-width: 768px) {
   nav { padding: 12px 16px !important; }
+  .docs-content { padding: 0; }
+  .docs-section-title { font-size: 1.5rem !important; }
+  .docs-endpoint-row { flex-wrap: wrap; gap: 4px; }
+  .docs-endpoint-desc { margin-left: 0 !important; width: 100%; padding-left: 28px; }
+  .docs-arch-card { padding: 12px !important; }
+  .docs-glass-panel { padding: 16px !important; }
+  .docs-code-block { font-size: 11px !important; padding: 12px !important; }
+}
+@media (max-width: 480px) {
+  .docs-section-title { font-size: 1.25rem !important; }
+  .docs-main { padding: 16px !important; }
 }
 .docs-content { width: 100%; max-width: 56rem; margin-inline: auto; }
+.docs-mobile-toc { display: none; }
 </style>
 </head>
 <body class="font-body min-h-screen flex flex-col">
@@ -112,9 +127,9 @@ html.light .sidebar-link.active { color: #8e7953; background: rgba(142, 121, 83,
 <!-- Mobile Menu -->
 <div id="mobile-menu" class="fixed top-[64px] left-0 w-full z-40 bg-surface/95 backdrop-blur-xl transform -translate-y-full opacity-0 transition-all duration-300 pointer-events-none border-b border-outline-variant/20">
 <div class="flex flex-col p-6 gap-4">
-<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label text-sm border-b border-outline-variant/30" href="/faq.html">FAQ</a>
-<a class="text-primary font-bold py-2 font-label text-sm border-b border-outline-variant/30" href="/docs.html">API Docs</a>
-<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label text-sm" href="/products.html">Products</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label text-sm border-b border-outline-variant/30" href="/faq.html" onclick="closeMobileMenu()">FAQ</a>
+<a class="text-primary font-bold py-2 font-label text-sm border-b border-outline-variant/30" href="/docs.html" onclick="closeMobileMenu()">API Docs</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label text-sm" href="/products.html" onclick="closeMobileMenu()">Products</a>
 <div class="flex gap-3 pt-4">
 <button onclick="location.href='/console'" class="flex-1 py-3 bg-primary text-on-primary rounded-full font-bold font-label text-sm" data-i18n="nav.signin">Sign In</button>
 <button onclick="location.href='/console'" class="flex-1 py-3 border border-primary text-primary rounded-full font-bold font-label text-sm" data-i18n="nav.getstarted">Console</button>
@@ -167,17 +182,44 @@ html.light .sidebar-link.active { color: #8e7953; background: rgba(142, 121, 83,
 </aside>
 
 <!-- Content -->
-<main class="flex-1 lg:ml-64 p-8 md:p-12">
+<main class="docs-main flex-1 lg:ml-64 p-4 sm:p-8 md:p-12">
 <div class="docs-content">
 
+<!-- Mobile TOC (visible only on mobile) -->
+<div class="docs-mobile-toc mb-6">
+<div class="glass-panel rounded-xl p-4">
+<div class="flex items-center justify-between cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+<span class="font-label text-xs font-medium text-on-surface-variant uppercase tracking-widest">Sections</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">expand_more</span>
+</div>
+<div class="hidden mt-3 pt-3 border-t border-outline-variant/20 space-y-1">
+<a href="#overview" class="sidebar-link active">Overview</a>
+<a href="#quickstart" class="sidebar-link">Quick Start</a>
+<a href="#architecture" class="sidebar-link">Architecture</a>
+<a href="#authentication" class="sidebar-link">Authentication</a>
+<a href="#health" class="sidebar-link"><span class="method-badge method-get">GET</span> /health</a>
+<a href="#ping" class="sidebar-link"><span class="method-badge method-get">GET</span> /v1/ping</a>
+<a href="#message" class="sidebar-link"><span class="method-badge method-post">POST</span> /v1/message</a>
+<a href="#admin-auth" class="sidebar-link">Admin Auth</a>
+<a href="#admin-config" class="sidebar-link">Config</a>
+<a href="#admin-inputs" class="sidebar-link">Inputs</a>
+<a href="#admin-outputs" class="sidebar-link">Outputs</a>
+<a href="#admin-skills" class="sidebar-link">Skills</a>
+<a href="#admin-logs" class="sidebar-link">Logs</a>
+<a href="#rate-limits" class="sidebar-link">Rate Limits</a>
+<a href="#error-codes" class="sidebar-link">Error Codes</a>
+</div>
+</div>
+</div>
+
 <!-- Overview -->
-<section id="overview" class="mb-20 scroll-mt-24">
+<section id="overview" class="mb-16 sm:mb-20 scroll-mt-20">
 <div class="inline-block px-3 py-1 rounded-full bg-gold/10 border border-gold/20 text-gold font-code text-[10px] uppercase tracking-widest mb-6" data-i18n="overview.badge">Open-Source · Self-Hosted · AI-Powered</div>
-<h1 class="font-display text-4xl md:text-5xl font-bold text-on-surface mb-6 leading-tight" data-i18n="overview.title">Jenn API Documentation</h1>
+<h1 class="docs-section-title font-display text-3xl sm:text-4xl md:text-5xl font-bold text-on-surface mb-6 leading-tight" data-i18n="overview.title">Jenn API Documentation</h1>
 <p class="text-lg text-on-surface-variant mb-8 leading-relaxed" data-i18n="overview.desc">
 Jenn is an open-source, self-hosted AI message router. It captures messages from multiple sources (Telegram, Desktop CLI, API), processes them through an AI router with multi-provider fallback (Groq → OpenRouter → GigaChat), and routes the results to your knowledge bases (Notion, Obsidian). Your data stays on your machine.
 </p>
-<div class="glass-panel rounded-2xl p-6 mb-8">
+<div class="docs-glass-panel glass-panel rounded-2xl p-4 sm:p-6 mb-8">
 <div class="flex items-center gap-3 mb-4">
 <span class="material-symbols-outlined text-gold">info</span>
 <span class="font-label text-sm font-medium" data-i18n="overview.note_label">How it works</span>
@@ -193,8 +235,8 @@ Messages flow through a simple pipeline: <strong class="text-on-surface">Input</
 </section>
 
 <!-- Quick Start -->
-<section id="quickstart" class="mb-20 scroll-mt-24">
-<h2 class="font-display text-3xl font-bold text-on-surface mb-6" data-i18n="quickstart.title">Quick Start</h2>
+<section id="quickstart" class="mb-16 sm:mb-20 scroll-mt-20">
+<h2 class="docs-section-title font-display text-2xl sm:text-3xl font-bold text-on-surface mb-6" data-i18n="quickstart.title">Quick Start</h2>
 <p class="text-on-surface-variant mb-8" data-i18n="quickstart.desc">Get Jenn running in under 5 minutes.</p>
 
 <div class="space-y-4 mb-8">
@@ -230,34 +272,34 @@ Messages flow through a simple pipeline: <strong class="text-on-surface">Input</
 </section>
 
 <!-- Architecture -->
-<section id="architecture" class="mb-20 scroll-mt-24">
-<h2 class="font-display text-3xl font-bold text-on-surface mb-6" data-i18n="arch.title">Architecture</h2>
+<section id="architecture" class="mb-16 sm:mb-20 scroll-mt-20">
+<h2 class="docs-section-title font-display text-2xl sm:text-3xl font-bold text-on-surface mb-6" data-i18n="arch.title">Architecture</h2>
 <p class="text-on-surface-variant mb-8" data-i18n="arch.desc">The data flow from input to output.</p>
 
-<div class="glass-panel rounded-2xl p-8 mb-8">
-<div class="grid grid-cols-1 md:grid-cols-5 gap-4 text-center">
-<div class="p-4 rounded-xl bg-surface-container-high/50 border border-outline-variant/20">
-<span class="material-symbols-outlined text-gold mb-2 block">input</span>
+<div class="docs-glass-panel glass-panel rounded-2xl p-4 sm:p-8 mb-8">
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 text-center">
+<div class="docs-arch-card p-3 sm:p-4 rounded-xl bg-surface-container-high/50 border border-outline-variant/20">
+<span class="material-symbols-outlined text-gold mb-2 block text-[20px]">input</span>
 <span class="font-label text-xs" data-i18n="arch.inputs">Inputs</span>
 <div class="text-[10px] text-on-surface-variant mt-1">Telegram, CLI, API</div>
 </div>
-<div class="p-4 rounded-xl bg-surface-container-high/50 border border-outline-variant/20">
-<span class="material-symbols-outlined text-gold mb-2 block">terminal</span>
+<div class="docs-arch-card p-3 sm:p-4 rounded-xl bg-surface-container-high/50 border border-outline-variant/20">
+<span class="material-symbols-outlined text-gold mb-2 block text-[20px]">terminal</span>
 <span class="font-label text-xs" data-i18n="arch.sdk">SDK</span>
 <div class="text-[10px] text-on-surface-variant mt-1">Bearer Token</div>
 </div>
-<div class="p-4 rounded-xl bg-gold/5 border border-gold/40">
-<span class="material-symbols-outlined text-gold text-2xl mb-2 block" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<div class="docs-arch-card p-3 sm:p-4 rounded-xl bg-gold/5 border border-gold/40">
+<span class="material-symbols-outlined text-gold text-xl sm:text-2xl mb-2 block" style="font-variation-settings: 'FILL' 1;">psychology</span>
 <span class="font-label text-xs text-gold font-bold" data-i18n="arch.core">Jenn Core</span>
 <div class="text-[10px] text-gold mt-1">AI Router + Skills</div>
 </div>
-<div class="p-4 rounded-xl bg-surface-container-high/50 border border-outline-variant/20">
-<span class="material-symbols-outlined text-gold mb-2 block">api</span>
+<div class="docs-arch-card p-3 sm:p-4 rounded-xl bg-surface-container-high/50 border border-outline-variant/20">
+<span class="material-symbols-outlined text-gold mb-2 block text-[20px]">api</span>
 <span class="font-label text-xs" data-i18n="arch.api">REST API</span>
 <div class="text-[10px] text-on-surface-variant mt-1">/v1/*</div>
 </div>
-<div class="p-4 rounded-xl bg-surface-container-high/50 border border-outline-variant/20">
-<span class="material-symbols-outlined text-gold mb-2 block">database</span>
+<div class="docs-arch-card p-3 sm:p-4 rounded-xl bg-surface-container-high/50 border border-outline-variant/20 col-span-2 sm:col-span-1">
+<span class="material-symbols-outlined text-gold mb-2 block text-[20px]">database</span>
 <span class="font-label text-xs" data-i18n="arch.storage">Storage</span>
 <div class="text-[10px] text-on-surface-variant mt-1">Notion, Obsidian</div>
 </div>
@@ -271,8 +313,8 @@ Messages flow through a simple pipeline: <strong class="text-on-surface">Input</
 </section>
 
 <!-- Authentication -->
-<section id="authentication" class="mb-20 scroll-mt-24">
-<h2 class="font-display text-3xl font-bold text-on-surface mb-6" data-i18n="auth.title">Authentication</h2>
+<section id="authentication" class="mb-16 sm:mb-20 scroll-mt-20">
+<h2 class="docs-section-title font-display text-2xl sm:text-3xl font-bold text-on-surface mb-6" data-i18n="auth.title">Authentication</h2>
 <p class="text-on-surface-variant mb-6" data-i18n="auth.desc">Public API uses Bearer tokens. Each input source gets its own UUID token.</p>
 
 <div class="code-block p-4 mb-6">
@@ -288,7 +330,7 @@ Messages flow through a simple pipeline: <strong class="text-on-surface">Input</
 </section>
 
 <!-- Health -->
-<section id="health" class="mb-20 scroll-mt-24">
+<section id="health" class="mb-16 sm:mb-20 scroll-mt-20">
 <div class="flex items-center gap-3 mb-4">
 <span class="method-badge method-get">GET</span>
 <code class="font-code text-sm text-on-surface">/health</code>
@@ -312,7 +354,7 @@ Messages flow through a simple pipeline: <strong class="text-on-surface">Input</
 </section>
 
 <!-- Ping -->
-<section id="ping" class="mb-20 scroll-mt-24">
+<section id="ping" class="mb-16 sm:mb-20 scroll-mt-20">
 <div class="flex items-center gap-3 mb-4">
 <span class="method-badge method-get">GET</span>
 <code class="font-code text-sm text-on-surface">/v1/ping</code>
@@ -336,7 +378,7 @@ Messages flow through a simple pipeline: <strong class="text-on-surface">Input</
 </section>
 
 <!-- Message -->
-<section id="message" class="mb-20 scroll-mt-24">
+<section id="message" class="mb-16 sm:mb-20 scroll-mt-20">
 <div class="flex items-center gap-3 mb-4">
 <span class="method-badge method-post">POST</span>
 <code class="font-code text-sm text-on-surface">/v1/message</code>
@@ -393,8 +435,8 @@ Messages flow through a simple pipeline: <strong class="text-on-surface">Input</
 </section>
 
 <!-- Admin Auth -->
-<section id="admin-auth" class="mb-20 scroll-mt-24">
-<h2 class="font-display text-3xl font-bold text-on-surface mb-6" data-i18n="admin_auth.title">Admin Authentication</h2>
+<section id="admin-auth" class="mb-16 sm:mb-20 scroll-mt-20">
+<h2 class="docs-section-title font-display text-2xl sm:text-3xl font-bold text-on-surface mb-6" data-i18n="admin_auth.title">Admin Authentication</h2>
 <p class="text-on-surface-variant mb-8" data-i18n="admin_auth.desc">JWT-based auth via httpOnly cookie or Bearer header.</p>
 
 <div class="space-y-6">
@@ -428,8 +470,8 @@ Messages flow through a simple pipeline: <strong class="text-on-surface">Input</
 </section>
 
 <!-- Admin Config -->
-<section id="admin-config" class="mb-20 scroll-mt-24">
-<h2 class="font-display text-3xl font-bold text-on-surface mb-6" data-i18n="admin_config.title">Configuration</h2>
+<section id="admin-config" class="mb-16 sm:mb-20 scroll-mt-20">
+<h2 class="docs-section-title font-display text-2xl sm:text-3xl font-bold text-on-surface mb-6" data-i18n="admin_config.title">Configuration</h2>
 
 <div class="space-y-6">
 <div>
@@ -467,71 +509,71 @@ Messages flow through a simple pipeline: <strong class="text-on-surface">Input</
 </section>
 
 <!-- Admin Inputs -->
-<section id="admin-inputs" class="mb-20 scroll-mt-24">
-<h2 class="font-display text-3xl font-bold text-on-surface mb-6" data-i18n="admin_inputs.title">Inputs</h2>
+<section id="admin-inputs" class="mb-16 sm:mb-20 scroll-mt-20">
+<h2 class="docs-section-title font-display text-2xl sm:text-3xl font-bold text-on-surface mb-6" data-i18n="admin_inputs.title">Inputs</h2>
 <p class="text-on-surface-variant mb-6" data-i18n="admin_inputs.desc">Manage input sources (Telegram Bot, Desktop CLI) and review custom marketplace requests from the console.</p>
 
-<div class="space-y-4">
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/inputs</code><span class="text-on-surface-variant text-xs ml-2">— List installed inputs</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/inputs/library</code><span class="text-on-surface-variant text-xs ml-2">— Browse available inputs</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/inputs/:name/install</code><span class="text-on-surface-variant text-xs ml-2">— Install input + create token</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-delete">DELETE</span><code class="font-code text-sm">/v1/admin/inputs/:name</code><span class="text-on-surface-variant text-xs ml-2">— Uninstall input</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/inputs/:name/config</code><span class="text-on-surface-variant text-xs ml-2">— Get input config</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-put">PUT</span><code class="font-code text-sm">/v1/admin/inputs/:name/config</code><span class="text-on-surface-variant text-xs ml-2">— Save input config</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/inputs/:name/test</code><span class="text-on-surface-variant text-xs ml-2">— Test input connection</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/marketplace-requests</code><span class="text-on-surface-variant text-xs ml-2">— List custom marketplace requests</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/marketplace-requests</code><span class="text-on-surface-variant text-xs ml-2">— Submit GitHub repo, description, and docs link</span></div>
+<div class="space-y-3">
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/inputs</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— List installed inputs</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/inputs/library</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Browse available inputs</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/inputs/:name/install</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Install input + create token</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-delete">DELETE</span><code class="font-code text-sm">/v1/admin/inputs/:name</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Uninstall input</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/inputs/:name/config</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Get input config</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-put">PUT</span><code class="font-code text-sm">/v1/admin/inputs/:name/config</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Save input config</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/inputs/:name/test</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Test input connection</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/marketplace-requests</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— List custom marketplace requests</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/marketplace-requests</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Submit GitHub repo, description, and docs link</span></div>
 </div>
 </section>
 
 <!-- Admin Outputs -->
-<section id="admin-outputs" class="mb-20 scroll-mt-24">
-<h2 class="font-display text-3xl font-bold text-on-surface mb-6" data-i18n="admin_outputs.title">Outputs</h2>
+<section id="admin-outputs" class="mb-16 sm:mb-20 scroll-mt-20">
+<h2 class="docs-section-title font-display text-2xl sm:text-3xl font-bold text-on-surface mb-6" data-i18n="admin_outputs.title">Outputs</h2>
 <p class="text-on-surface-variant mb-6" data-i18n="admin_outputs.desc">Manage output targets (Notion, Obsidian) and review custom marketplace requests from the console.</p>
 
-<div class="space-y-4">
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/outputs</code><span class="text-on-surface-variant text-xs ml-2">— List installed outputs</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/outputs/library</code><span class="text-on-surface-variant text-xs ml-2">— Browse available outputs</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/outputs/:name/install</code><span class="text-on-surface-variant text-xs ml-2">— Install output</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-delete">DELETE</span><code class="font-code text-sm">/v1/admin/outputs/:name</code><span class="text-on-surface-variant text-xs ml-2">— Uninstall output</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/outputs/:name/config</code><span class="text-on-surface-variant text-xs ml-2">— Get output config</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/outputs/:name/test</code><span class="text-on-surface-variant text-xs ml-2">— Test output connection</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/outputs/:name/destinations</code><span class="text-on-surface-variant text-xs ml-2">— List destinations</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/outputs/:name/sync-destinations</code><span class="text-on-surface-variant text-xs ml-2">— Sync from external app</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/outputs/:name/sync-schema</code><span class="text-on-surface-variant text-xs ml-2">— Sync Notion DB schema</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/outputs/:name/functions</code><span class="text-on-surface-variant text-xs ml-2">— List output functions</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/marketplace-requests</code><span class="text-on-surface-variant text-xs ml-2">— List custom marketplace requests</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/marketplace-requests</code><span class="text-on-surface-variant text-xs ml-2">— Submit GitHub repo, description, and docs link</span></div>
+<div class="space-y-3">
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/outputs</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— List installed outputs</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/outputs/library</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Browse available outputs</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/outputs/:name/install</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Install output</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-delete">DELETE</span><code class="font-code text-sm">/v1/admin/outputs/:name</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Uninstall output</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/outputs/:name/config</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Get output config</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/outputs/:name/test</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Test output connection</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/outputs/:name/destinations</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— List destinations</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/outputs/:name/sync-destinations</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Sync from external app</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/outputs/:name/sync-schema</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Sync Notion DB schema</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/outputs/:name/functions</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— List output functions</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/marketplace-requests</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— List custom marketplace requests</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/marketplace-requests</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Submit GitHub repo, description, and docs link</span></div>
 </div>
 </section>
 
 <!-- Admin Skills -->
-<section id="admin-skills" class="mb-20 scroll-mt-24">
-<h2 class="font-display text-3xl font-bold text-on-surface mb-6" data-i18n="admin_skills.title">Skills</h2>
+<section id="admin-skills" class="mb-16 sm:mb-20 scroll-mt-20">
+<h2 class="docs-section-title font-display text-2xl sm:text-3xl font-bold text-on-surface mb-6" data-i18n="admin_skills.title">Skills</h2>
 <p class="text-on-surface-variant mb-6" data-i18n="admin_skills.desc">Manage skills (save_entry, custom skills) and create new ones from the pipeline skill hub.</p>
 
-<div class="space-y-4">
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/skills</code><span class="text-on-surface-variant text-xs ml-2">— List installed skills</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/skills/library</code><span class="text-on-surface-variant text-xs ml-2">— Browse skill marketplace</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/skills/:name/install</code><span class="text-on-surface-variant text-xs ml-2">— Install skill</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-delete">DELETE</span><code class="font-code text-sm">/v1/admin/skills/:name</code><span class="text-on-surface-variant text-xs ml-2">— Uninstall skill</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/skills/create</code><span class="text-on-surface-variant text-xs ml-2">— Create custom skill</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/skills/:name/publish</code><span class="text-on-surface-variant text-xs ml-2">— Publish to marketplace</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/skills/:name/config</code><span class="text-on-surface-variant text-xs ml-2">— Get skill config</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/skills/:name/config</code><span class="text-on-surface-variant text-xs ml-2">— Save skill config</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/capabilities</code><span class="text-on-surface-variant text-xs ml-2">— Aggregated capabilities</span></div>
+<div class="space-y-3">
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/skills</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— List installed skills</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/skills/library</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Browse skill marketplace</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/skills/:name/install</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Install skill</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-delete">DELETE</span><code class="font-code text-sm">/v1/admin/skills/:name</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Uninstall skill</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/skills/create</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Create custom skill</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/skills/:name/publish</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Publish to marketplace</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/skills/:name/config</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Get skill config</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/skills/:name/config</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Save skill config</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/capabilities</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Aggregated capabilities</span></div>
 </div>
 </section>
 
 <!-- Admin Logs -->
-<section id="admin-logs" class="mb-20 scroll-mt-24">
-<h2 class="font-display text-3xl font-bold text-on-surface mb-6" data-i18n="admin_logs.title">Logs & Messages</h2>
+<section id="admin-logs" class="mb-16 sm:mb-20 scroll-mt-20">
+<h2 class="docs-section-title font-display text-2xl sm:text-3xl font-bold text-on-surface mb-6" data-i18n="admin_logs.title">Logs & Messages</h2>
 
-<div class="space-y-4 mb-6">
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/messages?limit=50</code><span class="text-on-surface-variant text-xs ml-2">— Message history</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/test-message</code><span class="text-on-surface-variant text-xs ml-2">— Send test message</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/logs/recent</code><span class="text-on-surface-variant text-xs ml-2">— Recent log entries</span></div>
-<div class="flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/logs/stream</code><span class="text-on-surface-variant text-xs ml-2">— SSE real-time stream</span></div>
+<div class="space-y-3 mb-6">
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/messages?limit=50</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Message history</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-post">POST</span><code class="font-code text-sm">/v1/admin/test-message</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Send test message</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/logs/recent</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— Recent log entries</span></div>
+<div class="docs-endpoint-row flex items-center gap-3"><span class="method-badge method-get">GET</span><code class="font-code text-sm">/v1/admin/logs/stream</code><span class="docs-endpoint-desc text-on-surface-variant text-xs ml-2">— SSE real-time stream</span></div>
 </div>
 
 <div class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-3">SSE Stream Example</div>
@@ -545,8 +587,8 @@ es.onmessage = (e) => {
 </section>
 
 <!-- Rate Limits -->
-<section id="rate-limits" class="mb-20 scroll-mt-24">
-<h2 class="font-display text-3xl font-bold text-on-surface mb-6" data-i18n="rate_limits.title">Rate Limits</h2>
+<section id="rate-limits" class="mb-16 sm:mb-20 scroll-mt-20">
+<h2 class="docs-section-title font-display text-2xl sm:text-3xl font-bold text-on-surface mb-6" data-i18n="rate_limits.title">Rate Limits</h2>
 
 <div class="glass-panel rounded-xl p-4 overflow-x-auto">
 <table class="w-full text-sm">
@@ -565,8 +607,8 @@ es.onmessage = (e) => {
 </section>
 
 <!-- Error Codes -->
-<section id="error-codes" class="mb-20 scroll-mt-24">
-<h2 class="font-display text-3xl font-bold text-on-surface mb-6" data-i18n="error_codes.title">Error Codes</h2>
+<section id="error-codes" class="mb-16 sm:mb-20 scroll-mt-20">
+<h2 class="docs-section-title font-display text-2xl sm:text-3xl font-bold text-on-surface mb-6" data-i18n="error_codes.title">Error Codes</h2>
 
 <div class="glass-panel rounded-xl p-4 overflow-x-auto mb-6">
 <table class="w-full text-sm">
@@ -600,7 +642,7 @@ es.onmessage = (e) => {
 
 <!-- Footer -->
 <footer class="w-full py-8 px-6 md:px-8 border-t border-outline-variant/20 bg-surface-container-lowest/30 relative z-20">
-<div class="flex flex-col md:flex-row justify-between items-center gap-4 max-w-4xl mx-auto lg:ml-64">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4 max-w-4xl mx-auto">
 <div class="font-display text-lg text-primary italic">Jenn</div>
 <div class="text-on-surface-variant text-xs">© 2024 Jenn. Open-Source AI Router. MIT License.</div>
 </div>
@@ -620,6 +662,11 @@ function toggleMobileMenu() {
         menu.classList.remove('mobile-menu-active');
         hamburger.classList.remove('menu-active');
     }
+}
+function closeMobileMenu() {
+    mobileMenuOpen = false;
+    document.getElementById('mobile-menu').classList.remove('mobile-menu-active');
+    document.querySelector('[onclick="toggleMobileMenu()"]').classList.remove('menu-active');
 }
 
 // Theme Toggle
@@ -814,6 +861,9 @@ sidebarLinks.forEach(link => {
         const target = document.getElementById(targetId);
         if (target) {
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Close mobile TOC if open
+            const mobileTocContent = document.querySelector('.docs-mobile-toc > div > div:last-child');
+            if (mobileTocContent) mobileTocContent.classList.add('hidden');
         }
     });
 });

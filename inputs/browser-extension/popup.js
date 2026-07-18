@@ -1,3 +1,6 @@
+// Для локальной разработки измените на: http://localhost:3000
+const SERVER_URL = 'https://jenn-app.tech'
+
 const $ = id => document.getElementById(id)
 
 const viewMain = $('view-main')
@@ -11,7 +14,6 @@ const openSettingsInline = $('open-settings-inline')
 const noToken = $('no-token')
 const toast = $('toast')
 const settingsMsg = $('settings-msg')
-const sUrl = $('s-url')
 const sToken = $('s-token')
 const saveBtn = $('save-btn')
 const testBtn = $('test-btn')
@@ -19,7 +21,7 @@ const testBtn = $('test-btn')
 // ── Storage ───────────────────────────────────
 
 function getCfg() {
-  return new Promise(r => chrome.storage.local.get(['serverUrl', 'token', 'showSettings'], r))
+  return new Promise(r => chrome.storage.local.get(['token', 'showSettings'], r))
 }
 
 function setCfg(data) {
@@ -55,7 +57,7 @@ function showView(name) {
 // ── Send ──────────────────────────────────────
 
 async function sendMessage(text, meta = {}) {
-  const { serverUrl, token } = await getCfg()
+  const { token } = await getCfg()
 
   if (!token) {
     showView('settings')
@@ -67,7 +69,7 @@ async function sendMessage(text, meta = {}) {
   hideToast(toast)
 
   try {
-    const res = await fetch(`${serverUrl || 'http://localhost:3000'}/v1/message`, {
+    const res = await fetch(`${SERVER_URL}/v1/message`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -124,8 +126,7 @@ input.addEventListener('keydown', e => {
 })
 
 settingsBtn.addEventListener('click', async () => {
-  const { serverUrl, token } = await getCfg()
-  sUrl.value = serverUrl || ''
+  const { token } = await getCfg()
   sToken.value = token || ''
   showView('settings')
 })
@@ -144,22 +145,20 @@ backBtn.addEventListener('click', async () => {
 })
 
 saveBtn.addEventListener('click', async () => {
-  const url = sUrl.value.trim().replace(/\/+$/, '')
   const tok = sToken.value.trim()
 
-  await setCfg({ serverUrl: url, token: tok, showSettings: false })
+  await setCfg({ token: tok, showSettings: false })
   showToast(settingsMsg, '✓ Сохранено', true)
 })
 
 testBtn.addEventListener('click', async () => {
-  const url = (sUrl.value.trim().replace(/\/+$/, '')) || 'http://localhost:3000'
   const tok = sToken.value.trim()
 
   testBtn.disabled = true
   hideToast(settingsMsg)
 
   try {
-    const res = await fetch(`${url}/v1/ping`, {
+    const res = await fetch(`${SERVER_URL}/v1/ping`, {
       headers: { 'Authorization': `Bearer ${tok}` }
     })
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
