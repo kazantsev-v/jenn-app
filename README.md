@@ -23,6 +23,111 @@ node index.js
 
 ---
 
+## Управление в production
+
+### Локальный запуск (один процесс)
+
+```bash
+npm start
+# Запускает index.js — Express сервер + Telegram-бот в одном процессе
+# HTTP на localhost:3000
+```
+
+### Production запуск (HTTPS + Let's Encrypt)
+
+```bash
+# Первый запуск — спросит домен и email для сертификата
+npm run start:prod
+
+# Последующие запуски — читает конфигурацию из .env.production
+npm run start:prod
+```
+
+При первом запуске скрипт:
+1. Спросит домен (например, `example.com`) и email для Let's Encrypt
+2. Установит certbot если его нет
+3. Получит SSL сертификат
+4. Сохранит конфигурацию в `.env.production`
+5. Запустит core (HTTPS на 443) и bot (Telegram) как отдельные процессы
+
+### Раздельный запуск core и bot
+
+```bash
+# Только Express сервер (без Telegram-бота)
+npm run start:core
+
+# Только Telegram-бот (ожидает core на localhost:3000)
+npm run start:bot
+```
+
+### Автозагрузка через systemd
+
+```bash
+# Создать systemd сервисы и включить автозагрузку
+sudo npm run setup:autostart
+
+# Или вручную:
+sudo bash setup-autostart.sh /path/to/jenn-app
+```
+
+Скрипт создаёт два сервиса:
+- `jenn-core.service` — Express сервер
+- `jenn-bot.service` — Telegram-бот (зависит от core)
+
+Оба сервиса автоматически перезапускаются при падении (`Restart=always`).
+
+### Управление сервисами
+
+```bash
+# Статус
+systemctl status jenn-core jenn-bot
+
+# Остановка
+systemctl stop jenn-core jenn-bot
+
+# Запуск
+systemctl start jenn-core jenn-bot
+
+# Перезапуск
+systemctl restart jenn-core jenn-bot
+
+# Логи в реальном времени
+journalctl -u jenn-core -u jenn-bot -f
+
+# Логи за последний час
+journalctl -u jenn-core -u jenn-bot --since "1 hour ago"
+```
+
+### Обновление кода
+
+```bash
+# Остановить сервисы
+sudo systemctl stop jenn-core jenn-bot
+
+# Обновить код
+git pull origin main
+npm install --production
+
+# Применить миграции БД
+npx prisma migrate deploy
+
+# Запустить сервисы
+sudo systemctl start jenn-core jenn-bot
+```
+
+### Ручное обновление SSL сертификата
+
+```bash
+# Certbot автоматически обновляет сертификаты через cron/systemd timer.
+# Принудительное обновление:
+sudo certbot renew
+
+# После обновления перезапустить core:
+sudo systemctl restart jenn-core
+```
+
+---
+
 ## Архитектура
 
 ```
@@ -129,7 +234,11 @@ node index.js
 ## Структура проекта
 
 ```
-├── index.js              # Точка входа (Express-сервер)
+├── index.js              # Точка входа (Express-сервер + Telegram-бот)
+├── jenn-core.js          # Production: Express сервер (без Telegram)
+├── jenn-bot.js           # Production: Telegram-бот (отдельный процесс)
+├── start.sh              # Production launcher с Let's Encrypt
+├── setup-autostart.sh    # Настройка systemd автозагрузки
 ├── config.js             # Загрузка конфигов (глобальный + на пользователя)
 ├── auth.js               # JWT + bcrypt
 ├── store.js              # In-memory store с персистентностью
