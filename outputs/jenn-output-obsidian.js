@@ -3,6 +3,7 @@ const { WebSocketServer } = require('ws')
 const store = require('../store')
 
 let _wss = null
+let _initCalled = false
 // ponytail: multi-client — Map<username, ws>. One active plugin per user.
 const _clients = new Map()
 let _pending = new Map()
@@ -48,21 +49,19 @@ module.exports = {
   },
 
   async init(config, options = {}) {
-    // Если уже есть shared сервер — не пересоздавать
-    if (_wss && !options._forceRecreate) {
-      console.log(`[Obsidian] Skipping init — server already running`)
+    if (_initCalled) {
+      console.log(`[Obsidian] Skipping init — already initialized`)
       return
     }
+    _initCalled = true
 
     stop()
     const cfg = this.getConfig(config)
 
-    // Если передан wss сервер (через HTTPS) — используем его
     if (options.wss) {
       _wss = options.wss
       console.log(`[Obsidian] Using shared WebSocket server (HTTPS)`)
     } else {
-      // Иначе создаём свой сервер (для localhost/dev)
       _port = cfg.ws_port
       _wss = new WebSocketServer({ port: _port, host: '0.0.0.0' })
       console.log(`[Obsidian] Server listening on port ${_port}`)
@@ -75,14 +74,13 @@ module.exports = {
       ws.on('message', async (raw) => {
         let msg
         try { msg = JSON.parse(raw.toString()) } catch { return }
+        console.log(`[Obsidian] Message:`, JSON.stringify(msg).substring(0, 200))
 
-        // auth phase: first message must be { type: 'auth', payload: { key } }
         if (!authedUser && msg.type === 'auth') {
           const info = await store.getSourceByToken(msg.payload?.key).catch(() => null)
           if (info && info.source === 'obsidian') {
             clearTimeout(authTimeout)
             authedUser = info.username
-            // replace previous connection of same user
             const prev = _clients.get(authedUser)
             if (prev && prev !== ws) try { prev.close() } catch {}
             _clients.set(authedUser, ws)
@@ -95,7 +93,6 @@ module.exports = {
           return
         }
 
-        // response to a pending RPC we sent
         if (msg.id && _pending.has(msg.id)) {
           const p = _pending.get(msg.id)
           clearTimeout(p.timeout)
@@ -106,7 +103,8 @@ module.exports = {
         }
       })
 
-      ws.on('close', () => {
+      ws.on('close', (code, reason) => {
+        console.log(`[Obsidian] Closed: code=${code}, reason=${reason?.toString() || 'none'}`)
         if (authedUser && _clients.get(authedUser) === ws) {
           _clients.delete(authedUser)
           console.log(`[Obsidian] Plugin disconnected (user ${authedUser})`)
@@ -115,10 +113,13 @@ module.exports = {
         }
         clearTimeout(authTimeout)
       })
+
+      ws.on('error', (err) => {
+        console.error(`[Obsidian] WebSocket error:`, err.message)
+      })
     })
 
     _wss.on('error', (err) => console.error(`[Obsidian] ${err.message}`))
-    console.log(`[Obsidian] Server listening on port ${_port}`)
   },
 
   functions: {
