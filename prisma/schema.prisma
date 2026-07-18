@@ -68,3 +68,14 @@ model Message {
   @@index([userId, receivedAt])
   @@index([source])
 }
+
+model Subscriber {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  source         String    @default("landing")
+  unsubscribedAt DateTime?
+  createdAt      DateTime  @default(now())
+
+  @@index([createdAt])
+  @@index([unsubscribedAt])
+}

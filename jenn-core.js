@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const { loadConfig, initConfigCache } = require('./config')
 const Processor = require('./core/processor')
-const { auth, ping, postMessage, health } = require('./routes')
+const { auth, ping, postMessage, health, subscribe } = require('./routes')
 const createAdminRouter = require('./routes-admin')
 const store = require('./store')
 const { disconnect: dbDisconnect } = require('./db')
@@ -81,6 +81,7 @@ async function start() {
 
   app.get('/v1/ping', auth, ping)
   app.post('/v1/message', auth, (req, res) => postMessage(req, res, processor))
+  app.post('/v1/subscribe', subscribe)
   app.get('/health', health)
 
   const sslKey = process.env.SSL_KEY

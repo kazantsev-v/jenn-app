@@ -1,4 +1,5 @@
 const store = require('./store')
+const { prisma } = require('./db')
 
 async function auth(req, res, next) {
   const header = req.headers['authorization']
@@ -62,4 +63,40 @@ function health(req, res) {
   })
 }
 
-module.exports = { auth, ping, postMessage, health }
+async function subscribe(req, res) {
+  const { email, source } = req.body
+
+  if (!email || typeof email !== 'string') {
+    return res.status(400).json({ error: 'missing_email', message: 'Email is required' })
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(email.trim())) {
+    return res.status(400).json({ error: 'invalid_email', message: 'Invalid email format' })
+  }
+
+  try {
+    const existing = await prisma.subscriber.findUnique({ where: { email: email.trim().toLowerCase() } })
+    if (existing) {
+      if (existing.unsubscribedAt) {
+        await prisma.subscriber.update({
+          where: { email: email.trim().toLowerCase() },
+          data: { unsubscribedAt: null, source: source || existing.source }
+        })
+        return res.status(200).json({ status: 'ok', message: 'Resubscribed successfully' })
+      }
+      return res.status(409).json({ error: 'already_subscribed', message: 'Email already subscribed' })
+    }
+
+    await prisma.subscriber.create({
+      data: { email: email.trim().toLowerCase(), source: source || 'landing' }
+    })
+
+    res.status(201).json({ status: 'ok', message: 'Subscribed successfully' })
+  } catch (err) {
+    console.error('[Subscribe] Error:', err.message)
+    res.status(500).json({ error: 'internal_error', message: 'Failed to subscribe' })
+  }
+}
+
+module.exports = { auth, ping, postMessage, health, subscribe }

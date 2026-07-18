@@ -647,25 +647,43 @@ animate();
 </div>
 </div>
 </div>
-<div class="md:col-span-5 flex flex-col gap-12 pt-24">
-<!-- Plugin Marketplace Floating Cards -->
-<div class="relative h-64">
-<div class="absolute top-0 right-0 glass-panel p-4 rounded-xl border border-gold/20 z-10 hover:scale-105 transition-transform tilt-card">
-<span class="material-symbols-outlined text-gold mb-2 block">send</span>
+<div class="md:col-span-5 flex flex-col gap-12 pt-8 sm:pt-16 md:pt-24">
+<!-- Plugin Marketplace Flow Cards -->
+<div class="relative">
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+<!-- Telegram Input -->
+<div class="glass-panel p-4 sm:p-5 rounded-xl border border-gold/20 hover:scale-105 transition-transform tilt-card text-center w-full sm:w-auto min-w-[120px]">
+<span class="material-symbols-outlined text-gold mb-2 block mx-auto">send</span>
 <div class="font-title-lg">Telegram</div>
+<div class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Input</div>
 </div>
-<div class="absolute bottom-0 left-0 glass-panel p-4 rounded-xl border border-lavender/20 z-20 hover:scale-105 transition-transform tilt-card">
-<span class="material-symbols-outlined text-lavender mb-2 block">laptop_mac</span>
-<div class="font-title-lg">Desktop</div>
+<!-- Arrow -->
+<div class="hidden sm:flex items-center text-gold/60">
+<span class="material-symbols-outlined text-2xl">arrow_forward</span>
 </div>
-<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 glass-panel p-4 rounded-xl border border-turquoise/20 z-0 opacity-50 tilt-card">
-<span class="material-symbols-outlined text-turquoise mb-2 block">description</span>
+<div class="sm:hidden flex items-center text-gold/60 rotate-90">
+<span class="material-symbols-outlined text-2xl">arrow_forward</span>
+</div>
+<!-- Notion Core -->
+<div class="glass-panel p-4 sm:p-5 rounded-xl border border-turquoise/20 hover:scale-105 transition-transform tilt-card text-center w-full sm:w-auto min-w-[120px]">
+<span class="material-symbols-outlined text-turquoise mb-2 block mx-auto">description</span>
 <div class="font-title-lg">Notion</div>
+<div class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Output</div>
 </div>
-<!-- Connection Lines SVG -->
-<svg class="absolute inset-0 w-full h-full pointer-events-none" style="filter: drop-shadow(0 0 5px rgba(220,199,161,0.2));">
-<path d="M 300 50 L 150 150 M 150 150 L 50 200" fill="none" stroke="#DCC7A1" stroke-dasharray="4 4" stroke-width="0.5"></path>
-</svg>
+<!-- Arrow -->
+<div class="hidden sm:flex items-center text-gold/60">
+<span class="material-symbols-outlined text-2xl">arrow_forward</span>
+</div>
+<div class="sm:hidden flex items-center text-gold/60 rotate-90">
+<span class="material-symbols-outlined text-2xl">arrow_forward</span>
+</div>
+<!-- Desktop Input -->
+<div class="glass-panel p-4 sm:p-5 rounded-xl border border-lavender/20 hover:scale-105 transition-transform tilt-card text-center w-full sm:w-auto min-w-[120px]">
+<span class="material-symbols-outlined text-lavender mb-2 block mx-auto">laptop_mac</span>
+<div class="font-title-lg">Desktop</div>
+<div class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Input</div>
+</div>
+</div>
 </div>
 <!-- Security Volumetric Effect -->
 <div class="relative group">
@@ -816,7 +834,7 @@ Jenn is not a replacement for Notion or Obsidian — it is the invisible layer b
 <p class="font-body-lg text-on-surface-variant max-w-xl mx-auto mb-12" data-i18n="cta.desc">
                 Capture from Telegram, Desktop, CLI. Route to Notion, Obsidian, anywhere. Jenn handles the rest — powered by AI, open-source, self-hosted.
             </p>
-<button class="relative group px-12 py-5 bg-gold text-on-primary-fixed rounded-full font-bold text-title-lg overflow-hidden transition-all hover:scale-110 active:scale-95">
+<button onclick="openSubscribeModal()" class="relative group px-12 py-5 bg-gold text-on-primary-fixed rounded-full font-bold text-title-lg overflow-hidden transition-all hover:scale-110 active:scale-95">
 <span class="relative z-10 flex items-center gap-2" data-i18n="cta.button"><span class="material-symbols-outlined text-[20px]">notifications_active</span> Follow Progress</span>
 <div class="absolute inset-0 bg-white/20 translate-x-full group-hover:translate-x-0 transition-transform skew-x-12 duration-500"></div>
 <div class="absolute -inset-4 bg-gold/40 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -988,7 +1006,11 @@ Jenn is not a replacement for Notion or Obsidian — it is the invisible layer b
                 'footer.privacy': 'Privacy',
                 'footer.terms': 'Terms',
                 'footer.status': 'System Status',
-                'footer.copyright': '© 2024 Jenn. Open-Source AI Router.'
+                'footer.copyright': '© 2024 Jenn. Open-Source AI Router.',
+                'subscribe.title': 'Follow Progress',
+                'subscribe.desc': 'Get updates on new features and releases',
+                'subscribe.placeholder': 'your@email.com',
+                'subscribe.button': 'Subscribe'
             },
             ru: {
                 'signin': 'Войти',
@@ -1037,7 +1059,11 @@ Jenn is not a replacement for Notion or Obsidian — it is the invisible layer b
                 'footer.privacy': 'Конфиденциальность',
                 'footer.terms': 'Условия',
                 'footer.status': 'Статус системы',
-                'footer.copyright': '© 2024 Jenn. Open-Source AI Router.'
+                'footer.copyright': '© 2024 Jenn. Open-Source AI Router.',
+                'subscribe.title': 'Следить за проектом',
+                'subscribe.desc': 'Получайте обновления о новых функциях и релизах',
+                'subscribe.placeholder': 'your@email.com',
+                'subscribe.button': 'Подписаться'
             }
         };
 
@@ -1062,5 +1088,111 @@ Jenn is not a replacement for Notion or Obsidian — it is the invisible layer b
                 }
             });
         }
+    </script>
+    <!-- Subscribe Modal -->
+    <div id="subscribe-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 backdrop-blur-sm">
+        <div class="relative w-full max-w-md mx-4 bg-surface-container rounded-2xl border border-outline-variant overflow-hidden shadow-2xl">
+            <div class="flex items-center justify-between p-6 border-b border-outline-variant">
+                <h3 class="font-display text-headline-lg text-on-surface" data-i18n="subscribe.title">Follow Progress</h3>
+                <button onclick="closeSubscribeModal()" class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant">close</span>
+                </button>
+            </div>
+            <div class="p-6">
+                <p class="text-on-surface-variant mb-6" data-i18n="subscribe.desc">Get updates on new features and releases</p>
+                <form id="subscribe-form" onsubmit="handleSubscribe(event)">
+                    <div class="mb-4">
+                        <input 
+                            type="email" 
+                            id="subscribe-email" 
+                            name="email" 
+                            required
+                            class="w-full bg-surface-container-high border border-outline-variant rounded-xl py-3 px-4 text-on-surface placeholder:text-outline focus:outline-none focus:border-gold transition-colors"
+                            placeholder="your@email.com"
+                            data-i18n-placeholder="subscribe.placeholder"
+                        >
+                    </div>
+                    <button 
+                        type="submit" 
+                        id="subscribe-submit"
+                        class="w-full py-3 bg-gold text-on-primary-fixed rounded-xl font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
+                        data-i18n="subscribe.button"
+                    >
+                        Subscribe
+                    </button>
+                </form>
+                <div id="subscribe-status" class="mt-4 text-center hidden"></div>
+            </div>
+        </div>
+    </div>
+    <style>
+        #subscribe-modal { transition: opacity 0.2s ease; }
+        #subscribe-modal.show { display: flex !important; }
+    </style>
+    <script>
+        function openSubscribeModal() {
+            const modal = document.getElementById('subscribe-modal');
+            modal.classList.add('show');
+            document.getElementById('subscribe-email').focus();
+        }
+
+        function closeSubscribeModal() {
+            const modal = document.getElementById('subscribe-modal');
+            modal.classList.remove('show');
+            document.getElementById('subscribe-form').reset();
+            document.getElementById('subscribe-status').classList.add('hidden');
+            document.getElementById('subscribe-submit').disabled = false;
+            document.getElementById('subscribe-submit').textContent = currentLang === 'ru' ? 'Подписаться' : 'Subscribe';
+        }
+
+        async function handleSubscribe(e) {
+            e.preventDefault();
+            const email = document.getElementById('subscribe-email').value.trim();
+            const submitBtn = document.getElementById('subscribe-submit');
+            const statusDiv = document.getElementById('subscribe-status');
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = currentLang === 'ru' ? 'Отправка...' : 'Subscribing...';
+            statusDiv.classList.add('hidden');
+
+            try {
+                const res = await fetch('/v1/subscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, source: 'landing' })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    statusDiv.textContent = currentLang === 'ru' ? '✓ Спасибо! Вы подписаны.' : '✓ Thanks! You are subscribed.';
+                    statusDiv.className = 'mt-4 text-center text-green-400';
+                    statusDiv.classList.remove('hidden');
+                    setTimeout(() => closeSubscribeModal(), 2000);
+                } else if (res.status === 409) {
+                    statusDiv.textContent = currentLang === 'ru' ? 'Этот email уже подписан' : 'This email is already subscribed';
+                    statusDiv.className = 'mt-4 text-center text-gold';
+                    statusDiv.classList.remove('hidden');
+                } else {
+                    throw new Error(data.message || 'Unknown error');
+                }
+            } catch (err) {
+                statusDiv.textContent = currentLang === 'ru' ? '✗ Ошибка подписки' : '✗ Subscription failed';
+                statusDiv.className = 'mt-4 text-center text-error';
+                statusDiv.classList.remove('hidden');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = currentLang === 'ru' ? 'Подписаться' : 'Subscribe';
+            }
+        }
+
+        // Close modal on backdrop click
+        document.getElementById('subscribe-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'subscribe-modal') closeSubscribeModal();
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeSubscribeModal();
+        });
     </script>
 </body></html>
