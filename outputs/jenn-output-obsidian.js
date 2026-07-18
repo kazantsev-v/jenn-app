@@ -48,6 +48,12 @@ module.exports = {
   },
 
   async init(config, options = {}) {
+    // Если уже есть shared сервер — не пересоздавать
+    if (_wss && !options._forceRecreate) {
+      console.log(`[Obsidian] Skipping init — server already running`)
+      return
+    }
+
     stop()
     const cfg = this.getConfig(config)
 
