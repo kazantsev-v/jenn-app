@@ -2,32 +2,54 @@ const { TelegramBot } = require('node-telegram-bot-api')
 const { prisma } = require('../db')
 
 let sharedBot = null
-let sharedUsers = []
+const userCache = new Map()
 
 const JENN_URL = process.env.JENN_URL || 'http://localhost:3000'
+const CACHE_TTL = 60_000
 
 async function start(store) {
   const sharedToken = process.env.BOT_TOKEN
+  if (!sharedToken) return
+  startSharedBot(sharedToken)
+}
+
+async function findUserByTelegram(senderId, senderUsername, store) {
+  const keys = [senderId]
+  if (senderUsername) {
+    keys.push(senderUsername, `@${senderUsername}`)
+  }
+
+  for (const key of keys) {
+    const cached = userCache.get(key)
+    if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.data
+  }
 
   const rows = await prisma.userConfig.findMany({
     include: { user: { select: { username: true } } },
   })
+
   for (const row of rows) {
-    const username = row.user.username
     const tgConfig = row.data?.inputsConfig?.tg_bot
-    if (!tgConfig || tgConfig.bot_mode !== 'built_in') continue
+    if (!tgConfig || tgConfig.bot_mode !== 'built_in' || !tgConfig.telegram_id) continue
 
+    const telegramId = tgConfig.telegram_id.trim()
+    const username = row.user.username
     const sourceToken = await store.getUserToken(username, 'tg_bot')
-    if (!sourceToken || !tgConfig.telegram_id) continue
+    if (!sourceToken) continue
 
-    sharedUsers.push({ telegramId: tgConfig.telegram_id.trim(), username, sourceToken })
+    const userData = { telegramId, username, sourceToken }
+
+    userCache.set(telegramId, { data: userData, ts: Date.now() })
+    if (username) userCache.set(username, { data: userData, ts: Date.now() })
+    userCache.set(`@${username}`, { data: userData, ts: Date.now() })
   }
 
-  if (sharedUsers.length > 0 && sharedToken) {
-    startSharedBot(sharedToken)
+  for (const key of keys) {
+    const cached = userCache.get(key)
+    if (cached) return cached.data
   }
 
-  if (sharedBot) console.log(`[TG Bridge] Shared bot for ${sharedUsers.length} user(s): ${sharedUsers.map(u => u.username).join(', ')}`)
+  return null
 }
 
 function startSharedBot(sharedToken) {
@@ -37,14 +59,11 @@ function startSharedBot(sharedToken) {
     baseApiUrl: process.env.TELEGRAM_API_URL || 'https://api.telegram.org'
   })
 
-  sharedBot.on('message', (msg) => {
+  sharedBot.on('message', async (msg) => {
     const senderId = String(msg.from?.id)
     const senderUsername = msg.from?.username
-    const match = sharedUsers.find(u =>
-      u.telegramId === senderId ||
-      u.telegramId === senderUsername ||
-      u.telegramId === `@${senderUsername}`
-    )
+
+    const match = await findUserByTelegram(senderId, senderUsername, require('../store'))
     if (!match) {
       return sharedBot.sendMessage(msg.chat.id,
         '❌ Вы не зарегистрированы в системе Jenn.\n\n' +
@@ -60,7 +79,7 @@ function startSharedBot(sharedToken) {
     }
     handleMessage(sharedBot, msg, match.username, match.sourceToken)
   })
-  console.log(`[TG Bridge] Shared bot for ${sharedUsers.length} user(s): ${sharedUsers.map(u => u.username).join(', ')}`)
+  console.log(`[TG Bridge] Shared bot started (dynamic user lookup)`)
 }
 
 async function isCoreReachable() {
@@ -147,7 +166,7 @@ function stop() {
     try { sharedBot.stopPolling() } catch {}
     sharedBot = null
   }
-  sharedUsers = []
+  userCache.clear()
 }
 
 module.exports = { start, stop }
