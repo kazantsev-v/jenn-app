@@ -10,7 +10,7 @@ module.exports = {
       <div style="font-weight:600;margin-bottom:8px">🔗 Подключение</div>
       <ol style="margin:0;padding-left:18px;color:var(--text2);line-height:1.7">
         <li>Скопируйте <strong>Source Token</strong> ниже (кнопка Copy)</li>
-        <li>Откройте Desktop Input на вашем ПК</li>
+        <li>Откройте Jenn Quick на вашем ПК</li>
         <li>При первом запуске вставьте токен и URL сервера в окно настройки</li>
         <li>Нажмите Alt+Space — введите текст — Enter → сообщение уйдёт на сервер</li>
       </ol>
