@@ -1032,7 +1032,7 @@ async function openInputConfig(name) {
     const showIfAttr = field.showIf ? ` data-depends="${escapeHtml(Object.keys(field.showIf)[0])}" data-depval="${escapeHtml(Object.values(field.showIf)[0])}"` : ''
     const shouldShow = !field.showIf || config[Object.keys(field.showIf)[0]] === Object.values(field.showIf)[0]
     const styleAttr = shouldShow ? '' : ' style="display:none"'
-    const val = config[field.key] || ''
+    const val = config[field.key] || field.default || ''
     const inputType = field.secret ? 'password' : (field.type === 'number' ? 'number' : 'text')
     if (field.type === 'select') {
       const opts = (field.options || []).map(o => {
@@ -1047,7 +1047,7 @@ async function openInputConfig(name) {
     } else {
       html += `<div class="form-group"${showIfAttr}${styleAttr}>
         <label>${escapeHtml(field.label)}</label>
-        <input type="${inputType}" value="${escapeHtml(val)}" data-key="${escapeHtml(field.key)}" class="input-config-field"${field.placeholder ? ' placeholder="' + escapeHtml(field.placeholder) + '"' : ''}>
+        <input type="${inputType}" value="${escapeHtml(val)}" data-key="${escapeHtml(field.key)}" class="input-config-field"${field.placeholder ? ' placeholder="' + escapeHtml(field.placeholder) + '"' : ''}${field.readOnly ? ' readonly style="opacity:0.6;cursor:not-allowed"' : ''}>
       </div>`
     }
   }
@@ -1103,6 +1103,13 @@ async function testInputConnection(name) {
   for (const el of fields) {
     config[el.dataset.key] = el.value
   }
+  // Fill readOnly defaults for empty fields
+  const { data } = await api('GET', '/inputs/' + encodeURIComponent(name) + '/config')
+  for (const field of (data.configFields || [])) {
+    if (field.readOnly && !config[field.key] && field.default !== undefined) {
+      config[field.key] = field.default
+    }
+  }
   const resultEl = document.getElementById('input-test-result')
   resultEl.innerHTML = '<div class="alert alert-info">Testing…</div>'
   const { status, data } = await api('POST', '/inputs/' + encodeURIComponent(name) + '/test', { config })
@@ -1126,6 +1133,13 @@ async function saveInputConfig(name) {
   const config = {}
   for (const el of fields) {
     config[el.dataset.key] = el.value
+  }
+  // Fill readOnly defaults for empty fields
+  const { data } = await api('GET', '/inputs/' + encodeURIComponent(name) + '/config')
+  for (const field of (data.configFields || [])) {
+    if (field.readOnly && !config[field.key] && field.default !== undefined) {
+      config[field.key] = field.default
+    }
   }
   const { status } = await api('PUT', '/inputs/' + encodeURIComponent(name) + '/config', { config })
   if (status === 200) {

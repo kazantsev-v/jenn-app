@@ -143,10 +143,47 @@ tailwind.config = {
     .modal-header { padding: 16px 20px; }
     .modal-body { padding: 20px; }
     .modal-footer { padding: 14px 20px; flex-wrap: wrap; }
-    .modal-footer button { flex: 1; min-width: 0; text-align: center; }
+    .modal-footer button { flex: 1; min-width: 0; text-align: center; min-height: 44px; font-size: 15px; }
     .toast { bottom: 88px; right: 16px; left: 16px; text-align: center; }
-    .logs-console { height: calc(100dvh - 230px); font-size: 11px; }
+    .logs-console { height: calc(100dvh - 280px); font-size: 11px; }
     .tooltip-bubble { left: 0 !important; transform: none !important; bottom: 100% !important; margin-bottom: 8px; width: max-content; max-width: 280px; }
+    
+    /* Touch-friendly targets */
+    button, [role="button"], .cursor-pointer { min-height: 44px; }
+    .glass-panel { cursor: pointer; }
+    .glass-panel:active { transform: scale(0.98); opacity: 0.9; }
+    button:active { opacity: 0.8; }
+    .sidebar-nav-item, .mobile-nav-item { min-height: 48px; }
+    
+    /* Prevent iOS zoom on inputs */
+    input, textarea, select { font-size: 16px !important; }
+    .form-group input, .form-group textarea, .form-group select { padding: 12px 14px; }
+    
+    /* Pipeline improvements */
+    .pipeline-shell { padding: 8px; }
+    .hub-surface { padding: 16px; }
+    .hub-surface .flex.h-28 { height: 72px; width: 72px; }
+    .hub-surface .flex.h-28 .material-symbols-outlined { font-size: 20px; }
+    .hub-surface .font-headline-md { font-size: 14px; }
+    .pipeline-column { padding: 0 4px; }
+    
+    /* Activity table improvements */
+    table { font-size: 12px; }
+    th, td { padding: 8px 6px; }
+    
+    /* Better spacing for mobile */
+    .space-y-8 { gap: 16px; }
+    .space-y-6 { gap: 12px; }
+    .space-y-4 { gap: 10px; }
+    .space-y-3 { gap: 8px; }
+  }
+  
+  /* Touch device optimizations */
+  @media (hover: none) {
+    .glass-panel:hover { border-color: rgba(220,199,161,0.08); }
+    .glass-panel:active { border-color: rgba(220,199,161,0.3); background: rgba(220,199,161,0.08); }
+    button:hover { opacity: 1; }
+    button:active { opacity: 0.7; }
   }
 </style>
 </head>
@@ -2311,6 +2348,41 @@ async function uninstallOutput(name) { if (!confirm(`${t('misc.remove_output_con
 function escapeHtml(s) { if (!s) return ''; const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 function timeAgo(dateStr) { if (!dateStr) return ''; const d = new Date(dateStr); const diff = (Date.now() - d.getTime()) / 1000; if (diff < 60) return t('time.just_now'); if (diff < 3600) return Math.floor(diff/60) + t('time.m_ago'); if (diff < 86400) return Math.floor(diff/3600) + t('time.h_ago'); return Math.floor(diff/86400) + t('time.d_ago'); }
 function copyText(text) { navigator.clipboard.writeText(text).then(() => toast(t('misc.copied'), 'success')); }
+
+// ── Mobile Optimizations ──
+(function() {
+  // Close drawer when clicking outside
+  const drawer = document.getElementById('mobile-drawer');
+  if (drawer) {
+    drawer.addEventListener('click', (e) => {
+      if (e.target === drawer) toggleMobileDrawer();
+    });
+  }
+  
+  // Prevent double-tap zoom on buttons
+  let lastTap = 0;
+  document.addEventListener('touchend', (e) => {
+    const now = Date.now();
+    if (now - lastTap < 300 && e.target.closest('button, [role="button"], .cursor-pointer')) {
+      e.preventDefault();
+    }
+    lastTap = now;
+  }, { passive: false });
+  
+  // Add smooth scroll for iOS
+  if (window.navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+    document.body.style.WebkitOverflowScrolling = 'touch';
+  }
+  
+  // Handle viewport height for mobile browsers
+  function setVh() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+  setVh();
+  window.addEventListener('resize', setVh);
+  window.addEventListener('orientationchange', setVh);
+})();
 </script>
 </body>
 </html>

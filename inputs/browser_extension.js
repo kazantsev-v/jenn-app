@@ -18,7 +18,7 @@ module.exports = {
     </div>
   `,
   configFields: [
-    { key: 'server_url', label: 'URL сервера', type: 'text', placeholder: 'http://localhost:3000' }
+    { key: 'server_url', label: 'URL сервера', type: 'text', placeholder: 'https://jenn-app.tech', default: 'https://jenn-app.tech', readOnly: true }
   ],
   async test(config) {
     const url = config?.server_url || 'http://localhost:3000'

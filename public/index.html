@@ -411,10 +411,10 @@ void main() {
 <a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-lg text-label-lg" href="/products.html">Products</a>
 </div>
 <div class="col-start-3 md:col-auto justify-self-end flex gap-4 items-center">
-<button onclick="toggleLang()" class="w-8 h-8 rounded-full border border-outline-variant/50 hover:border-primary flex items-center justify-center text-xs font-label-lg text-on-surface-variant hover:text-primary transition-all" title="Language"><span id="lang-label">EN</span></button>
+<button onclick="toggleLang()" class="w-8 h-8 rounded-full border border-outline-variant/50 hover:border-primary flex items-center justify-center text-xs font-label-lg text-on-surface-variant hover:text-primary transition-all" title="Language"><span id="lang-label">RU</span></button>
 <button onclick="toggleTheme()" class="w-8 h-8 rounded-full border border-outline-variant/50 hover:border-primary flex items-center justify-center text-on-surface-variant hover:text-primary transition-all" title="Theme"><span class="material-symbols-outlined text-[16px]" id="theme-icon">dark_mode</span></button>
-<button onclick="location.href='/console'" class="hidden md:block text-on-surface-variant hover:text-primary transition-all font-label-lg text-label-lg" data-i18n="signin">Sign In</button>
-<button onclick="location.href='/console'" class="hidden md:block bg-primary text-on-primary px-6 py-2 rounded-full font-bold font-label-lg text-label-lg hover:scale-105 active:scale-95 transition-transform" data-i18n="getstarted">Get Started</button>
+<button onclick="location.href='/console'" class="hidden md:block text-on-surface-variant hover:text-primary transition-all font-label-lg text-label-lg" data-i18n="signin">Войти</button>
+<button onclick="location.href='/console'" class="hidden md:block bg-primary text-on-primary px-6 py-2 rounded-full font-bold font-label-lg text-label-lg hover:scale-105 active:scale-95 transition-transform" data-i18n="getstarted">Начать</button>
 <button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-surface-container-high transition-colors">
 <span class="w-5 h-0.5 bg-on-surface-variant transition-all" id="menu-line-1"></span>
 <span class="w-5 h-0.5 bg-on-surface-variant transition-all" id="menu-line-2"></span>
@@ -429,8 +429,8 @@ void main() {
 <a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label-lg text-label-lg border-b border-outline-variant/30" href="/docs.html">API Docs</a>
 <a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label-lg text-label-lg" href="/products.html">Products</a>
 <div class="flex gap-3 pt-4">
-<button onclick="location.href='/console'" class="flex-1 py-3 bg-primary text-on-primary rounded-full font-bold font-label-lg text-label-lg" data-i18n="signin">Sign In</button>
-<button onclick="location.href='/console'" class="flex-1 py-3 border border-primary text-primary rounded-full font-bold font-label-lg text-label-lg" data-i18n="getstarted">Get Started</button>
+<button onclick="location.href='/console'" class="flex-1 py-3 bg-primary text-on-primary rounded-full font-bold font-label-lg text-label-lg" data-i18n="signin">Войти</button>
+<button onclick="location.href='/console'" class="flex-1 py-3 border border-primary text-primary rounded-full font-bold font-label-lg text-label-lg" data-i18n="getstarted">Начать</button>
 </div>
 </div>
 </div>
@@ -542,15 +542,15 @@ animate();
 </div>
 <div class="relative z-20 text-center max-w-4xl">
 <h1 class="font-display text-display mb-6 tracking-tight parallax-item" data-speed="0.05" data-i18n="hero.title">
-                Capture Everything.<br/>
-<span class="text-gold italic">Route Intelligently.</span>
+                Никаких лишних<br/>
+<span class="text-gold italic">решений</span>
 </h1>
 <p class="font-display text-headline-lg italic text-on-surface-variant mb-12 parallax-item" data-speed="0.02" data-i18n="hero.subtitle">
-                The AI-powered knowledge router that captures from anywhere and delivers exactly where it matters. Open-source, self-hosted, yours.
+                Отправляйте всё в Jenn. Он сам поймёт контекст и доставит информацию в Obsidian, Notion или любую другую систему.
             </p>
 <div class="flex flex-wrap gap-6 justify-center">
 <button class="bg-gold text-surface-container-lowest px-10 py-4 rounded-full font-bold text-title-lg hover:shadow-[0_0_30px_rgba(220,199,161,0.3)] transition-all" data-i18n="hero.cta">
-                    Initiate Connection
+                    Начать
                 </button>
 </div>
 </div>
@@ -616,17 +616,17 @@ animate();
 <section class="relative py-32 bg-surface-container-lowest/40 backdrop-blur-sm z-20">
 <div class="max-w-container-max mx-auto px-margin-safe">
 <div class="mb-24">
-<span class="text-gold font-label-lg uppercase tracking-widest mb-4 block" data-i18n="core.label">How It Works</span>
-<h2 class="font-display text-display" data-i18n="core.title">The Jenn Pipeline</h2>
+<span class="text-gold font-label-lg uppercase tracking-widest mb-4 block" data-i18n="core.label">Как это работает</span>
+<h2 class="font-display text-display" data-i18n="core.title">Структура Jenn</h2>
 </div>
 <!-- Living Node-Graph Pipeline -->
 <div class="relative grid md:grid-cols-12 gap-8 items-start">
 <div class="md:col-span-7 relative">
 <div class="glass-panel p-10 rounded-[4rem] rounded-tr-none border-l-4 border-gold relative overflow-hidden tilt-card">
 <div class="specular-highlight"></div>
-<h3 class="font-display text-headline-lg mb-6" data-i18n="pipeline.title">AI-Powered Routing</h3>
+<h3 class="font-display text-headline-lg mb-6" data-i18n="pipeline.title">Маршрутизация</h3>
 <p class="font-body-lg text-on-surface-variant mb-8 max-w-lg" data-i18n="pipeline.desc">
-                            Messages flow from Telegram, Desktop, CLI through Jenn Core — an AI router that understands intent and routes to Notion, Obsidian, or any output you configure.
+                            Сообщения из Inputs (Telegram, Desktop, и др.) проходят через Jenn Core — роутер, который определяет намерения и направляет данные в Notion, Obsidian или любой другой output.
                         </p>
 <!-- Visual Node Graph Placeholder -->
 <div class="flex flex-col gap-4">
@@ -635,14 +635,14 @@ animate();
 <span class="material-symbols-outlined text-gold">psychology</span>
 </div>
 <div class="flex-1 h-px bg-gradient-to-r from-gold/50 to-transparent"></div>
-<div class="px-4 py-2 bg-surface-container-high rounded-lg font-code text-label-lg text-gold">Input stream: Active</div>
+<div class="px-4 py-2 bg-surface-container-high rounded-lg font-code text-label-lg text-gold">Поток ввода: Активен</div>
 </div>
 <div class="ml-16 flex items-center gap-4">
 <div class="w-10 h-10 bg-surface-container-high rounded-full flex items-center justify-center border border-outline-variant">
 <span class="material-symbols-outlined text-lavender">hub</span>
 </div>
 <div class="flex-1 h-px bg-gradient-to-r from-lavender/50 to-transparent"></div>
-<div class="px-4 py-2 bg-surface-container-high rounded-lg font-code text-label-lg text-lavender">Classification layer</div>
+<div class="px-4 py-2 bg-surface-container-high rounded-lg font-code text-label-lg text-lavender">Слой классификации</div>
 </div>
 </div>
 </div>
@@ -710,8 +710,8 @@ Fully open source. Audit the code, extend it, or contribute to the project.
 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold/5 blur-[150px] rounded-full pointer-events-none"></div>
 <div class="max-w-container-max mx-auto px-margin-safe relative z-10">
 <div class="text-center mb-16 md:mb-24">
-<span class="text-gold font-label-lg uppercase tracking-widest mb-4 block" data-i18n="usecases.label">Use Cases</span>
-<h2 class="font-display text-display mb-6" data-i18n="usecases.title">Who is Jenn for?</h2>
+<span class="text-gold font-label-lg uppercase tracking-widest mb-4 block" data-i18n="usecases.label">Сценарии</span>
+<h2 class="font-display text-display mb-6" data-i18n="usecases.title">Кому поможет Jenn?</h2>
 <p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto" data-i18n="usecases.subtitle">
 One inbox for everything that matters. You write — Jenn figures out where it belongs.
 </p>
@@ -722,14 +722,14 @@ One inbox for everything that matters. You write — Jenn figures out where it b
 <div class="w-14 h-14 rounded-2xl bg-gold/10 border border-gold/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
 <span class="material-symbols-outlined text-gold text-3xl">lightbulb</span>
 </div>
-<span class="text-gold font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card1.tag">Personal productivity</span>
-<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card1.title">Capture ideas anywhere</h3>
+<span class="text-gold font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card1.tag">Личная продуктивность</span>
+<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card1.title">Ловите идеи где угодно</h3>
 <p class="font-body-md text-on-surface-variant mb-6 flex-1" data-i18n="usecases.card1.desc">
-Thought on a walk? Message Telegram. Jenn tags it as «Ideas» and drops it into your Notion database — no folders, no copy-paste.
+Мысль на прогулке? Написали боту. Jenn пометит как «Идеи» и сохранит в Notion — без папок и копипаста.
 </p>
 <div class="flex items-start gap-3 pt-4 border-t border-outline-variant/20">
 <span class="material-symbols-outlined text-gold text-[18px] mt-0.5">chat</span>
-<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card1.example">«idea: app for finding travel companions»</p>
+<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card1.example">«идея: приложение для поиска попутчиков»</p>
 </div>
 </div>
 <!-- Card 2: Links -->
@@ -737,14 +737,14 @@ Thought on a walk? Message Telegram. Jenn tags it as «Ideas» and drops it into
 <div class="w-14 h-14 rounded-2xl bg-lavender/10 border border-lavender/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
 <span class="material-symbols-outlined text-lavender text-3xl">link</span>
 </div>
-<span class="text-lavender font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card2.tag">Content &amp; research</span>
-<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card2.title">Save links, not chaos</h3>
+<span class="text-lavender font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card2.tag">Контент и ресерч</span>
+<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card2.title">Ссылки без хаоса</h3>
 <p class="font-body-md text-on-surface-variant mb-6 flex-1" data-i18n="usecases.card2.desc">
-Forward a post or paste a URL. AI reads the context, picks a category, and files it into Notion or Obsidian — so bookmarks stop becoming a graveyard.
+Переслали пост или вставили URL. AI читает контекст, выбирает категорию и кладёт в Notion или Obsidian — закладки перестают быть свалкой.
 </p>
 <div class="flex items-start gap-3 pt-4 border-t border-outline-variant/20">
 <span class="material-symbols-outlined text-lavender text-[18px] mt-0.5">forward</span>
-<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card2.example">Forward a channel post → sorted into «AI articles»</p>
+<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card2.example">Переслали пост → в базу «Статьи по AI»</p>
 </div>
 </div>
 <!-- Card 3: Freelancer -->
@@ -752,14 +752,14 @@ Forward a post or paste a URL. AI reads the context, picks a category, and files
 <div class="w-14 h-14 rounded-2xl bg-turquoise/10 border border-turquoise/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
 <span class="material-symbols-outlined text-turquoise text-3xl">payments</span>
 </div>
-<span class="text-turquoise font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card3.tag">Freelancers</span>
-<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card3.title">Track expenses in plain language</h3>
+<span class="text-turquoise font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card3.tag">Фрилансеры</span>
+<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card3.title">Расходы обычным языком</h3>
 <p class="font-body-md text-on-surface-variant mb-6 flex-1" data-i18n="usecases.card3.desc">
-«Hosting 1500₽, AI sub $20» — Jenn logs rows for you. End of month, the spreadsheet is already filled.
+«Хостинг 1500₽, подписка на AI 20$» — Jenn запишет строки. В конце месяца таблица уже заполнена.
 </p>
 <div class="flex items-start gap-3 pt-4 border-t border-outline-variant/20">
 <span class="material-symbols-outlined text-turquoise text-[18px] mt-0.5">receipt_long</span>
-<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card3.example">«bought hosting 1500, AI subscription 20$»</p>
+<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card3.example">«купил хостинг 1500, AI 20$»</p>
 </div>
 </div>
 <!-- Card 4: Student -->
@@ -767,14 +767,14 @@ Forward a post or paste a URL. AI reads the context, picks a category, and files
 <div class="w-14 h-14 rounded-2xl bg-sand/10 border border-sand/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
 <span class="material-symbols-outlined text-sand text-3xl">school</span>
 </div>
-<span class="text-sand font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card4.tag">Students &amp; researchers</span>
-<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card4.title">Quote once, store forever</h3>
+<span class="text-sand font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card4.tag">Студенты и исследователи</span>
+<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card4.title">Цитата один раз — навсегда</h3>
 <p class="font-body-md text-on-surface-variant mb-6 flex-1" data-i18n="usecases.card4.desc">
-Highlight a paragraph, send it via Desktop Input or Telegram. Category, tags, and source land in your research vault automatically.
+Выделили абзац, отправили через Desktop Input или Telegram. Категория, теги и источник сами попадают в vault.
 </p>
 <div class="flex items-start gap-3 pt-4 border-t border-outline-variant/20">
 <span class="material-symbols-outlined text-sand text-[18px] mt-0.5">format_quote</span>
-<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card4.example">Select text → Alt+Space → saved to thesis notes</p>
+<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card4.example">Выделили текст → Alt+Space → в заметки диплома</p>
 </div>
 </div>
 <!-- Card 5: Creators -->
@@ -782,14 +782,14 @@ Highlight a paragraph, send it via Desktop Input or Telegram. Category, tags, an
 <div class="w-14 h-14 rounded-2xl bg-gold/10 border border-gold/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
 <span class="material-symbols-outlined text-gold text-3xl">movie_filter</span>
 </div>
-<span class="text-gold font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card5.tag">Creators</span>
-<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card5.title">Build a content inbox</h3>
+<span class="text-gold font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card5.tag">Креаторы</span>
+<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card5.title">Контент-инбокс</h3>
 <p class="font-body-md text-on-surface-variant mb-6 flex-1" data-i18n="usecases.card5.desc">
-Articles, memes, quotes, news — one chat all day. By evening everything is sorted into blogs, visuals, and content-plan boards.
+Статьи, мемы, цитаты, новости — один чат весь день. К вечеру всё разложено по базам: блог, визуал, контент-план.
 </p>
 <div class="flex items-start gap-3 pt-4 border-t border-outline-variant/20">
 <span class="material-symbols-outlined text-gold text-[18px] mt-0.5">auto_awesome</span>
-<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card5.example">Day of scraps → evening: fully sorted libraries</p>
+<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card5.example">День обрывков → вечером: всё по полочкам</p>
 </div>
 </div>
 <!-- Card 6: Daily dump -->
@@ -797,23 +797,23 @@ Articles, memes, quotes, news — one chat all day. By evening everything is sor
 <div class="w-14 h-14 rounded-2xl bg-lavender/10 border border-lavender/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
 <span class="material-symbols-outlined text-lavender text-3xl">psychology_alt</span>
 </div>
-<span class="text-lavender font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card6.tag">Everyday life</span>
-<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card6.title">Brain dump, auto-sorted</h3>
+<span class="text-lavender font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card6.tag">Повседневность</span>
+<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card6.title">Мозговой дамп, автосортировка</h3>
 <p class="font-body-md text-on-surface-variant mb-6 flex-1" data-i18n="usecases.card6.desc">
-End of day: one stream of consciousness. Meetings, errands, tasks — Jenn splits them into notes, reminders, and destinations you already use.
+Конец дня: один поток сознания. Встречи, поручения, задачи — Jenn разносит по заметкам, напоминаниям и вашим сервисам.
 </p>
 <div class="flex items-start gap-3 pt-4 border-t border-outline-variant/20">
 <span class="material-symbols-outlined text-lavender text-[18px] mt-0.5">stream</span>
-<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card6.example">One message → notes + reminders + tasks</p>
+<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card6.example">Одно сообщение → заметки + напоминания + задачи</p>
 </div>
 </div>
 </div>
 <div class="mt-16 text-center">
 <p class="font-body-md text-on-surface-variant max-w-xl mx-auto mb-8" data-i18n="usecases.footer">
-Jenn is not a replacement for Notion or Obsidian — it is the invisible layer between you and your tools.
+Jenn — не замена Notion или Obsidian, а невидимый слой между вами и вашими инструментами.
 </p>
 <a href="/products.html" class="inline-flex items-center gap-2 text-gold hover:text-primary transition-colors font-label-lg text-label-lg group">
-<span data-i18n="usecases.cta">Explore products</span>
+<span data-i18n="usecases.cta">Смотреть продукты</span>
 <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
 </a>
 </div>
@@ -830,12 +830,12 @@ Jenn is not a replacement for Notion or Obsidian — it is the invisible layer b
 <div class="w-full h-full rounded-full border-[1px] border-gold border-dashed animate-spin" style="animation-duration: 60s;"></div>
 <div class="absolute inset-20 rounded-full bg-gold/10 blur-[120px]"></div>
 </div>
-<h2 class="font-display text-[80px] leading-none mb-12 tracking-tighter" data-i18n="cta.title">Your knowledge, <br/>on autopilot.</h2>
+<h2 class="font-display text-[80px] leading-none mb-12 tracking-tighter" data-i18n="cta.title">Ваши знания, <br/>на автопилоте.</h2>
 <p class="font-body-lg text-on-surface-variant max-w-xl mx-auto mb-12" data-i18n="cta.desc">
-                Capture from Telegram, Desktop, CLI. Route to Notion, Obsidian, anywhere. Jenn handles the rest — powered by AI, open-source, self-hosted.
+                Принимайте из Telegram, Desktop, CLI. Направляйте в Notion, Obsidian, куда угодно. Jenn делает остальное — AI, open-source, self-hosted.
             </p>
 <button onclick="openSubscribeModal()" class="relative group px-12 py-5 bg-gold text-on-primary-fixed rounded-full font-bold text-title-lg overflow-hidden transition-all hover:scale-110 active:scale-95">
-<span class="relative z-10 flex items-center gap-2" data-i18n="cta.button"><span class="material-symbols-outlined text-[20px]">notifications_active</span> Follow Progress</span>
+<span class="relative z-10 flex items-center gap-2" data-i18n="cta.button"><span class="material-symbols-outlined text-[20px]">notifications_active</span> Следить за проектом</span>
 <div class="absolute inset-0 bg-white/20 translate-x-full group-hover:translate-x-0 transition-transform skew-x-12 duration-500"></div>
 <div class="absolute -inset-4 bg-gold/40 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
 </button>
@@ -845,13 +845,13 @@ Jenn is not a replacement for Notion or Obsidian — it is the invisible layer b
 <footer class="w-full py-12 px-6 md:px-margin-safe border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-gutter bg-surface-container-lowest z-30 relative mt-auto flex-shrink-0">
 <div class="font-display text-headline-lg text-primary">Jenn</div>
 <div class="flex flex-wrap justify-center gap-8">
-<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="footer.docs">Documentation</a>
-<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="footer.changelog">Changelog</a>
-<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="footer.privacy">Privacy</a>
-<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="footer.terms">Terms</a>
-<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="footer.status">System Status</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="footer.docs">Документация</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="footer.changelog">История изменений</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="footer.privacy">Конфиденциальность</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="footer.terms">Условия</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="footer.status">Статус системы</a>
 </div>
-<div class="text-on-surface-variant font-body-md text-body-md opacity-60" data-i18n="footer.copyright">© 2024 Jenn Console. Architectural Intelligence.</div>
+<div class="text-on-surface-variant font-body-md text-body-md opacity-60" data-i18n="footer.copyright">© 2024 Jenn. Open-Source AI Router.</div>
 </footer>
 <script>
         // Mobile Menu Toggle
@@ -959,59 +959,6 @@ Jenn is not a replacement for Notion or Obsidian — it is the invisible layer b
 
         // Language Toggle
         const translations = {
-            en: {
-                'signin': 'Sign In',
-                'getstarted': 'Get Started',
-                'hero.title': 'Capture Everything.<br/><span class="text-gold italic">Route Intelligently.</span>',
-                'hero.subtitle': 'The AI-powered knowledge router that captures from anywhere and delivers exactly where it matters. Open-source, self-hosted, yours.',
-                'hero.cta': 'Get Started',
-                'core.label': 'How It Works',
-                'core.title': 'The Jenn Pipeline',
-                'pipeline.title': 'AI-Powered Routing',
-                'pipeline.desc': 'Messages flow from Telegram, Desktop, CLI through Jenn Core — an AI router that understands intent and routes to Notion, Obsidian, or any output you configure.',
-                'usecases.label': 'Use Cases',
-                'usecases.title': 'Who is Jenn for?',
-                'usecases.subtitle': 'One inbox for everything that matters. You write — Jenn figures out where it belongs.',
-                'usecases.card1.tag': 'Personal productivity',
-                'usecases.card1.title': 'Capture ideas anywhere',
-                'usecases.card1.desc': 'Thought on a walk? Message Telegram. Jenn tags it as «Ideas» and drops it into your Notion database — no folders, no copy-paste.',
-                'usecases.card1.example': '«idea: app for finding travel companions»',
-                'usecases.card2.tag': 'Content &amp; research',
-                'usecases.card2.title': 'Save links, not chaos',
-                'usecases.card2.desc': 'Forward a post or paste a URL. AI reads the context, picks a category, and files it into Notion or Obsidian — so bookmarks stop becoming a graveyard.',
-                'usecases.card2.example': 'Forward a channel post → sorted into «AI articles»',
-                'usecases.card3.tag': 'Freelancers',
-                'usecases.card3.title': 'Track expenses in plain language',
-                'usecases.card3.desc': '«Hosting 1500₽, AI sub $20» — Jenn logs rows for you. End of month, the spreadsheet is already filled.',
-                'usecases.card3.example': '«bought hosting 1500, AI subscription 20$»',
-                'usecases.card4.tag': 'Students &amp; researchers',
-                'usecases.card4.title': 'Quote once, store forever',
-                'usecases.card4.desc': 'Highlight a paragraph, send it via Desktop Input or Telegram. Category, tags, and source land in your research vault automatically.',
-                'usecases.card4.example': 'Select text → Alt+Space → saved to thesis notes',
-                'usecases.card5.tag': 'Creators',
-                'usecases.card5.title': 'Build a content inbox',
-                'usecases.card5.desc': 'Articles, memes, quotes, news — one chat all day. By evening everything is sorted into blogs, visuals, and content-plan boards.',
-                'usecases.card5.example': 'Day of scraps → evening: fully sorted libraries',
-                'usecases.card6.tag': 'Everyday life',
-                'usecases.card6.title': 'Brain dump, auto-sorted',
-                'usecases.card6.desc': 'End of day: one stream of consciousness. Meetings, errands, tasks — Jenn splits them into notes, reminders, and destinations you already use.',
-                'usecases.card6.example': 'One message → notes + reminders + tasks',
-                'usecases.footer': 'Jenn is not a replacement for Notion or Obsidian — it is the invisible layer between you and your tools.',
-                'usecases.cta': 'Explore products',
-                'cta.title': 'Your knowledge, <br/>on autopilot.',
-                'cta.desc': 'Capture from Telegram, Desktop, CLI. Route to Notion, Obsidian, anywhere. Jenn handles the rest — powered by AI, open-source, self-hosted.',
-                'cta.button': '<span class="material-symbols-outlined text-[20px]">notifications_active</span> Follow Progress',
-                'footer.docs': 'Documentation',
-                'footer.changelog': 'Changelog',
-                'footer.privacy': 'Privacy',
-                'footer.terms': 'Terms',
-                'footer.status': 'System Status',
-                'footer.copyright': '© 2024 Jenn. Open-Source AI Router.',
-                'subscribe.title': 'Follow Progress',
-                'subscribe.desc': 'Get updates on new features and releases',
-                'subscribe.placeholder': 'your@email.com',
-                'subscribe.button': 'Subscribe'
-            },
             ru: {
                 'signin': 'Войти',
                 'getstarted': 'Начать',
@@ -1039,7 +986,7 @@ Jenn is not a replacement for Notion or Obsidian — it is the invisible layer b
                 'usecases.card3.example': '«купил хостинг 1500, AI 20$»',
                 'usecases.card4.tag': 'Студенты и исследователи',
                 'usecases.card4.title': 'Цитата один раз — навсегда',
-                'usecases.card4.desc': 'Выделили абзац, отправили через Junn Quick или Telegram. Категория, теги и источник сами попадают в vault.',
+                'usecases.card4.desc': 'Выделили абзац, отправили через Desktop Input или Telegram. Категория, теги и источник сами попадают в vault.',
                 'usecases.card4.example': 'Выделили текст → Alt+Space → в заметки диплома',
                 'usecases.card5.tag': 'Креаторы',
                 'usecases.card5.title': 'Контент-инбокс',
@@ -1064,10 +1011,63 @@ Jenn is not a replacement for Notion or Obsidian — it is the invisible layer b
                 'subscribe.desc': 'Получайте обновления о новых функциях и релизах',
                 'subscribe.placeholder': 'your@email.com',
                 'subscribe.button': 'Подписаться'
+            },
+            en: {
+                'signin': 'Sign In',
+                'getstarted': 'Get Started',
+                'hero.title': 'Capture Everything.<br/><span class="text-gold italic">Route Intelligently.</span>',
+                'hero.subtitle': 'The AI-powered knowledge router that captures from anywhere and delivers exactly where it matters. Open-source, self-hosted, yours.',
+                'hero.cta': 'Get Started',
+                'core.label': 'How It Works',
+                'core.title': 'The Jenn Pipeline',
+                'pipeline.title': 'AI-Powered Routing',
+                'pipeline.desc': 'Messages flow from Telegram, Desktop, CLI through Jenn Core — an AI router that understands intent and routes to Notion, Obsidian, or any output you configure.',
+                'usecases.label': 'Use Cases',
+                'usecases.title': 'Who is Jenn for?',
+                'usecases.subtitle': 'One inbox for everything that matters. You write — Jenn figures out where it belongs.',
+                'usecases.card1.tag': 'Personal productivity',
+                'usecases.card1.title': 'Capture ideas anywhere',
+                'usecases.card1.desc': 'Thought on a walk? Message Telegram. Jenn tags it as «Ideas» and drops it into your Notion database — no folders, no copy-paste.',
+                'usecases.card1.example': '«idea: app for finding travel companions»',
+                'usecases.card2.tag': 'Content & research',
+                'usecases.card2.title': 'Save links, not chaos',
+                'usecases.card2.desc': 'Forward a post or paste a URL. AI reads the context, picks a category, and files it into Notion or Obsidian — so bookmarks stop becoming a graveyard.',
+                'usecases.card2.example': 'Forward a channel post → sorted into «AI articles»',
+                'usecases.card3.tag': 'Freelancers',
+                'usecases.card3.title': 'Track expenses in plain language',
+                'usecases.card3.desc': '«Hosting 1500₽, AI sub $20» — Jenn logs rows for you. End of month, the spreadsheet is already filled.',
+                'usecases.card3.example': '«bought hosting 1500, AI subscription 20$»',
+                'usecases.card4.tag': 'Students & researchers',
+                'usecases.card4.title': 'Quote once, store forever',
+                'usecases.card4.desc': 'Highlight a paragraph, send it via Desktop Input or Telegram. Category, tags, and source land in your research vault automatically.',
+                'usecases.card4.example': 'Select text → Alt+Space → saved to thesis notes',
+                'usecases.card5.tag': 'Creators',
+                'usecases.card5.title': 'Build a content inbox',
+                'usecases.card5.desc': 'Articles, memes, quotes, news — one chat all day. By evening everything is sorted into blogs, visuals, and content-plan boards.',
+                'usecases.card5.example': 'Day of scraps → evening: fully sorted libraries',
+                'usecases.card6.tag': 'Everyday life',
+                'usecases.card6.title': 'Brain dump, auto-sorted',
+                'usecases.card6.desc': 'End of day: one stream of consciousness. Meetings, errands, tasks — Jenn splits them into notes, reminders, and destinations you already use.',
+                'usecases.card6.example': 'One message → notes + reminders + tasks',
+                'usecases.footer': 'Jenn is not a replacement for Notion or Obsidian — it is the invisible layer between you and your tools.',
+                'usecases.cta': 'Explore products',
+                'cta.title': 'Your knowledge, <br/>on autopilot.',
+                'cta.desc': 'Capture from Telegram, Desktop, CLI. Route to Notion, Obsidian, anywhere. Jenn handles the rest — powered by AI, open-source, self-hosted.',
+                'cta.button': '<span class="material-symbols-outlined text-[20px]">notifications_active</span> Follow Progress',
+                'footer.docs': 'Documentation',
+                'footer.changelog': 'Changelog',
+                'footer.privacy': 'Privacy',
+                'footer.terms': 'Terms',
+                'footer.status': 'System Status',
+                'footer.copyright': '© 2024 Jenn. Open-Source AI Router.',
+                'subscribe.title': 'Follow Progress',
+                'subscribe.desc': 'Get updates on new features and releases',
+                'subscribe.placeholder': 'your@email.com',
+                'subscribe.button': 'Subscribe'
             }
         };
 
-        let currentLang = localStorage.getItem('lang') || 'en';
+        let currentLang = localStorage.getItem('lang') || 'ru';
         applyLanguage(currentLang);
 
         function toggleLang() {
@@ -1093,13 +1093,13 @@ Jenn is not a replacement for Notion or Obsidian — it is the invisible layer b
     <div id="subscribe-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 backdrop-blur-sm">
         <div class="relative w-full max-w-md mx-4 bg-surface-container rounded-2xl border border-outline-variant overflow-hidden shadow-2xl">
             <div class="flex items-center justify-between p-6 border-b border-outline-variant">
-                <h3 class="font-display text-headline-lg text-on-surface" data-i18n="subscribe.title">Follow Progress</h3>
+                <h3 class="font-display text-headline-lg text-on-surface" data-i18n="subscribe.title">Следить за проектом</h3>
                 <button onclick="closeSubscribeModal()" class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
                     <span class="material-symbols-outlined text-on-surface-variant">close</span>
                 </button>
             </div>
             <div class="p-6">
-                <p class="text-on-surface-variant mb-6" data-i18n="subscribe.desc">Get updates on new features and releases</p>
+                <p class="text-on-surface-variant mb-6" data-i18n="subscribe.desc">Получайте обновления о новых функциях и релизах</p>
                 <form id="subscribe-form" onsubmit="handleSubscribe(event)">
                     <div class="mb-4">
                         <input 
@@ -1118,7 +1118,7 @@ Jenn is not a replacement for Notion or Obsidian — it is the invisible layer b
                         class="w-full py-3 bg-gold text-on-primary-fixed rounded-xl font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
                         data-i18n="subscribe.button"
                     >
-                        Subscribe
+                        Подписаться
                     </button>
                 </form>
                 <div id="subscribe-status" class="mt-4 text-center hidden"></div>
