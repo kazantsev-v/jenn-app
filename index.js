@@ -1,6 +1,8 @@
 require('dotenv').config()
 const fs = require('fs')
 const path = require('path')
+const http = require('http')
+const https = require('https')
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
@@ -63,7 +65,6 @@ async function start() {
   }
 
   const app = express()
-  const port = process.env.PORT || 3000
 
   app.use(cookieParser())
   app.use(cors({ origin: true, credentials: true }))
@@ -86,15 +87,9 @@ async function start() {
   app.post('/v1/message', auth, (req, res) => postMessage(req, res, processor))
   app.get('/health', health)
 
-  app.listen(port, '0.0.0.0', () => {
-    console.log(`Jenn server running on http://localhost:${port}`)
-    console.log(`Landing: http://localhost:${port}/`)
-    console.log(`Console: http://localhost:${port}/app`)
-    console.log(`FAQ: http://localhost:${port}/faq`)
-    setImmediate(() => telegramBridge.start(store).catch(e => console.error('[TG Bridge]', e.message)))
-  }).on('error', (err) => {
-    console.error('Server error:', err.message)
-  })
+  const sslKey = process.env.SSL_KEY
+  const sslCert = process.env.SSL_CERT
+  const domain = process.env.DOMAIN
 
   const shutdown = () => {
     telegramBridge.stop()
@@ -104,6 +99,38 @@ async function start() {
   }
   process.on('SIGINT', shutdown)
   process.on('SIGTERM', shutdown)
+
+  if (sslKey && sslCert && fs.existsSync(sslKey) && fs.existsSync(sslCert)) {
+    const sslOpts = {
+      key: fs.readFileSync(sslKey),
+      cert: fs.readFileSync(sslCert),
+    }
+
+    https.createServer(sslOpts, app).listen(443, '0.0.0.0', () => {
+      console.log(`Jenn HTTPS server running on https://${domain || 'localhost'}`)
+      console.log(`Console: https://${domain || 'localhost'}/app`)
+      setImmediate(() => telegramBridge.start(store).catch(e => console.error('[TG Bridge]', e.message)))
+    })
+
+    const redirectApp = express()
+    redirectApp.use((req, res) => {
+      res.redirect(301, `https://${domain || req.headers.host}${req.url}`)
+    })
+    http.createServer(redirectApp).listen(80, '0.0.0.0', () => {
+      console.log('HTTP→HTTPS redirect on port 80')
+    })
+  } else {
+    const port = process.env.PORT || 3000
+    app.listen(port, '0.0.0.0', () => {
+      console.log(`Jenn server running on http://localhost:${port}`)
+      console.log(`Landing: http://localhost:${port}/`)
+      console.log(`Console: http://localhost:${port}/app`)
+      console.log(`FAQ: http://localhost:${port}/faq`)
+      setImmediate(() => telegramBridge.start(store).catch(e => console.error('[TG Bridge]', e.message)))
+    }).on('error', (err) => {
+      console.error('Server error:', err.message)
+    })
+  }
 }
 
 start().catch(err => {

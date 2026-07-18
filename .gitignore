@@ -29,8 +29,14 @@ jenn-obsidian/
 # Screenshots (development artifacts)
 *.png
 
-# OpenCode configuration
+# AI tool artifacts
 .opencode/
+opencode.json
+.playwright-mcp/
+
+# Documentation (keep README only)
+*.md
+!README.md
 
 # Compiled binaries
 examples/DesktopInput/bin/

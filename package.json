@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "start:prod": "bash start.sh",
     "migrate:dev": "prisma migrate dev --schema prisma/schema.prisma",
     "migrate:files": "node scripts/migrate-from-files.js",
     "studio": "prisma studio --schema prisma/schema.prisma",
