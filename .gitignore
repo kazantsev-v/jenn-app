@@ -29,6 +29,7 @@ jenn-obsidian/
 
 # Screenshots (development artifacts)
 *.png
+!public/favicon.png
 
 # AI tool artifacts
 .opencode/
