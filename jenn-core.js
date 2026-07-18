@@ -56,10 +56,6 @@ async function start() {
   await initConfigCache()
   await store.seedTestToken()
 
-  if (obsidianOut?.init) {
-    // init вызывается после создания HTTPS сервера (внутри listen callback)
-  }
-
   const app = express()
 
   app.use(cookieParser())
