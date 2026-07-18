@@ -11,10 +11,13 @@ Jenn принимает входящие сообщения из разных и
 npm install
 
 # 2. Настройка окружения
-copy .env.example .env
+cp .env.example .env
 # Отредактируйте .env — впишите свои API-ключи
 
-# 3. Запуск сервера
+# 3. Инициализация БД
+npx prisma migrate dev
+
+# 4. Запуск сервера
 node index.js
 # → Лендинг: http://localhost:3000/
 # → Console: http://localhost:3000/console
@@ -136,8 +139,9 @@ sudo systemctl stop jenn-core jenn-bot
 git pull origin main
 npm install --production
 
-# Применить миграции БД
+# Применить миграции БД и перегенерировать Prisma Client
 npx prisma migrate deploy
+npx prisma generate
 
 # Запустить сервисы
 sudo systemctl start jenn-core jenn-bot
@@ -159,14 +163,25 @@ sudo systemctl restart jenn-core
 ## Архитектура
 
 ```
-Источник (tg_bot / CLI / desktop) → POST /v1/message
-    ↓
-  Processor (core/processor.js)
-    ├── AI Router (ai/router.js) — определяет намерение и категорию
-    ├── Skill (skills/*.js) — исполняет логику (save_entry, create_reminder)
-    └── Output (outputs/*.js) — сохраняет в Notion и т.д.
-    ↓
-  Ответ: { status, result }
+┌─────────────────────────────────────────────────────────────┐
+│                        Inputs                                │
+│  browser_extension  │  desktop  │  tg_bot  │  CLI / other   │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+                    POST /v1/message
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│                    Jenn Core (jenn-core.js)                  │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │  AI Router   │→ │    Skills    │→ │   Outputs    │      │
+│  │ (ai/router)  │  │ (skills/*)   │  │ (outputs/*)  │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│              Telegram Bridge (jenn-bot.js)                   │
+│  Polling → fetch /v1/message → response to user             │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 **Поток данных:**
@@ -175,7 +190,21 @@ sudo systemctl restart jenn-core
 3. **AI Router** обходит провайдеров по порядку (Groq → OpenRouter → GigaChat), пока один не ответит
 4. Определяется **навык** (skill) и **категория**
 5. Skill исполняется с данными из сообщения
-6. Результат отправляется в **output** (Notion и т.д.)
+6. Результат отправляется в **output** (Notion, Obsidian и т.д.)
+
+**Telegram-бот работает независимо:**
+- Если core недоступен — бот отвечает заготовкой ("система временно недоступна")
+- Проверка доступности core перед каждым сообщением через `/health`
+
+---
+
+## Источники (Inputs)
+
+| Источник | Описание |
+|----------|----------|
+| `browser_extension` | Chrome-расширение для отправки выделенного текста |
+| `desktop` | Desktop Input — Alt+Space → окно ввода → отправка |
+| `tg_bot` | Telegram-бот (встроенный или отдельный) |
 
 ---
 
@@ -201,6 +230,7 @@ sudo systemctl restart jenn-core
 
 ## Переменные окружения (.env)
 
+### AI Providers
 | Переменная         | Описание                          |
 |--------------------|-----------------------------------|
 | `GROQ_KEY`         | API-ключ Groq                     |
@@ -208,11 +238,36 @@ sudo systemctl restart jenn-core
 | `GIGACHAT_KEY`     | Base64-ключ GigaChat              |
 | `GIGACHAT_CLIENT_ID` | Client ID GigaChat               |
 | `GIGACHAT_SCOPE`   | Scope GigaChat                    |
+
+### Интеграции
+| Переменная         | Описание                          |
+|--------------------|-----------------------------------|
 | `NOTION_API_KEY`   | Internal Integration Secret Notion |
-| `JWT_SECRET`       | Секрет подписи JWT (сменить в production!) |
-| `PORT`             | Порт сервера (по умолч. 3000)     |
-| `TG_BOT_TOKEN`     | Токен Telegram-бота               |
+| `GSHEETS_CLIENT_EMAIL` | Google Sheets service account email |
+| `GSHEETS_PRIVATE_KEY`  | Google Sheets private key         |
+| `GSHEETS_SHEET_ID`     | Google Sheets spreadsheet ID      |
+
+### Telegram
+| Переменная         | Описание                          |
+|--------------------|-----------------------------------|
+| `BOT_TOKEN`        | Токен Telegram-бота (основной)    |
+| `TG_BOT_TOKEN`     | Токен Telegram-бота (bridge)      |
 | `TG_CHAT_ID`       | ID чата Telegram                  |
+
+### Сервер и БД
+| Переменная         | Описание                          |
+|--------------------|-----------------------------------|
+| `PORT`             | Порт сервера (по умолч. 3000)     |
+| `JWT_SECRET`       | Секрет подписи JWT (сменить в production!) |
+| `DATABASE_URL`     | Строка подключения к БД           |
+| `JENN_DB_LOG`      | Уровень логирования БД (0=off)    |
+
+### Production (HTTPS)
+| Переменная         | Описание                          |
+|--------------------|-----------------------------------|
+| `DOMAIN`           | Домен для SSL (создаётся автоматически) |
+| `SSL_KEY`          | Путь к приватному ключу (создаётся автоматически) |
+| `SSL_CERT`         | Путь к сертификату (создаётся автоматически) |
 
 ---
 
@@ -223,6 +278,7 @@ sudo systemctl restart jenn-core
 | Метод | Путь            | Описание                         |
 |-------|-----------------|----------------------------------|
 | POST  | `/v1/message`   | Отправить сообщение (Bearer-токен)|
+| POST  | `/v1/subscribe` | Подписка на обновления (email)   |
 | GET   | `/v1/ping`      | Проверка соединения              |
 | GET   | `/health`       | Health-check                     |
 
@@ -268,19 +324,37 @@ sudo systemctl restart jenn-core
 ├── start.sh              # Production launcher с Let's Encrypt
 ├── setup-autostart.sh    # Настройка systemd автозагрузки
 ├── config.js             # Загрузка конфигов (глобальный + на пользователя)
+├── db.js                 # Подключение к БД (Prisma)
 ├── auth.js               # JWT + bcrypt
 ├── store.js              # In-memory store с персистентностью
 ├── routes.js             # Публичные API-роуты
 ├── routes-admin.js       # Admin API-роуты
+├── services/
+│   └── telegram-bridge.js # Telegram-бот как отдельный сервис
 ├── ai/                   # AI-роутер и провайдеры
 │   ├── router.js
 │   ├── prompt.js
 │   └── providers/        # groq, openrouter, gigachat
 ├── core/
 │   └── processor.js      # Основной процессор сообщений
-├── skills/               # Навыки (save_entry, create_reminder)
-├── outputs/              # Выходы (notion)
-├── public/               # Admin SPA (index.html)
+├── inputs/               # Источники
+│   ├── browser_extension.js
+│   ├── desktop.js
+│   └── tg_bot.js
+├── skills/               # Навыки
+│   └── save_entry.js
+├── outputs/              # Выходы
+│   ├── notion.js
+│   └── jenn-output-obsidian.js
+├── prisma/               # Схема БД и миграции
+│   └── schema.prisma
+├── public/               # Frontend (лендинги, консоль, FAQ, docs)
+│   ├── index.html        # Главная (лендинг)
+│   ├── console.html      # Консоль управления
+│   ├── app.html          # Legacy Admin
+│   ├── faq.html          # FAQ
+│   ├── docs.html         # Документация API
+│   └── stitch/           # Дополнительные лендинги
 ├── data/                 # Пользователи, конфиги, реестры
 └── examples/             # Примеры интеграций
 ```
@@ -292,4 +366,6 @@ sudo systemctl restart jenn-core
 - Сервер Node.js 22+ (использует встроенный `fetch`).
 - Для Notion используется `https.request` (не `undici`) для совместимости с корпоративными сетями.
 - Admin panel использует httpOnly cookie + Bearer-токен для авторизации.
-- Все конфиги пользователей хранятся в `data/configs/{username}.json` с подстановкой `${VAR}` из `.env`.
+- Конфигурации пользователей хранятся в БД (таблица `UserConfig`) с подстановкой `${VAR}` из `.env`.
+- База данных: SQLite для разработки, PostgreSQL для production.
+- Telegram-бот работает независимо от core — если core недоступен, отвечает заготовкой.
