@@ -47,7 +47,15 @@ function startSharedBot(sharedToken) {
     )
     if (!match) {
       return sharedBot.sendMessage(msg.chat.id,
-        '❌ Вы не зарегистрированы.\nНастройте Telegram ID в админ-панели Jenn.'
+        '❌ Вы не зарегистрированы в системе Jenn.\n\n' +
+        '📋 Инструкция по настройке:\n\n' +
+        '1. Откройте консоль: https://jenn-app.tech/console\n' +
+        '2. Зарегистрируйтесь или войдите в аккаунт\n' +
+        '3. Перейдите в раздел "Pipeline"\n' +
+        '4. Выберите "Input Telegram"\n' +
+        '5. Укажите ваш Telegram: @' + (senderUsername || senderId) + '\n' +
+        '6. Сохраните настройки\n\n' +
+        'После этого я смогу сохранять ваши сообщения!'
       )
     }
     handleMessage(sharedBot, msg, match.username, match.sourceToken)
@@ -118,14 +126,14 @@ async function handleMessage(bot, msg, username, sourceToken) {
         reply += `\n📌 ${result.action.params.title}`
       }
       if (result?.result?.url) {
-        reply += `\n🔗 ${result.result.url}`
+        reply += `\n🔗 <a href="${result.result.url}">ссылка</a>`
       }
       if (result?.result?.destination) {
         const dest = result.result.destination
         const output = result?.action?.tool?.split('.')[0] || ''
         reply += `\n📂 В: ${dest}${output ? ` (${output})` : ''}`
       }
-      bot.sendMessage(msg.chat.id, reply)
+      bot.sendMessage(msg.chat.id, reply, { parse_mode: 'HTML' })
     } else {
       bot.sendMessage(msg.chat.id, `❌ ${data.message || 'Неизвестная ошибка'}`)
     }
