@@ -43,6 +43,7 @@ async function postMessage(req, res, processor) {
   console.log(`[${source}] ${user.name} (${user.id}): "${text}"`)
 
   const result = await processor.process(msg, req.source?.username)
+  await store.setMessageResult(msg.message_id, result)
   console.log(`[Core] → ${JSON.stringify(result)}`)
 
   res.status(201).json({

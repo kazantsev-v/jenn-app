@@ -25,15 +25,20 @@ function resolveDateString(str) {
 }
 
 const NAME_MAP = [
-  { key: 'title',    types: ['title'],        names: ['название', 'заголовок', 'title', 'name'] },
-  { key: 'text',     types: ['rich_text'],    names: ['текст', 'содержание', 'описание', 'text', 'content', 'message'] },
-  { key: 'content',  types: ['rich_text'],    names: ['текст', 'содержание', 'text', 'content', 'message'] },
-  { key: 'category', types: ['select'],       names: ['категория', 'тип', 'category', 'type'] },
-  { key: 'date',     types: ['date'],         names: ['дата', 'срок', 'date', 'deadline'] },
-  { key: 'source',   types: ['select'],       names: ['источник', 'source'] },
-  { key: 'priority', types: ['select'],       names: ['приоритет', 'priority'] },
-  { key: 'tags',     types: ['multi_select'], names: ['теги', 'tags', 'labels'] },
-  { key: 'status',   types: ['select'],       names: ['статус', 'status'] },
+  { key: 'title',    types: ['title'],                          names: ['название', 'заголовок', 'title', 'name'] },
+  { key: 'text',     types: ['rich_text'],                      names: ['текст', 'содержание', 'описание', 'text', 'content', 'message'] },
+  { key: 'content',  types: ['rich_text'],                      names: ['текст', 'содержание', 'text', 'content', 'message'] },
+  { key: 'category', types: ['select', 'multi_select', 'status'], names: ['категория', 'тип', 'category', 'type'] },
+  { key: 'date',     types: ['date'],                           names: ['дата', 'срок', 'date', 'deadline'] },
+  { key: 'source',   types: ['select', 'multi_select', 'status'], names: ['источник', 'source'] },
+  { key: 'priority', types: ['select', 'multi_select', 'status'], names: ['приоритет', 'priority'] },
+  { key: 'tags',     types: ['multi_select'],                    names: ['теги', 'tags', 'labels'] },
+  { key: 'status',   types: ['select', 'multi_select', 'status'], names: ['статус', 'status'] },
+  { key: 'url',      types: ['url'],                             names: ['ссылка', 'url', 'link', 'website', 'сайт'] },
+  { key: 'email',    types: ['email'],                           names: ['почта', 'email', 'e-mail'] },
+  { key: 'phone',    types: ['phone_number'],                    names: ['телефон', 'phone', 'tel'] },
+  { key: 'number',   types: ['number'],                          names: ['число', 'number', 'count', 'amount', 'количество', 'сумма'] },
+  { key: 'checked',  types: ['checkbox'],                        names: ['галочка', 'checkbox', 'done', 'выполнено', 'check'] },
 ]
 
 function smartMapToProperties(data, liveProps) {
@@ -58,6 +63,7 @@ function smartMapToProperties(data, liveProps) {
     if (def.type === 'title') return { title: [{ type: 'text', text: { content: String(val).slice(0, 2000) } }] }
     if (def.type === 'rich_text') return { rich_text: [{ type: 'text', text: { content: String(val).slice(0, 2000) } }] }
     if (def.type === 'select') return { select: { name: String(val) } }
+    if (def.type === 'status') return { status: { name: String(val) } }
     if (def.type === 'date') {
       const iso = resolveDateString(String(val))
       return iso ? { date: { start: iso } } : null
@@ -65,6 +71,26 @@ function smartMapToProperties(data, liveProps) {
     if (def.type === 'multi_select') {
       const items = Array.isArray(val) ? val : String(val).split(',').map(s => s.trim())
       return { multi_select: items.map(t => ({ name: t })) }
+    }
+    if (def.type === 'number') {
+      const n = Number(val)
+      return isNaN(n) ? null : { number: n }
+    }
+    if (def.type === 'checkbox') return { checkbox: Boolean(val) }
+    if (def.type === 'url') return { url: String(val).slice(0, 2000) }
+    if (def.type === 'email') return { email: String(val).slice(0, 2000) }
+    if (def.type === 'phone_number') return { phone_number: String(val).slice(0, 2000) }
+    if (def.type === 'people') {
+      const people = Array.isArray(val) ? val : [val]
+      return { people: people.map(p => typeof p === 'string' ? { id: p } : p) }
+    }
+    if (def.type === 'files') {
+      const files = Array.isArray(val) ? val : [val]
+      return { files: files.map(f => typeof f === 'string' ? { name: f, external: { url: f } } : f) }
+    }
+    if (def.type === 'relation') {
+      const ids = Array.isArray(val) ? val : [val]
+      return { relation: ids.map(id => ({ id: String(id) })) }
     }
     return null
   }
@@ -76,6 +102,49 @@ function smartMapToProperties(data, liveProps) {
     if (!col) continue
     const built = build(col, liveProps[col], val)
     if (built) { props[col] = built; used.add(col) }
+  }
+
+  const SKIP_KEYS = new Set(['title', 'text', 'content', 'destination', 'database'])
+
+  for (const [key, val] of Object.entries(data)) {
+    if (val === undefined || val === null || val === '') continue
+    if (SKIP_KEYS.has(key)) continue
+    for (const [colName, colDef] of Object.entries(liveProps)) {
+      if (used.has(colName)) continue
+      if (colName.toLowerCase().trim() === key.toLowerCase().trim()) {
+        const built = build(colName, colDef, val)
+        if (built) { props[colName] = built; used.add(colName) }
+      }
+    }
+  }
+
+  const TYPE_HINT = {
+    date: ['date'],
+    tags: ['multi_select'],
+    priority: ['select', 'multi_select', 'status'],
+    category: ['select', 'multi_select', 'status'],
+    source: ['select', 'multi_select', 'status'],
+    status: ['select', 'multi_select', 'status'],
+    url: ['url'],
+    email: ['email'],
+    phone: ['phone_number'],
+    number: ['number'],
+    checked: ['checkbox'],
+  }
+
+  for (const [key, val] of Object.entries(data)) {
+    if (val === undefined || val === null || val === '') continue
+    if (SKIP_KEYS.has(key)) continue
+    if (Object.values(props).some(p => {
+      const v = p.select?.name || p.status?.name || p.rich_text?.[0]?.text?.content || p.date?.start || p.url || p.email || p.phone_number
+      return v === String(val)
+    })) continue
+    const hints = TYPE_HINT[key] || ['select', 'rich_text', 'multi_select', 'number', 'checkbox', 'url']
+    const col = findCol(hints, [])
+    if (col) {
+      const built = build(col, liveProps[col], val)
+      if (built) { props[col] = built; used.add(col) }
+    }
   }
 
   return props
@@ -104,6 +173,18 @@ function notionPropertySchema(def) {
         options: (def.options || []).map(name => ({ name: String(name) }))
       }
     }
+  }
+  if (def.type === 'status') {
+    return {
+      status: {
+        options: (def.options || []).map(name => ({ name: String(name) }))
+      }
+    }
+  }
+  if (def.type === 'people') return { people: {} }
+  if (def.type === 'files') return { files: {} }
+  if (def.type === 'relation') {
+    return { relation: { database_id: def.database_id || '' } }
   }
   return null
 }
@@ -146,23 +227,24 @@ function inferDesiredProperties(data, desired, liveProps) {
   const desiredNames = new Set(Object.keys(desired || {}).map(n => n.toLowerCase().trim()))
   const hasType = (type) => Object.values(liveProps || {}).some(p => p.type === type) || Object.values(desired || {}).some(p => p.type === type)
   const hasName = (name) => liveNames.has(name.toLowerCase()) || desiredNames.has(name.toLowerCase())
+  const hasSelectType = () => hasType('select') || hasType('multi_select') || hasType('status')
 
   if ((data.text || data.content) && !hasType('rich_text') && !hasName('Текст')) {
     inferred['Текст'] = { type: 'rich_text' }
   }
-  if (data.category && !hasName('Категория')) {
+  if (data.category && !hasSelectType() && !hasName('Категория')) {
     inferred['Категория'] = { type: 'select', options: [String(data.category)] }
   }
   if (data.date && !hasType('date') && !hasName('Дата')) {
     inferred['Дата'] = { type: 'date' }
   }
-  if (data.source && !hasName('Источник')) {
+  if (data.source && !hasSelectType() && !hasName('Источник')) {
     inferred['Источник'] = { type: 'select', options: [String(data.source)] }
   }
-  if (data.priority && !hasName('Приоритет')) {
+  if (data.priority && !hasSelectType() && !hasName('Приоритет')) {
     inferred['Приоритет'] = { type: 'select', options: ['low', 'medium', 'high', String(data.priority)].filter((v, i, a) => a.indexOf(v) === i) }
   }
-  if (data.tags && !hasName('Теги')) {
+  if (data.tags && !hasType('multi_select') && !hasName('Теги')) {
     inferred['Теги'] = { type: 'multi_select', options: Array.isArray(data.tags) ? data.tags.map(String) : [] }
   }
   return inferred
@@ -178,7 +260,6 @@ function textChunks(text, size = 1900) {
 function buildPageChildren(data, mappedProperties) {
   const children = []
   const hasRichTextProperty = Object.values(mappedProperties || {}).some(p => p.rich_text)
-  const meta = []
 
   if (!hasRichTextProperty && data.text) {
     for (const chunk of textChunks(data.text)) {
@@ -190,26 +271,6 @@ function buildPageChildren(data, mappedProperties) {
         }
       })
     }
-  }
-
-  if (data.category && !Object.values(mappedProperties || {}).some(p => p.select?.name === data.category)) {
-    meta.push(`Категория: ${data.category}`)
-  }
-  if (data.date && !Object.values(mappedProperties || {}).some(p => p.date)) {
-    meta.push(`Дата: ${data.date}`)
-  }
-  if (data.source && !Object.values(mappedProperties || {}).some(p => p.select?.name === data.source)) {
-    meta.push(`Источник: ${data.source}`)
-  }
-
-  if (meta.length) {
-    children.push({
-      object: 'block',
-      type: 'paragraph',
-      paragraph: {
-        rich_text: [{ type: 'text', text: { content: meta.join('\n') } }]
-      }
-    })
   }
 
   return children
@@ -344,6 +405,10 @@ async function writeToDatabase(db, data, apiKey, log) {
   }
 
   liveProps = await ensureConfiguredProperties(notion, db, liveProps, data, log)
+
+  log?.(`liveProps after ensure: ${JSON.stringify(Object.entries(liveProps).map(([n, d]) => `${n}:${d.type}`))}`)
+  log?.(`data keys: ${Object.keys(data).join(', ')}`)
+  log?.(`data.category: ${data.category}`)
 
   const properties = smartMapToProperties(data, liveProps)
   log?.(`mapped: ${Object.keys(properties).join(', ') || '(none)'}`)
@@ -498,9 +563,17 @@ module.exports = {
         text: { type: 'string', description: 'Полный текст записи', required: true },
         destination: { type: 'string', description: 'Destination id/name: database или page', optional: true },
         database: { type: 'string', description: 'Совместимость: database destination id/name', optional: true },
+        category: { type: 'string', description: 'Категория из select/multi_select/status-поля таблицы', optional: true },
         date: { type: 'string', description: 'Дата YYYY-MM-DD', optional: true },
-        priority: { type: 'string', description: 'priority: low, medium, high', optional: true },
-        tags: { type: 'array', description: 'Список тегов', optional: true }
+        source: { type: 'string', description: 'Источник из select/multi_select-поля таблицы', optional: true },
+        priority: { type: 'string', description: 'Приоритет из select-поля', optional: true },
+        status: { type: 'string', description: 'Статус из status/select-поля', optional: true },
+        tags: { type: 'array', description: 'Список тегов (multi_select)', optional: true },
+        url: { type: 'string', description: 'URL из url-поля таблицы', optional: true },
+        email: { type: 'string', description: 'Email из email-поля', optional: true },
+        phone: { type: 'string', description: 'Телефон из phone_number-поля', optional: true },
+        number: { type: 'string', description: 'Число из number-поля', optional: true },
+        checked: { type: 'boolean', description: 'Галочка из checkbox-поля', optional: true }
       },
       async handler(params, config) {
         const apiKey = config?.api_key
@@ -512,11 +585,7 @@ module.exports = {
           title: params.title || params.text?.slice(0, 80) || 'Untitled',
           text: params.text || params.title || '',
           content: params.text || params.title || '',
-          category: params.category || null,
-          date: params.date || null,
-          source: params.source || null,
-          priority: params.priority || null,
-          tags: params.tags || null,
+          ...params
         }
         const result = destination.type === 'page'
           ? await appendToPage(destination, data, apiKey, msg => console.log(`[Notion:saveText] ${msg}`))

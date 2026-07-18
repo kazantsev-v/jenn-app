@@ -16,9 +16,5 @@ module.exports = {
       </ol>
     </div>
   `,
-  configFields: [
-    { key: 'source_name', label: 'Source Name', type: 'text', placeholder: 'desktop' },
-    { key: 'server_url', label: 'URL сервера', type: 'text', placeholder: 'http://localhost:3000' },
-    { key: 'user_name', label: 'Имя пользователя', type: 'text', placeholder: 'Desktop User' }
-  ]
+  configFields: []
 }

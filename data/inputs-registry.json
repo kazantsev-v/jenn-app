@@ -16,5 +16,14 @@
     "author": "Jenn Core",
     "version": "1.0.0",
     "local": true
+  },
+  {
+    "name": "browser_extension",
+    "title": "Browser Extension",
+    "description": "Расширение для Chrome / Firefox / Edge — текст и закладки",
+    "icon": "🌐",
+    "author": "Jenn Core",
+    "version": "1.0.0",
+    "local": true
   }
 ]

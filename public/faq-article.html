@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html class="dark" lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jenn | Статья FAQ</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#131314",
+                    "inverse-primary": "#6c5c3d",
+                    "tertiary-container": "#d4c1f2",
+                    "secondary-container": "#584725",
+                    "on-error-container": "#ffdad6",
+                    "on-primary": "#3b2f14",
+                    "gold": "#DCC7A1",
+                    "surface-container-lowest": "#0e0e0f",
+                    "primary-container": "#dcc7a1",
+                    "outline-variant": "#4c463c",
+                    "surface-container": "#201f20",
+                    "on-surface": "#e5e2e3",
+                    "primary": "#f9e3bb",
+                    "tertiary-fixed-dim": "#d1beef",
+                    "secondary": "#dcc398",
+                    "primary-fixed": "#f6e0b9",
+                    "on-error": "#690005",
+                    "surface": "#131314",
+                    "background": "#131314",
+                    "on-tertiary-fixed": "#21143a",
+                    "inverse-surface": "#e5e2e3",
+                    "tertiary-fixed": "#ebdcff",
+                    "on-primary-fixed-variant": "#534528",
+                    "primary-fixed-dim": "#d9c49e",
+                    "error": "#ffb4ab",
+                    "inverse-on-surface": "#313031",
+                    "sand": "#E8D5B5",
+                    "surface-bright": "#1E1E21",
+                    "surface-tint": "#d9c49e",
+                    "on-secondary-fixed": "#261900",
+                    "outline": "#989084",
+                    "surface-variant": "#353436",
+                    "on-secondary": "#3d2e0f",
+                    "on-surface-variant": "#cfc5b8",
+                    "on-tertiary-fixed-variant": "#4e4068",
+                    "surface-container-high": "#2a2a2b",
+                    "secondary-fixed-dim": "#dcc398",
+                    "on-tertiary-container": "#5c4d77",
+                    "error-container": "#93000a",
+                    "surface-container-low": "#1c1b1c",
+                    "lavender": "#C3B1E1",
+                    "on-secondary-fixed-variant": "#554423",
+                    "tertiary": "#ede0ff",
+                    "on-secondary-container": "#ceb58b",
+                    "on-tertiary": "#372950",
+                    "on-primary-container": "#625234",
+                    "turquoise": "#87C5C5",
+                    "secondary-fixed": "#fadfb2",
+                    "surface-container-highest": "#353436",
+                    "on-primary-fixed": "#251a03",
+                    "on-background": "#e5e2e3"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-safe": "32px",
+                    "unit": "8px",
+                    "container-max": "1200px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "label-lg": ["Inter"],
+                    "headline-lg": ["Cormorant Garamond"],
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Cormorant Garamond"],
+                    "title-lg": ["Inter"],
+                    "display": ["Cormorant Garamond"],
+                    "code": ["JetBrains Mono"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-lg": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "title-lg": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "display": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                    "code": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["15px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #131314;
+            color: #e5e2e3;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(30, 30, 33, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(152, 144, 132, 0.1);
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Light Theme */
+        html.light body {
+            background-color: #f9f8f6;
+            color: #1c1c1a;
+        }
+        html.light .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .article-content {
+                padding: 24px 16px !important;
+            }
+        }
+
+        /* Mobile Menu Active State */
+        .mobile-menu-active {
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+
+        /* Hamburger Animation */
+        .menu-active #menu-line-1 {
+            transform: rotate(45deg) translate(4px, 4px);
+        }
+        .menu-active #menu-line-2 {
+            opacity: 0;
+        }
+        .menu-active #menu-line-3 {
+            transform: rotate(-45deg) translate(4px, -4px);
+        }
+    </style>
+</head>
+<body class="selection:bg-primary selection:text-on-primary min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 md:px-margin-safe py-4 bg-surface/80 backdrop-blur-xl">
+<div class="font-display text-title-lg font-bold text-primary tracking-tight">Jenn</div>
+<div class="hidden md:flex gap-gutter items-center">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-lg text-label-lg" href="/" data-i18n="nav_solutions">Solutions</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-lg text-label-lg" href="/" data-i18n="nav_pipeline">Pipeline</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-lg text-label-lg" href="/" data-i18n="nav_integrations">Integrations</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-lg text-label-lg" href="/faq.html">FAQ</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-lg text-label-lg" href="/">API</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-lg text-label-lg" href="/" data-i18n="nav_pricing">Pricing</a>
+</div>
+<div class="flex gap-4 items-center">
+<button onclick="toggleLang()" class="w-8 h-8 rounded-full border border-outline-variant/50 hover:border-primary flex items-center justify-center text-xs font-label-lg text-on-surface-variant hover:text-primary transition-all" title="Language"><span id="lang-label">RU</span></button>
+<button onclick="toggleTheme()" class="w-8 h-8 rounded-full border border-outline-variant/50 hover:border-primary flex items-center justify-center text-on-surface-variant hover:text-primary transition-all" title="Theme"><span class="material-symbols-outlined text-[16px]" id="theme-icon">dark_mode</span></button>
+<button class="hidden md:block text-on-surface-variant hover:text-primary transition-all font-label-lg text-label-lg" data-i18n="signin">Sign In</button>
+<button class="hidden md:block bg-primary text-on-primary px-6 py-2 rounded-full font-bold font-label-lg text-label-lg hover:scale-105 active:scale-95 transition-transform" data-i18n="getstarted">Get Started</button>
+<button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-surface-container-high transition-colors">
+<span class="w-5 h-0.5 bg-on-surface-variant transition-all" id="menu-line-1"></span>
+<span class="w-5 h-0.5 bg-on-surface-variant transition-all" id="menu-line-2"></span>
+<span class="w-5 h-0.5 bg-on-surface-variant transition-all" id="menu-line-3"></span>
+</button>
+</div>
+</nav>
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="fixed top-[72px] left-0 w-full z-40 bg-surface/95 backdrop-blur-xl transform -translate-y-full opacity-0 transition-all duration-300 pointer-events-none">
+<div class="flex flex-col p-6 gap-4">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label-lg text-label-lg border-b border-outline-variant/30" href="/" data-i18n="nav_solutions">Solutions</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label-lg text-label-lg border-b border-outline-variant/30" href="/" data-i18n="nav_pipeline">Pipeline</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label-lg text-label-lg border-b border-outline-variant/30" href="/" data-i18n="nav_integrations">Integrations</a>
+<a class="text-primary font-bold py-2 font-label-lg text-label-lg border-b border-outline-variant/30" href="/faq.html">FAQ</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label-lg text-label-lg border-b border-outline-variant/30" href="/">API</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label-lg text-label-lg" href="/" data-i18n="nav_pricing">Pricing</a>
+<div class="flex gap-3 pt-4">
+<button class="flex-1 py-3 bg-primary text-on-primary rounded-full font-bold font-label-lg text-label-lg" data-i18n="signin">Sign In</button>
+<button class="flex-1 py-3 border border-primary text-primary rounded-full font-bold font-label-lg text-label-lg" data-i18n="getstarted">Get Started</button>
+</div>
+</div>
+</div>
+<main class="relative z-10 pt-32 pb-24 px-gutter max-w-container-max mx-auto flex-1">
+<!-- Back Button -->
+<a href="/faq.html" class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors font-label-lg text-label-lg mb-12 fade-in">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span data-i18n="back">Back to FAQ</span>
+</a>
+<!-- Article Header -->
+<section class="mb-16 fade-in">
+<div class="flex gap-4 mb-6">
+<span class="bg-turquoise/10 text-turquoise px-3 py-1 rounded-full text-[10px] uppercase font-bold tracking-widest" id="article-category" data-i18n="article_category">Complex</span>
+<span class="text-on-surface-variant font-label-lg text-label-lg" id="article-read-time" data-i18n="article_read_time">12 min read</span>
+</div>
+<h1 class="font-display text-display italic mb-8 leading-tight" id="article-title" data-i18n="article_title">
+                How does the AI-Router determine semantic routing priorities?
+            </h1>
+<div class="flex items-center gap-4 text-on-surface-variant font-label-lg text-label-lg">
+<span data-i18n="article_author">By Jenn Team</span>
+<span class="w-1 h-1 bg-on-surface-variant rounded-full"></span>
+<span id="article-date">July 2026</span>
+</div>
+</section>
+<!-- Article Content -->
+<article class="article-content glass-panel rounded-[2.5rem] p-12 fade-in">
+<div class="prose prose-invert max-w-none">
+<div class="space-y-6 font-body-md text-body-md text-on-surface-variant leading-relaxed">
+<p class="text-lg text-on-surface" data-i18n="article_intro">
+                        Delve into the multi-layer filtering system that ensures low-latency execution by predicting intent before the full tokenization process begins.
+                    </p>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-12 mb-6" data-i18n="h2_routing">Understanding the Routing Architecture</h2>
+<p data-i18n="p_routing1">
+                        The Jenn AI-Router employs a sophisticated multi-layer filtering system that analyzes incoming data streams in real-time. Unlike traditional routing mechanisms that rely on static rules, our neural approach dynamically adapts to context and user behavior patterns.
+                    </p>
+<p data-i18n="p_routing2">
+                        At its core, the system uses a combination of semantic analysis and predictive modeling to determine the optimal routing path for each piece of information. This ensures that data reaches its destination with minimal latency while maintaining contextual integrity.
+                    </p>
+<h3 class="font-title-lg text-title-lg text-on-surface mt-8 mb-4" data-i18n="h3_components">Key Components</h3>
+<ul class="list-disc list-inside space-y-2" data-i18n="ul_components">
+<li><strong>Семантический слой анализа:</strong> Парсит входные данные для понимания намерения и контекста</li>
+<li><strong>Предиктивная модель:</strong> Предсказывает потребности маршрутизации на основе исторических паттернов</li>
+<li><strong>Движок приоритетов:</strong> Назначает динамические оценки приоритета каждому решению маршрутизации</li>
+<li><strong>Петля обратной связи:</strong> Непрерывно учится на результатах маршрутизации для повышения точности</li>
+</ul>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-12 mb-6" data-i18n="h2_impl">Implementation Details</h2>
+<p data-i18n="p_impl">
+                        The routing system is built on a modular architecture that allows for easy extension and customization. Each component can be independently tuned to meet specific performance requirements.
+                    </p>
+<pre class="glass-panel rounded-2xl p-6 font-code text-code text-on-surface-variant overflow-x-auto"><code>// Example routing configuration
+const router = new JennRouter({
+  semanticLayer: true,
+  predictiveModel: 'v2.4',
+  priorityThreshold: 0.85,
+  feedbackEnabled: true
+});
+
+router.on('route', (decision) => {
+  console.log(`Routed with priority: ${decision.priority}`);
+});</code></pre>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-12 mb-6" data-i18n="h2_perf">Performance Metrics</h2>
+<p data-i18n="p_perf">
+                        In production environments, the AI-Router consistently achieves sub-10ms routing decisions with 99.7% accuracy. The system scales horizontally to handle millions of routing decisions per second.
+                    </p>
+<div class="glass-panel rounded-2xl p-8 mt-8">
+<h4 class="font-title-lg text-title-lg text-on-surface mb-4" data-i18n="benchmarks">Performance Benchmarks</h4>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="font-label-lg text-label-lg text-on-surface-variant" data-i18n="metric_latency">Average Latency</span>
+<span class="font-code text-code text-primary">8.3ms</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-lg text-label-lg text-on-surface-variant" data-i18n="metric_accuracy">Accuracy Rate</span>
+<span class="font-code text-code text-primary">99.7%</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-lg text-label-lg text-on-surface-variant" data-i18n="metric_throughput">Throughput</span>
+<span class="font-code text-code text-primary">2.4M/sec</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- Related Articles -->
+<section class="mt-24">
+<h2 class="font-headline-lg text-headline-lg mb-12" data-i18n="related">Related Articles</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<a href="/faq-article.html?id=2" class="glass-panel p-8 rounded-[2rem] hover:bg-surface-container-high transition-colors group">
+<div class="flex gap-4 mb-4">
+<span class="bg-sand/10 text-sand px-3 py-1 rounded-full text-[10px] uppercase font-bold" data-i18n="tag_standard">Standard</span>
+<span class="text-on-surface-variant font-label-lg text-label-lg" data-i18n="read_4">4 min</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-2 group-hover:text-primary transition-colors" data-i18n="rel2_title">Managing API Keys via CLI</h3>
+<p class="text-on-surface-variant text-body-md font-body-md" data-i18n="rel2_desc">Securely rotate and scope your console credentials.</p>
+</a>
+<a href="/faq-article.html?id=3" class="glass-panel p-8 rounded-[2rem] hover:bg-surface-container-high transition-colors group">
+<div class="flex gap-4 mb-4">
+<span class="bg-lavender/10 text-lavender px-3 py-1 rounded-full text-[10px] uppercase font-bold" data-i18n="tag_advanced">Advanced</span>
+<span class="text-on-surface-variant font-label-lg text-label-lg" data-i18n="read_8">8 min</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-2 group-hover:text-primary transition-colors" data-i18n="rel3_title">Custom Model Integration</h3>
+<p class="text-on-surface-variant text-body-md font-body-md" data-i18n="rel3_desc">Connecting proprietary LLMs to the Jenn pipeline.</p>
+</a>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 px-6 md:px-margin-safe border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-gutter bg-surface-container-lowest z-30 relative mt-auto flex-shrink-0">
+<div class="font-display text-headline-lg text-primary">Jenn</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="ft_docs">Documentation</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="ft_changelog">Changelog</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="ft_privacy">Privacy</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="ft_terms">Terms</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="ft_status">System Status</a>
+</div>
+<div class="text-on-surface-variant font-body-md text-body-md opacity-60" data-i18n="ft_copy">© 2024 Jenn. Architectural Intelligence.</div>
+</footer>
+<script>
+        // Mobile Menu Toggle
+        let mobileMenuOpen = false;
+        function toggleMobileMenu() {
+            mobileMenuOpen = !mobileMenuOpen;
+            const menu = document.getElementById('mobile-menu');
+            const hamburger = document.querySelector('[onclick="toggleMobileMenu()"]');
+            
+            if (mobileMenuOpen) {
+                menu.classList.add('mobile-menu-active');
+                hamburger.classList.add('menu-active');
+            } else {
+                menu.classList.remove('mobile-menu-active');
+                hamburger.classList.remove('menu-active');
+            }
+        }
+
+        // Theme Toggle
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.className = savedTheme;
+        updateThemeIcon(savedTheme);
+
+        function toggleTheme() {
+            const current = document.documentElement.className;
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.className = newTheme;
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-icon');
+            if (icon) {
+                icon.textContent = theme === 'dark' ? 'dark_mode' : 'light_mode';
+            }
+        }
+
+        // Language Toggle
+        const translations = {
+            en: {
+                'signin': 'Sign In',
+                'getstarted': 'Get Started',
+                'back': 'Back to FAQ',
+                'nav_solutions': 'Solutions',
+                'nav_pipeline': 'Pipeline',
+                'nav_integrations': 'Integrations',
+                'nav_pricing': 'Pricing',
+                'article_category': 'Complex',
+                'article_read_time': '12 min read',
+                'article_title': 'How does the AI-Router determine semantic routing priorities?',
+                'article_author': 'By Jenn Team',
+                'article_intro': 'Delve into the multi-layer filtering system that ensures low-latency execution by predicting intent before the full tokenization process begins.',
+                'h2_routing': 'Understanding the Routing Architecture',
+                'p_routing1': 'The Jenn AI-Router employs a sophisticated multi-layer filtering system that analyzes incoming data streams in real-time. Unlike traditional routing mechanisms that rely on static rules, our neural approach dynamically adapts to context and user behavior patterns.',
+                'p_routing2': 'At its core, the system uses a combination of semantic analysis and predictive modeling to determine the optimal routing path for each piece of information. This ensures that data reaches its destination with minimal latency while maintaining contextual integrity.',
+                'h3_components': 'Key Components',
+                'ul_components': '<li><strong>Semantic Analysis Layer:</strong> Parses incoming data to understand intent and context</li><li><strong>Predictive Model:</strong> Anticipates routing needs based on historical patterns</li><li><strong>Priority Engine:</strong> Assigns dynamic priority scores to each routing decision</li><li><strong>Feedback Loop:</strong> Continuously learns from routing outcomes to improve accuracy</li>',
+                'h2_impl': 'Implementation Details',
+                'p_impl': 'The routing system is built on a modular architecture that allows for easy extension and customization. Each component can be independently tuned to meet specific performance requirements.',
+                'h2_perf': 'Performance Metrics',
+                'p_perf': 'In production environments, the AI-Router consistently achieves sub-10ms routing decisions with 99.7% accuracy. The system scales horizontally to handle millions of routing decisions per second.',
+                'benchmarks': 'Performance Benchmarks',
+                'metric_latency': 'Average Latency',
+                'metric_accuracy': 'Accuracy Rate',
+                'metric_throughput': 'Throughput',
+                'related': 'Related Articles',
+                'tag_standard': 'Standard',
+                'read_4': '4 min',
+                'rel2_title': 'Managing API Keys via CLI',
+                'rel2_desc': 'Securely rotate and scope your console credentials.',
+                'tag_advanced': 'Advanced',
+                'read_8': '8 min',
+                'rel3_title': 'Custom Model Integration',
+                'rel3_desc': 'Connecting proprietary LLMs to the Jenn pipeline.',
+                'ft_docs': 'Documentation',
+                'ft_changelog': 'Changelog',
+                'ft_privacy': 'Privacy',
+                'ft_terms': 'Terms',
+                'ft_status': 'System Status',
+                'ft_copy': '© 2024 Jenn. Architectural Intelligence.'
+            },
+            ru: {
+                'signin': 'Войти',
+                'getstarted': 'Начать',
+                'back': 'Назад к FAQ',
+                'nav_solutions': 'Решения',
+                'nav_pipeline': 'Конвейер',
+                'nav_integrations': 'Интеграции',
+                'nav_pricing': 'Цены',
+                'article_category': 'Сложный',
+                'article_read_time': '12 мин чтения',
+                'article_title': 'Как AI-Router определяет приоритеты семантической маршрутизации?',
+                'article_author': 'От команды Jenn',
+                'article_intro': 'Подробный обзор многоуровневой системы фильтрации, обеспечивающей низкую задержку за счёт предсказания намерения до начала полной токенизации.',
+                'h2_routing': 'Понимание архитектуры маршрутизации',
+                'p_routing1': 'AI-Router Jenn использует сложную многоуровневую систему фильтрации, которая анализирует входящие потоки данных в реальном времени. В отличие от традиционных механизмов маршрутизации, основанных на статических правилах, наш нейронный подход динамически адаптируется к контексту и паттернам поведения пользователей.',
+                'p_routing2': 'В основе системы используется комбинация семантического анализа и предиктивного моделирования для определения оптимального маршрута для каждой части информации. Это обеспечивает доставку данных до места назначения с минимальной задержкой при сохранении контекстной целостности.',
+                'h3_components': 'Ключевые компоненты',
+                'ul_components': '<li><strong>Семантический слой анализа:</strong> Парсит входные данные для понимания намерения и контекста</li><li><strong>Предиктивная модель:</strong> Предсказывает потребности маршрутизации на основе исторических паттернов</li><li><strong>Движок приоритетов:</strong> Назначает динамические оценки приоритета каждому решению маршрутизации</li><li><strong>Петля обратной связи:</strong> Непрерывно учится на результатах маршрутизации для повышения точности</li>',
+                'h2_impl': 'Детали реализации',
+                'p_impl': 'Система маршрутизации построена на модульной архитектуре, которая позволяет легко расширять и настраивать её. Каждый компонент может быть независимо настроен для удовлетворения конкретных требований к производительности.',
+                'h2_perf': 'Показатели производительности',
+                'p_perf': 'В производственных средах AI-Router стабильно обеспечивает решения маршрутизации с задержкой менее 10мс и точностью 99.7%. Система масштабируется горизонтально для обработки миллионов решений маршрутизации в секунду.',
+                'benchmarks': 'Эталоны производительности',
+                'metric_latency': 'Средняя задержка',
+                'metric_accuracy': 'Точность',
+                'metric_throughput': 'Пропускная способность',
+                'related': 'Связанные статьи',
+                'tag_standard': 'Стандартный',
+                'read_4': '4 мин',
+                'rel2_title': 'Управление API-ключами через CLI',
+                'rel2_desc': 'Безопасное обновление и ограничение прав доступа к вашим учётным данным.',
+                'tag_advanced': 'Продвинутый',
+                'read_8': '8 мин',
+                'rel3_title': 'Интеграция пользовательских моделей',
+                'rel3_desc': 'Подключение проприетарных LLM к конвейеру Jenn.',
+                'ft_docs': 'Документация',
+                'ft_changelog': 'История изменений',
+                'ft_privacy': 'Конфиденциальность',
+                'ft_terms': 'Условия',
+                'ft_status': 'Статус системы',
+                'ft_copy': '© 2024 Jenn. Архитектурный интеллект.'
+            }
+        };
+
+        let currentLang = localStorage.getItem('lang') || 'ru';
+        applyLanguage(currentLang);
+
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'ru' : 'en';
+            localStorage.setItem('lang', currentLang);
+            applyLanguage(currentLang);
+        }
+
+        function applyLanguage(lang) {
+            const langLabel = document.getElementById('lang-label');
+            if (langLabel) {
+                langLabel.textContent = lang === 'en' ? 'EN' : 'RU';
+            }
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+        }
+    </script>
+</body>
+</html>

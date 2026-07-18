@@ -73,9 +73,12 @@ async function start() {
 
   app.get('/app', (req, res) => res.sendFile(path.join(__dirname, 'public', 'app.html')))
   app.get('/console', (req, res) => res.sendFile(path.join(__dirname, 'public', 'console.html')))
-  app.get('/docs', (req, res) => res.sendFile(path.join(__dirname, 'public', 'stitch', 'landing-knowledge.html')))
+  app.get('/docs', (req, res) => res.sendFile(path.join(__dirname, 'public', 'docs.html')))
   app.get('/features', (req, res) => res.sendFile(path.join(__dirname, 'public', 'stitch', 'landing-features.html')))
   app.get('/pricing', (req, res) => res.sendFile(path.join(__dirname, 'public', 'stitch', 'landing-pricing.html')))
+  app.get('/faq', (req, res) => res.sendFile(path.join(__dirname, 'public', 'faq.html')))
+  app.get('/faq-article', (req, res) => res.sendFile(path.join(__dirname, 'public', 'faq-article.html')))
+  app.get('/products', (req, res) => res.sendFile(path.join(__dirname, 'public', 'products.html')))
 
   app.use(express.static(path.join(__dirname, 'public')))
 
@@ -87,6 +90,7 @@ async function start() {
     console.log(`Jenn server running on http://localhost:${port}`)
     console.log(`Landing: http://localhost:${port}/`)
     console.log(`Console: http://localhost:${port}/app`)
+    console.log(`FAQ: http://localhost:${port}/faq`)
     setImmediate(() => telegramBridge.start(store).catch(e => console.error('[TG Bridge]', e.message)))
   }).on('error', (err) => {
     console.error('Server error:', err.message)

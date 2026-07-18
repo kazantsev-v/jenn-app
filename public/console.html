@@ -93,11 +93,23 @@ tailwind.config = {
   .glass-panel { background: rgba(28,28,30,0.4); backdrop-filter: blur(20px); border: 1px solid rgba(220,199,161,0.08); transition: all 0.3s ease; }
   .glass-panel:hover { border-color: rgba(220,199,161,0.15); }
   .pipeline-line { background: linear-gradient(90deg, transparent, rgba(220,199,161,0.2), transparent); height: 1px; }
+  .pipeline-shell { max-width: 1440px; margin: 0 auto; width: 100%; }
+  .pipeline-grid { display: grid; gap: 16px; align-items: start; }
+  @media (min-width: 1280px) {
+    .pipeline-grid { grid-template-columns: minmax(280px, 1fr) minmax(320px, 380px) minmax(280px, 1fr); gap: 24px; }
+  }
+  @media (max-width: 1279px) {
+    .pipeline-grid { grid-template-columns: 1fr; }
+    .pipeline-column { order: unset; }
+  }
+  .hub-surface { background: linear-gradient(180deg, rgba(35,35,38,0.95), rgba(22,22,24,0.96)); border: 1px solid rgba(220,199,161,0.12); }
+  .hub-note { background: rgba(14,14,15,0.7); border: 1px solid rgba(220,199,161,0.12); }
+  .tab-pill { border: 1px solid rgba(220,199,161,0.12); background: rgba(14,14,15,0.7); color: #9CA3AF; }
+  .tab-pill.active { border-color: rgba(220,199,161,0.4); color: #DCC7A1; background: rgba(220,199,161,0.06); }
   .pulse-gold { box-shadow: 0 0 0 0 rgba(220,199,161,0.4); animation: pulse 2s infinite; }
   @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(220,199,161,0.4); } 70% { box-shadow: 0 0 0 15px rgba(220,199,161,0); } 100% { box-shadow: 0 0 0 0 rgba(220,199,161,0); } }
   .sidebar-active { color: #DCC7A1 !important; background: rgba(220,199,161,0.05); }
   .scroll-hide::-webkit-scrollbar { display: none; }
-  .hidden { display: none !important; }
   .toast { position: fixed; bottom: 24px; right: 24px; padding: 10px 18px; border-radius: 12px; font-size: 13px; z-index: 1000; opacity: 0; transition: opacity 0.3s; pointer-events: none; background: rgba(28,28,30,0.9); border: 1px solid rgba(220,199,161,0.15); color: #F9F8F6; }
   .toast.show { opacity: 1; }
   .toast-success { border-color: rgba(135,197,197,0.4); }
@@ -110,6 +122,7 @@ tailwind.config = {
   .logs-console .log-detail { color: #9CA3AF; font-size: 11px; }
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 500; }
   .modal { background: #1C1C1E; border: 1px solid #2D2D30; border-radius: 18px; width: 600px; max-width: 90vw; max-height: 85vh; overflow-y: auto; }
+  .modal.modal-lg { width: 760px; }
   .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid #2D2D30; }
   .modal-body { padding: 24px; }
   .modal-footer { display: flex; justify-content: flex-end; gap: 8px; padding: 16px 24px; border-top: 1px solid #2D2D30; }
@@ -117,94 +130,146 @@ tailwind.config = {
   .form-group label { display: block; font-size: 12px; color: #9CA3AF; margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; }
   .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; background: #0E0E0F; border: 1px solid #2D2D30; border-radius: 12px; color: #F9F8F6; font-size: 14px; font-family: 'Inter', sans-serif; outline: none; transition: border 0.2s; }
   .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: #DCC7A1; }
+  .mobile-drawer { transform: translateX(100%); transition: transform 0.25s ease; }
+  .mobile-drawer.open { transform: translateX(0); }
+  .mobile-nav-item.active { color: #DCC7A1; }
+  .tooltip-bubble { pointer-events: none; position: absolute; z-index: 50; border-radius: 12px; border: 1px solid #2D2D30; background: #232326; padding: 8px 12px; font-size: 12px; line-height: 1.5; color: #9CA3AF; opacity: 0; transition: opacity 0.2s; }
+  .group:hover .tooltip-bubble { opacity: 1; }
+  @media (max-width: 767px) {
+    body { overflow: hidden; }
+    .modal-overlay { align-items: flex-end; }
+    .modal { width: 100%; max-width: 100%; max-height: 88dvh; border-radius: 18px 18px 0 0; }
+    .modal-header { padding: 16px 20px; }
+    .modal-body { padding: 20px; }
+    .modal-footer { padding: 14px 20px; flex-wrap: wrap; }
+    .modal-footer button { flex: 1; min-width: 0; text-align: center; }
+    .toast { bottom: 88px; right: 16px; left: 16px; text-align: center; }
+    .logs-console { height: calc(100dvh - 230px); font-size: 11px; }
+    .tooltip-bubble { left: 0 !important; transform: none !important; bottom: 100% !important; margin-bottom: 8px; width: max-content; max-width: 280px; }
+  }
 </style>
 </head>
 <body class="font-body-md text-body-md overflow-hidden">
 
 <!-- AUTH SCREEN -->
-<div id="auth-screen" class="flex items-center justify-center h-screen w-screen">
-  <div class="glass-panel p-10 rounded-2xl w-[400px] text-center">
+<div id="auth-screen" class="flex items-center justify-center h-screen w-screen p-4">
+  <div class="glass-panel p-6 sm:p-10 rounded-2xl w-full max-w-[400px] text-center">
     <h1 class="font-headline-md text-4xl text-primary italic mb-2">Jenn</h1>
     <p class="text-on-surface-variant text-sm mb-8" id="auth-subtitle">Sign in to your console</p>
     <div id="auth-alert"></div>
     <div id="login-form">
       <div class="form-group text-left">
-        <label>Username</label>
+        <label id="lbl-login-user">Username</label>
         <input type="text" id="login-username" placeholder="your_username" autocomplete="username">
       </div>
       <div class="form-group text-left">
-        <label>Password</label>
+        <label id="lbl-login-pass">Password</label>
         <input type="password" id="login-password" placeholder="••••••" autocomplete="current-password">
       </div>
-      <button onclick="login()" class="w-full py-3 bg-primary text-on-primary rounded-xl font-medium hover:opacity-90 transition-all mt-2">Sign in</button>
-      <p class="text-on-surface-variant text-xs mt-4">No account? <a onclick="showRegister()" class="text-primary cursor-pointer hover:underline">Register</a></p>
+      <button onclick="login()" class="w-full py-3 bg-primary text-on-primary rounded-xl font-medium hover:opacity-90 transition-all mt-2" id="btn-login">Sign in</button>
+      <p class="text-on-surface-variant text-xs mt-4" id="login-footer">No account? <a onclick="showRegister()" class="text-primary cursor-pointer hover:underline">Register</a></p>
     </div>
     <div id="register-form" class="hidden">
       <div class="form-group text-left">
-        <label>Username</label>
+        <label id="lbl-reg-user">Username</label>
         <input type="text" id="reg-username" placeholder="your_username" autocomplete="off">
       </div>
       <div class="form-group text-left">
-        <label>Password</label>
+        <label id="lbl-reg-pass">Password</label>
         <input type="password" id="reg-password" placeholder="••••" autocomplete="new-password">
       </div>
-      <button onclick="register()" class="w-full py-3 bg-primary text-on-primary rounded-xl font-medium hover:opacity-90 transition-all mt-2">Create account</button>
-      <p class="text-on-surface-variant text-xs mt-4">Have an account? <a onclick="showLogin()" class="text-primary cursor-pointer hover:underline">Sign in</a></p>
+      <button onclick="register()" class="w-full py-3 bg-primary text-on-primary rounded-xl font-medium hover:opacity-90 transition-all mt-2" id="btn-register">Create account</button>
+      <p class="text-on-surface-variant text-xs mt-4" id="reg-footer">Have an account? <a onclick="showLogin()" class="text-primary cursor-pointer hover:underline">Sign in</a></p>
     </div>
+    <button onclick="toggleLang()" class="mt-6 w-8 h-8 mx-auto rounded-full border border-outline-variant text-on-surface-variant hover:text-primary hover:border-primary transition-all flex items-center justify-center text-xs font-bold" id="lang-toggle">EN</button>
   </div>
 </div>
 
 <!-- APP LAYOUT -->
-<div id="app" class="flex h-screen w-full hidden">
+<div id="app" class="flex h-dvh w-full flex-col md:flex-row hidden">
   <!-- Sidebar -->
-  <aside class="w-64 border-r border-outline-variant flex flex-col p-6 space-y-6 bg-surface-container-lowest flex-shrink-0">
+  <aside class="hidden md:flex w-64 border-r border-outline-variant flex-col p-6 space-y-6 bg-surface-container-lowest flex-shrink-0">
     <div class="flex items-center space-x-3 px-2">
       <span class="font-headline-md text-2xl text-primary tracking-tighter italic">Jenn</span>
       <span class="font-label-mono text-label-mono text-on-surface-variant uppercase bg-surface-container-high px-2 py-0.5 rounded">Console</span>
     </div>
     <nav class="flex-1 space-y-1" id="sidebar-nav">
-      <a onclick="navigate('dashboard')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="dashboard">
+      <a onclick="navigate('dashboard')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="dashboard" data-nav-key="nav.dashboard">
         <span class="material-symbols-outlined text-[20px]">dashboard</span>
         <span class="font-medium">Dashboard</span>
       </a>
-      <a onclick="navigate('pipeline')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="pipeline">
+      <a onclick="navigate('pipeline')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="pipeline" data-nav-key="nav.pipeline">
         <span class="material-symbols-outlined text-[20px]">account_tree</span>
         <span class="font-medium">Pipeline</span>
       </a>
-      <a onclick="navigate('activity')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="activity">
+      <a onclick="navigate('marketplace')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="marketplace" data-nav-key="nav.marketplace">
+        <span class="material-symbols-outlined text-[20px]">storefront</span>
+        <span class="font-medium">Marketplace</span>
+      </a>
+      <a onclick="navigate('activity')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="activity" data-nav-key="nav.activity">
         <span class="material-symbols-outlined text-[20px]">inbox</span>
         <span class="font-medium">Activity</span>
       </a>
-      <a onclick="navigate('logs')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="logs">
-        <span class="material-symbols-outlined text-[20px]">terminal</span>
-        <span class="font-medium">Logs</span>
-      </a>
-      <a onclick="navigate('apikeys')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="apikeys">
+      <a onclick="navigate('apikeys')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="apikeys" data-nav-key="nav.apikeys">
         <span class="material-symbols-outlined text-[20px]">key</span>
         <span class="font-medium">API Keys</span>
       </a>
-      <a onclick="navigate('settings')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="settings" id="settings-nav">
+      <a onclick="navigate('settings')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer" data-page="settings" id="settings-nav" data-nav-key="nav.settings">
         <span class="material-symbols-outlined text-[20px]">settings</span>
         <span class="font-medium">Settings</span>
       </a>
       <div id="dev-nav" class="hidden">
-        <a onclick="navigate('test')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-lavender hover:text-lavender transition-all duration-300 cursor-pointer" data-page="test">
+        <a onclick="navigate('logs')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-lavender hover:text-lavender transition-all duration-300 cursor-pointer" data-page="logs" data-nav-key="nav.logs">
+          <span class="material-symbols-outlined text-[20px]">terminal</span>
+          <span class="font-medium text-lavender">Logs</span>
+        </a>
+        <a onclick="navigate('test')" class="sidebar-nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-lavender hover:text-lavender transition-all duration-300 cursor-pointer" data-page="test" data-nav-key="nav.devtest">
           <span class="material-symbols-outlined text-[20px]">bug_report</span>
           <span class="font-medium text-lavender">Dev Test</span>
         </a>
       </div>
     </nav>
-    <div class="pt-4 border-t border-outline-variant">
-      <button onclick="logout()" class="flex items-center space-x-3 px-3 py-2.5 w-full rounded-lg text-on-surface-variant hover:text-error transition-all duration-300">
+    <div class="pt-4 border-t border-outline-variant space-y-1">
+      <button onclick="toggleLang()" class="flex items-center space-x-3 px-3 py-2.5 w-full rounded-lg text-on-surface-variant hover:text-primary transition-all duration-300">
+        <span class="material-symbols-outlined text-[20px]">language</span>
+        <span class="font-medium" id="sidebar-lang-label">EN</span>
+      </button>
+      <button onclick="logout()" class="flex items-center space-x-3 px-3 py-2.5 w-full rounded-lg text-on-surface-variant hover:text-error transition-all duration-300" data-nav-key="nav.signout">
         <span class="material-symbols-outlined text-[20px]">logout</span>
         <span class="font-medium">Sign out</span>
       </button>
     </div>
   </aside>
 
+  <header class="md:hidden flex h-16 flex-shrink-0 items-center justify-between border-b border-outline-variant bg-surface-container-lowest px-4">
+    <div class="font-headline-md text-2xl italic text-primary">Jenn</div>
+    <div class="flex items-center gap-2">
+      <span id="mobile-page-label" class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant">Dashboard</span>
+      <button onclick="toggleMobileDrawer()" class="flex h-10 w-10 items-center justify-center rounded-lg border border-outline-variant text-on-surface" aria-label="Open console menu"><span class="material-symbols-outlined">menu</span></button>
+    </div>
+  </header>
+
   <!-- Main Content -->
-  <main class="flex-1 overflow-y-auto scroll-hide p-10 space-y-10" id="main-content">
+  <main class="flex-1 overflow-y-auto scroll-hide p-4 pb-24 space-y-6 sm:p-6 sm:pb-24 md:p-10 md:space-y-10" id="main-content">
   </main>
+
+  <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 grid grid-cols-5 border-t border-outline-variant bg-surface-container-lowest px-2 py-2">
+    <button onclick="navigate('dashboard')" class="mobile-nav-item flex flex-col items-center gap-1 py-1 text-on-surface-variant" data-page="dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="text-[10px]" id="mob-nav-home">Home</span></button>
+    <button onclick="navigate('pipeline')" class="mobile-nav-item flex flex-col items-center gap-1 py-1 text-on-surface-variant" data-page="pipeline"><span class="material-symbols-outlined text-[20px]">account_tree</span><span class="text-[10px]" id="mob-nav-flow">Flow</span></button>
+    <button onclick="navigate('marketplace')" class="mobile-nav-item flex flex-col items-center gap-1 py-1 text-on-surface-variant" data-page="marketplace"><span class="material-symbols-outlined text-[20px]">storefront</span><span class="text-[10px]" id="mob-nav-market">Market</span></button>
+    <button onclick="navigate('activity')" class="mobile-nav-item flex flex-col items-center gap-1 py-1 text-on-surface-variant" data-page="activity"><span class="material-symbols-outlined text-[20px]">inbox</span><span class="text-[10px]" id="mob-nav-activity">Activity</span></button>
+    <button onclick="toggleMobileDrawer()" class="mobile-nav-item flex flex-col items-center gap-1 py-1 text-on-surface-variant"><span class="material-symbols-outlined text-[20px]">more_horiz</span><span class="text-[10px]" id="mob-nav-more">More</span></button>
+  </nav>
+
+  <div id="mobile-drawer" class="mobile-drawer md:hidden fixed inset-y-0 right-0 z-50 flex w-[min(84vw,340px)] flex-col border-l border-outline-variant bg-surface-container-lowest p-5 shadow-2xl" aria-hidden="true">
+    <div class="mb-6 flex items-center justify-between"><span class="font-headline-md text-2xl italic text-primary">Jenn</span><button onclick="toggleMobileDrawer()" class="p-2 text-on-surface-variant" aria-label="Close console menu"><span class="material-symbols-outlined">close</span></button></div>
+    <nav class="space-y-1">
+      <button onclick="navigate('apikeys')" class="w-full flex items-center gap-3 rounded-lg px-3 py-3 text-left text-on-surface-variant"><span class="material-symbols-outlined">key</span><span id="drawer-apikeys">API Keys</span></button>
+      <button onclick="navigate('settings')" class="w-full flex items-center gap-3 rounded-lg px-3 py-3 text-left text-on-surface-variant"><span class="material-symbols-outlined">settings</span><span id="drawer-settings">Settings</span></button>
+      <button onclick="toggleLang()" class="w-full flex items-center gap-3 rounded-lg px-3 py-3 text-left text-on-surface-variant"><span class="material-symbols-outlined">language</span><span id="drawer-lang-label">EN</span></button>
+    </nav>
+    <button onclick="logout()" class="mt-auto flex items-center gap-3 rounded-lg px-3 py-3 text-left text-on-surface-variant"><span class="material-symbols-outlined">logout</span><span id="drawer-signout">Sign out</span></button>
+  </div>
 </div>
 
 <div id="toast" class="toast"></div>
@@ -228,6 +293,593 @@ let devMode = false;
 let settingsClicks = 0;
 let cachedConfig = {};
 let logsEventSource = null;
+let currentPage = 'dashboard';
+let activeMarketplaceType = 'input';
+let activeMarketplaceTab = 'browse';
+let activeSkillTab = 'browse';
+
+// ── i18n ──
+let currentLang = localStorage.getItem('lang') || 'en';
+const translations = {
+  en: {
+    // Auth
+    'auth.subtitle': 'Sign in to your console',
+    'auth.username': 'Username',
+    'auth.password': 'Password',
+    'auth.signin': 'Sign in',
+    'auth.no_account': 'No account?',
+    'auth.register_link': 'Register',
+    'auth.create_title': 'Create your account',
+    'auth.create_btn': 'Create account',
+    'auth.have_account': 'Have an account?',
+    'auth.signin_link': 'Sign in',
+    'auth.login_failed': 'Login failed',
+    'auth.register_failed': 'Registration failed',
+    // Sidebar
+    'nav.dashboard': 'Dashboard',
+    'nav.pipeline': 'Pipeline',
+    'nav.marketplace': 'Marketplace',
+    'nav.activity': 'Activity',
+    'nav.logs': 'Logs',
+    'nav.apikeys': 'API Keys',
+    'nav.settings': 'Settings',
+    'nav.devtest': 'Dev Test',
+    'nav.signout': 'Sign out',
+    // Mobile nav
+    'mobile.home': 'Home',
+    'mobile.flow': 'Flow',
+    'mobile.market': 'Market',
+    'mobile.activity': 'Activity',
+    'mobile.more': 'More',
+    // Dashboard
+    'dashboard.title': 'System Overview',
+    'dashboard.neural_buffer': 'Neural Buffer: Active',
+    'dashboard.inputs': 'Inputs',
+    'dashboard.active_sources': 'Active sources',
+    'dashboard.outputs': 'Outputs',
+    'dashboard.configured_targets': 'Configured targets',
+    'dashboard.skills': 'Skills',
+    'dashboard.capabilities': 'Capabilities',
+    'dashboard.messages': 'Messages',
+    'dashboard.recent_entries': 'Recent entries',
+    'dashboard.recent_activity': 'Recent Activity',
+    'dashboard.no_messages': 'No messages yet',
+    'dashboard.success': 'Success',
+    'dashboard.processed': 'processed',
+    'dashboard.unknown': 'unknown',
+    'dashboard.none_installed': 'None installed',
+    // Pipeline
+    'pipeline.title': 'Pipeline',
+    'pipeline.subtitle': 'Inputs → Core → Outputs',
+    'pipeline.desc': 'A tighter working surface for routing sources into Jenn Core and out to the right destination. Use Add to browse the marketplace or submit a custom request.',
+    'pipeline.compact': 'Compact console workspace',
+    'pipeline.active_inputs': 'Active Inputs',
+    'pipeline.add': 'Add',
+    'pipeline.active': 'Active',
+    'pipeline.no_inputs': 'No inputs installed',
+    'pipeline.no_token': 'No token',
+    'pipeline.core_note': 'Keep the core lean. When a workflow repeats, turn it into a skill so the route stays readable and the action becomes reusable.',
+    'pipeline.core_note_label': 'Core note',
+    'pipeline.create_skill': 'Create skill',
+    'pipeline.browse_skills': 'Browse skills',
+    'pipeline.skills': 'Skills',
+    'pipeline.installed': 'installed',
+    'pipeline.no_skills': 'No skills installed yet',
+    'pipeline.outputs': 'Outputs',
+    'pipeline.no_outputs': 'No outputs installed',
+    'pipeline.connected': 'Connected',
+    'pipeline.not_configured': 'Not configured',
+    'pipeline.input_source': 'Input source',
+    'pipeline.output_dest': 'Output destination',
+    'pipeline.installed_cap': 'Installed capability',
+    // Marketplace
+    'marketplace.title': 'Marketplace',
+    'marketplace.subtitle': 'Connect how Jenn receives and delivers information.',
+    'marketplace.installed': 'installed',
+    'marketplace.inputs_title': 'Inputs',
+    'marketplace.inputs_desc': 'Sources that send information into Jenn.',
+    'marketplace.outputs_title': 'Outputs',
+    'marketplace.outputs_desc': 'Destinations where Jenn saves and routes results.',
+    'marketplace.no_inputs': 'No inputs are available.',
+    'marketplace.no_outputs': 'No outputs are available.',
+    'marketplace.request_input': 'Request Input',
+    'marketplace.request_output': 'Request Output',
+    'marketplace.configure': 'Configure',
+    'marketplace.install': 'Install',
+    // Activity
+    'activity.title': 'Activity',
+    'activity.subtitle': 'Recent messages processed by Jenn',
+    'activity.no_messages': 'No messages yet. Send a message through an input to see it here.',
+    'activity.source': 'Source',
+    'activity.success': 'Success',
+    'activity.failed': 'Failed',
+    'activity.direct_call': 'Direct call',
+    'activity.open_result': 'Open',
+    // Logs
+    'logs.title': 'Logs',
+    'logs.subtitle': 'Real-time processing logs',
+    'logs.clear': 'Clear',
+    // API Keys
+    'apikeys.title': 'API Keys',
+    'apikeys.subtitle': 'Manage source tokens for input connections',
+    'apikeys.create': 'Create Key',
+    'apikeys.source': 'Source',
+    'apikeys.token': 'Token',
+    'apikeys.actions': 'Actions',
+    'apikeys.no_keys': 'No API keys yet',
+    'apikeys.delete_confirm': 'Delete key',
+    'apikeys.source_name': 'Source name:',
+    'apikeys.created': 'Key created',
+    'apikeys.deleted': 'Key deleted',
+    // Settings
+    'settings.title': 'Settings',
+    'settings.subtitle': 'Configure your Jenn instance',
+    'settings.language': 'Language',
+    'settings.language_desc': 'Choose your preferred language',
+    'settings.account': 'Account',
+    'settings.username': 'Username',
+    'settings.change_password': 'Change Password',
+    'settings.current_password': 'Current password',
+    'settings.new_password': 'New password',
+    'settings.confirm_password': 'Confirm new password',
+    'settings.update_password': 'Update Password',
+    'settings.signout': 'Sign Out',
+    'settings.password_changed': 'Password changed',
+    'settings.password_mismatch': 'Passwords do not match',
+    'settings.wrong_password': 'Current password is incorrect',
+    'settings.password_too_short': 'Password must be at least 4 characters',
+    // Modals
+    'modal.close': 'Close',
+    'modal.cancel': 'Cancel',
+    'modal.save': 'Save',
+    'modal.delete': 'Delete',
+    'modal.test': 'Test',
+    'modal.remove': 'Remove',
+    'modal.copy': 'Copy',
+    'modal.loading': 'Loading...',
+    'modal.testing': 'Testing...',
+    'modal.connected': 'Connected',
+    'modal.test_failed': 'Test failed',
+    'modal.saved': 'Saved',
+    'modal.failed': 'Failed',
+    'modal.removed': 'Removed',
+    'modal.remove_confirm': 'Remove',
+    // Time
+    'time.just_now': 'just now',
+    'time.m_ago': 'm ago',
+    'time.h_ago': 'h ago',
+    'time.d_ago': 'd ago',
+    // Misc
+    'misc.copied': 'Copied',
+    'misc.dev_mode': 'Developer mode activated',
+    'misc.dev_log': '🛠 Developer Log',
+    'misc.clear': 'Clear',
+    'misc.browse': 'Browse',
+    'misc.submit_request': 'Submit request',
+    'misc.create': 'Create',
+    'misc.available': 'Available',
+    'misc.installed': 'Installed',
+    'misc.no_skills': 'No skills available yet. Create one on the Create tab.',
+    'misc.create_skill_desc': 'Create a new skill module. Name must be a valid identifier',
+    'misc.name': 'Name',
+    'misc.icon': 'Icon',
+    'misc.description': 'Description',
+    'misc.params_json': 'Params JSON',
+    'misc.code': 'Code',
+    'misc.skill_name_required': 'Skill name is required',
+    'misc.name_invalid': 'Name must be a valid identifier (e.g. my_skill)',
+    'misc.code_required': 'Skill code is required',
+    'misc.params_invalid': 'Params must be valid JSON',
+    'misc.skill_created': 'Skill created and installed',
+    'misc.install_failed': 'Install failed',
+    'misc.remove_failed': 'Remove failed',
+    'misc.remove_skill_confirm': 'Remove skill',
+    'misc.from_pipeline': 'from your pipeline?',
+    'misc.loading_skills': 'Loading skills…',
+    'misc.skills_hub': 'Skills hub',
+    'misc.skills_hub_desc': 'Browse installed skills, install from the local registry, or create a new reusable skill module for the pipeline.',
+    'misc.marketplace_online': 'Marketplace online',
+    'misc.marketplace_offline': 'Marketplace offline — showing local registry',
+    'misc.local_registry': 'Local skills registry',
+    'misc.add_input': 'Add Input',
+    'misc.add_output': 'Add Output',
+    'misc.inputs_marketplace': 'Inputs marketplace',
+    'misc.outputs_marketplace': 'Outputs marketplace',
+    'misc.request_custom_input': 'Request a custom input',
+    'misc.request_custom_output': 'Request a custom output',
+    'misc.browse_or_request': 'Browse the marketplace or send a custom request with a GitHub repository, description, and documentation link.',
+    'misc.documentation': 'Documentation',
+    'misc.always_include_docs': 'Always include docs',
+    'misc.submission_docs_desc': 'Every submission must include a GitHub repository URL, a short description, and a documentation link.',
+    'misc.item_name': 'Item name',
+    'misc.github_repo': 'GitHub repository URL',
+    'misc.github_placeholder': 'Optional display name for the request',
+    'misc.desc_label': 'Description',
+    'misc.desc_placeholder': 'What should this input/output do? What problem does it solve?',
+    'misc.docs_link': 'Documentation link',
+    'misc.need_reference': 'Need a reference?',
+    'misc.open_docs': 'Open the docs',
+    'misc.send_request': 'Send request',
+    'misc.request_submitted': 'Marketplace request submitted',
+    'misc.request_failed': 'Request failed',
+    'misc.no_items': 'No items available right now.',
+    'misc.loading_marketplace': 'Loading marketplace...',
+    'misc.yes': 'Yes',
+    'misc.no': 'No',
+    'misc.route': 'Route',
+    'misc.routing_mode': 'Routing mode',
+    'misc.jenn_decides': 'Jenn decides by destination',
+    'misc.always_use': 'Always use selected destination',
+    'misc.default_destination': 'Default destination',
+    'misc.no_destinations': 'No destinations synced',
+    'misc.no_config_fields': 'No configuration fields for this skill.',
+    'misc.no_config_fields_output': 'No configuration fields',
+    'misc.save_failed': 'Failed to save',
+    'misc.skill_config_saved': 'Skill config saved',
+    'misc.inputs_library': 'Inputs Library',
+    'misc.outputs_library': 'Outputs Library',
+    'misc.no_inputs_available': 'No inputs available',
+    'misc.no_outputs_available': 'No outputs available',
+    'misc.invalid_json': 'Invalid JSON',
+    'misc.config_saved': 'Config saved',
+    'misc.send_test': 'Send Test',
+    'misc.processing': 'Processing...',
+    'misc.test_message': 'Test Message',
+    'misc.type_test': 'Type a test message...',
+    'misc.loading_config': 'Loading...',
+    'misc.self_hosted_note': 'Run the external input client with your Source Token. For Telegram self-hosted use',
+    'misc.destinations': 'Destinations',
+    'misc.destinations_desc': 'Select routing destinations and add a comment for Jenn.',
+    'misc.refresh': 'Refresh',
+    'misc.connecting': 'Connecting and loading destinations…',
+    'misc.waiting': 'Waiting for connection… attempt',
+    'misc.of': 'of',
+    'misc.load_failed': 'Failed to load destinations',
+    'misc.connect_failed': 'Failed to connect',
+    'misc.retry': 'Retry',
+    'misc.no_dest_found': 'No destinations found. Check integration access.',
+    'misc.page': 'Page',
+    'misc.database': 'Database',
+    'misc.open_notion': 'Open in Notion ↗',
+    'misc.comment_for_jenn': 'Comment for Jenn',
+    'misc.save_placeholder': 'What to save here? e.g. tasks, ideas, links…',
+    'misc.ws_url': 'WebSocket URL',
+    'misc.api_key': 'Obsidian API key',
+    'misc.obsidian_note': 'Specify these details in the Jenn plugin for Obsidian.',
+    'misc.remove_input_confirm': 'Remove input',
+    'misc.remove_output_confirm': 'Remove output',
+    'misc.config_saved_nav': 'Saved',
+    'misc.test_connected': '✓ Connected',
+    'misc.test_failed_msg': '✕ Test failed',
+    'misc.ready': 'Ready',
+    'misc.user_config': 'User Config',
+    'misc.raw_config': 'Raw Configuration (JSON)',
+    'misc.save_config': 'Save Config',
+    'misc.configure_instance': 'Configure your Jenn instance',
+    'skill.add_instance': 'Add Instance',
+    'skill.instance_name': 'Instance name',
+    'skill.router_instructions': 'Router Instructions',
+    'skill.router_instructions_tooltip': 'Text that helps AI understand when to use this skill instance. Example: "Save only work-related tasks to Notion" or "All messages about movies go to Excel". Empty instruction = AI decides on its own.',
+    'skill.router_instructions_placeholder': 'Describe when to use this instance (e.g., "Save work tasks to Notion")',
+    'skill.allowed_outputs': 'Allowed Outputs',
+    'skill.no_outputs_available': 'No outputs available',
+    'skill.fallback_destination': 'Fallback Destination',
+    'skill.no_fallback': 'No fallback',
+    'skill.select_destination': 'Select destination',
+    'skill.new_instance': 'New Instance',
+    'misc.notion_dest_tooltip': 'Checked databases and pages sync with Jenn Core. Without active checkboxes, data is not saved. Table categories sync automatically.',
+    'misc.obsidian_dest_tooltip': 'Checked folders will be available for routing. Without active checkboxes, notes are not created.',
+    'misc.notion_setup_guide': 'Setup guide',
+  },
+  ru: {
+    // Auth
+    'auth.subtitle': 'Войдите в консоль',
+    'auth.username': 'Имя пользователя',
+    'auth.password': 'Пароль',
+    'auth.signin': 'Войти',
+    'auth.no_account': 'Нет аккаунта?',
+    'auth.register_link': 'Зарегистрироваться',
+    'auth.create_title': 'Создайте аккаунт',
+    'auth.create_btn': 'Создать',
+    'auth.have_account': 'Уже есть аккаунт?',
+    'auth.signin_link': 'Войти',
+    'auth.login_failed': 'Ошибка входа',
+    'auth.register_failed': 'Ошибка регистрации',
+    // Sidebar
+    'nav.dashboard': 'Обзор',
+    'nav.pipeline': 'Конвейер',
+    'nav.marketplace': 'Маркет',
+    'nav.activity': 'Активность',
+    'nav.logs': 'Логи',
+    'nav.apikeys': 'API ключи',
+    'nav.settings': 'Настройки',
+    'nav.devtest': 'Тест',
+    'nav.signout': 'Выйти',
+    // Mobile nav
+    'mobile.home': 'Главная',
+    'mobile.flow': 'Поток',
+    'mobile.market': 'Маркет',
+    'mobile.activity': 'Лента',
+    'mobile.more': 'Ещё',
+    // Dashboard
+    'dashboard.title': 'Обзор системы',
+    'dashboard.neural_buffer': 'Нейробуфер: Активен',
+    'dashboard.inputs': 'Входы',
+    'dashboard.active_sources': 'Активные источники',
+    'dashboard.outputs': 'Выходы',
+    'dashboard.configured_targets': 'Настроенные цели',
+    'dashboard.skills': 'Навыки',
+    'dashboard.capabilities': 'Возможности',
+    'dashboard.messages': 'Сообщения',
+    'dashboard.recent_entries': 'Последние записи',
+    'dashboard.recent_activity': 'Последняя активность',
+    'dashboard.no_messages': 'Пока нет сообщений',
+    'dashboard.success': 'Успех',
+    'dashboard.processed': 'обработано',
+    'dashboard.unknown': 'неизвестно',
+    'dashboard.none_installed': 'Не установлено',
+    // Pipeline
+    'pipeline.title': 'Конвейер',
+    'pipeline.subtitle': 'Входы → Ядро → Выходы',
+    'pipeline.desc': 'Рабочая поверхность для маршрутизации источников в ядро Jenn и далее к нужному адресату. Используйте «Добавить» для просмотра маркета или отправьте запрос.',
+    'pipeline.compact': 'Компактная консоль',
+    'pipeline.active_inputs': 'Активные входы',
+    'pipeline.add': 'Добавить',
+    'pipeline.active': 'Активен',
+    'pipeline.no_inputs': 'Входы не установлены',
+    'pipeline.no_token': 'Нет токена',
+    'pipeline.core_note': 'Держите ядро лёгким. Если процесс повторяется — превратите его в навык, чтобы маршрут оставался читаемым, а действие — переиспользуемым.',
+    'pipeline.core_note_label': 'Заметка ядра',
+    'pipeline.create_skill': 'Создать навык',
+    'pipeline.browse_skills': 'Навыки',
+    'pipeline.skills': 'Навыки',
+    'pipeline.installed': 'установлено',
+    'pipeline.no_skills': 'Навыки пока не установлены',
+    'pipeline.outputs': 'Выходы',
+    'pipeline.no_outputs': 'Выходы не установлены',
+    'pipeline.connected': 'Подключено',
+    'pipeline.not_configured': 'Не настроено',
+    'pipeline.input_source': 'Источник ввода',
+    'pipeline.output_dest': 'Назначение вывода',
+    'pipeline.installed_cap': 'Установленная возможность',
+    // Marketplace
+    'marketplace.title': 'Маркет',
+    'marketplace.subtitle': 'Подключите источники и получатели данных Jenn.',
+    'marketplace.installed': 'установлено',
+    'marketplace.inputs_title': 'Входы',
+    'marketplace.inputs_desc': 'Источники, отправляющие данные в Jenn.',
+    'marketplace.outputs_title': 'Выходы',
+    'marketplace.outputs_desc': 'Места, куда Jenn сохраняет и маршрутизирует результаты.',
+    'marketplace.no_inputs': 'Нет доступных входов.',
+    'marketplace.no_outputs': 'Нет доступных выходов.',
+    'marketplace.request_input': 'Запросить Input',
+    'marketplace.request_output': 'Запросить Output',
+    'marketplace.configure': 'Настроить',
+    'marketplace.install': 'Установить',
+    // Activity
+    'activity.title': 'Активность',
+    'activity.subtitle': 'Последние сообщения, обработанные Jenn',
+    'activity.no_messages': 'Пока нет сообщений. Отправьте сообщение через вход, чтобы увидеть его здесь.',
+    'activity.source': 'Источник',
+    'activity.success': 'Успех',
+    'activity.failed': 'Ошибка',
+    'activity.direct_call': 'Прямой вызов',
+    'activity.open_result': 'Открыть',
+    // Logs
+    'logs.title': 'Логи',
+    'logs.subtitle': 'Логи обработки в реальном времени',
+    'logs.clear': 'Очистить',
+    // API Keys
+    'apikeys.title': 'API ключи',
+    'apikeys.subtitle': 'Управление токенами источников для подключений',
+    'apikeys.create': 'Создать ключ',
+    'apikeys.source': 'Источник',
+    'apikeys.token': 'Токен',
+    'apikeys.actions': 'Действия',
+    'apikeys.no_keys': 'Пока нет API ключей',
+    'apikeys.delete_confirm': 'Удалить ключ',
+    'apikeys.source_name': 'Имя источника:',
+    'apikeys.created': 'Ключ создан',
+    'apikeys.deleted': 'Ключ удалён',
+    // Settings
+    'settings.title': 'Настройки',
+    'settings.subtitle': 'Конфигурация вашего экземпляра Jenn',
+    'settings.language': 'Язык',
+    'settings.language_desc': 'Выберите предпочитаемый язык',
+    'settings.account': 'Аккаунт',
+    'settings.username': 'Имя пользователя',
+    'settings.change_password': 'Сменить пароль',
+    'settings.current_password': 'Текущий пароль',
+    'settings.new_password': 'Новый пароль',
+    'settings.confirm_password': 'Подтвердите новый пароль',
+    'settings.update_password': 'Обновить пароль',
+    'settings.signout': 'Выйти',
+    'settings.password_changed': 'Пароль изменён',
+    'settings.password_mismatch': 'Пароли не совпадают',
+    'settings.wrong_password': 'Неверный текущий пароль',
+    'settings.password_too_short': 'Пароль должен быть не менее 4 символов',
+    // Modals
+    'modal.close': 'Закрыть',
+    'modal.cancel': 'Отмена',
+    'modal.save': 'Сохранить',
+    'modal.delete': 'Удалить',
+    'modal.test': 'Тест',
+    'modal.remove': 'Убрать',
+    'modal.copy': 'Копировать',
+    'modal.loading': 'Загрузка...',
+    'modal.testing': 'Тестирование...',
+    'modal.connected': 'Подключено',
+    'modal.test_failed': 'Тест не пройден',
+    'modal.saved': 'Сохранено',
+    'modal.failed': 'Ошибка',
+    'modal.removed': 'Удалено',
+    'modal.remove_confirm': 'Удалить',
+    // Time
+    'time.just_now': 'только что',
+    'time.m_ago': 'м назад',
+    'time.h_ago': 'ч назад',
+    'time.d_ago': 'д назад',
+    // Misc
+    'misc.copied': 'Скопировано',
+    'misc.dev_mode': 'Режим разработчика активирован',
+    'misc.dev_log': '🛠 Лог разработчика',
+    'misc.clear': 'Очистить',
+    'misc.browse': 'Обзор',
+    'misc.submit_request': 'Отправить запрос',
+    'misc.create': 'Создать',
+    'misc.available': 'Доступно',
+    'misc.installed': 'Установлено',
+    'misc.no_skills': 'Нет доступных навыков. Создайте на вкладке «Создать».',
+    'misc.create_skill_desc': 'Создайте новый модуль навыка. Имя должно быть валидным идентификатором',
+    'misc.name': 'Имя',
+    'misc.icon': 'Иконка',
+    'misc.description': 'Описание',
+    'misc.params_json': 'Параметры JSON',
+    'misc.code': 'Код',
+    'misc.skill_name_required': 'Имя навыка обязательно',
+    'misc.name_invalid': 'Имя должно быть валидным идентификатором (напр. my_skill)',
+    'misc.code_required': 'Код навыка обязателен',
+    'misc.params_invalid': 'Параметры должны быть валидным JSON',
+    'misc.skill_created': 'Навык создан и установлен',
+    'misc.install_failed': 'Ошибка установки',
+    'misc.remove_failed': 'Ошибка удаления',
+    'misc.remove_skill_confirm': 'Удалить навык',
+    'misc.from_pipeline': 'из вашего конвейера?',
+    'misc.loading_skills': 'Загрузка навыков…',
+    'misc.skills_hub': 'Хаб навыков',
+    'misc.skills_hub_desc': 'Просматривайте навыки, устанавливайте из реестра или создайте новый переиспользуемый модуль для конвейера.',
+    'misc.marketplace_online': 'Маркет онлайн',
+    'misc.marketplace_offline': 'Маркет офлайн — локальный реестр',
+    'misc.local_registry': 'Локальный реестр навыков',
+    'misc.add_input': 'Добавить вход',
+    'misc.add_output': 'Добавить выход',
+    'misc.inputs_marketplace': 'Маркет входов',
+    'misc.outputs_marketplace': 'Маркет выходов',
+    'misc.request_custom_input': 'Запросить пользовательский вход',
+    'misc.request_custom_output': 'Запросить пользовательский выход',
+    'misc.browse_or_request': 'Просмотрите маркет или отправьте запрос с GitHub-репозиторием, описанием и ссылкой на документацию.',
+    'misc.documentation': 'Документация',
+    'misc.always_include_docs': 'Всегда прикладывайте документацию',
+    'misc.submission_docs_desc': 'Каждый запрос должен содержать URL GitHub-репозитория, краткое описание и ссылку на документацию.',
+    'misc.item_name': 'Название',
+    'misc.github_repo': 'URL GitHub-репозитория',
+    'misc.github_placeholder': 'Необязательное название для запроса',
+    'misc.desc_label': 'Описание',
+    'misc.desc_placeholder': 'Что должен делать этот вход/выход? Какую проблему решает?',
+    'misc.docs_link': 'Ссылка на документацию',
+    'misc.need_reference': 'Нужна справка?',
+    'misc.open_docs': 'Открыть документацию',
+    'misc.send_request': 'Отправить запрос',
+    'misc.request_submitted': 'Запрос отправлен',
+    'misc.request_failed': 'Ошибка запроса',
+    'misc.no_items': 'Нет доступных элементов.',
+    'misc.loading_marketplace': 'Загрузка маркета...',
+    'misc.yes': 'Да',
+    'misc.no': 'Нет',
+    'misc.route': 'Маршрут',
+    'misc.routing_mode': 'Режим маршрутизации',
+    'misc.jenn_decides': 'Jenn решает по назначению',
+    'misc.always_use': 'Всегда использовать выбранное назначение',
+    'misc.default_destination': 'Назначение по умолчанию',
+    'misc.no_destinations': 'Нет синхронизированных назначений',
+    'misc.no_config_fields': 'Нет полей конфигурации для этого навыка.',
+    'misc.no_config_fields_output': 'Нет полей конфигурации',
+    'misc.save_failed': 'Ошибка сохранения',
+    'misc.skill_config_saved': 'Конфигурация навыка сохранена',
+    'misc.inputs_library': 'Библиотека входов',
+    'misc.outputs_library': 'Библиотека выходов',
+    'misc.no_inputs_available': 'Нет доступных входов',
+    'misc.no_outputs_available': 'Нет доступных выходов',
+    'misc.invalid_json': 'Невалидный JSON',
+    'misc.config_saved': 'Конфигурация сохранена',
+    'misc.send_test': 'Отправить тест',
+    'misc.processing': 'Обработка...',
+    'misc.test_message': 'Тестовое сообщение',
+    'misc.type_test': 'Введите тестовое сообщение...',
+    'misc.loading_config': 'Загрузка...',
+    'misc.self_hosted_note': 'Запустите внешний клиент входа с вашим Source Token. Для Telegram self-hosted используйте',
+    'misc.destinations': 'Назначения',
+    'misc.destinations_desc': 'Выберите назначения для маршрутизации и добавьте комментарий для Jenn.',
+    'misc.refresh': 'Обновить',
+    'misc.connecting': 'Подключение и загрузка назначений…',
+    'misc.waiting': 'Ожидание подключения… попытка',
+    'misc.of': 'из',
+    'misc.load_failed': 'Не удалось загрузить назначения',
+    'misc.connect_failed': 'Не удалось подключиться',
+    'misc.retry': 'Повторить',
+    'misc.no_dest_found': 'Назначения не найдены. Проверьте доступ интеграции.',
+    'misc.page': 'Страница',
+    'misc.database': 'База данных',
+    'misc.open_notion': 'Открыть в Notion ↗',
+    'misc.comment_for_jenn': 'Комментарий для Jenn',
+    'misc.save_placeholder': 'Что сохранять здесь? Например: задачи, идеи, ссылки…',
+    'misc.ws_url': 'WebSocket URL',
+    'misc.api_key': 'Obsidian API ключ',
+    'misc.obsidian_note': 'Укажите эти данные в плагине Jenn для Obsidian.',
+    'misc.remove_input_confirm': 'Удалить вход',
+    'misc.remove_output_confirm': 'Удалить выход',
+    'misc.config_saved_nav': 'Сохранено',
+    'misc.test_connected': '✓ Подключено',
+    'misc.test_failed_msg': '✕ Тест не пройден',
+    'misc.ready': 'Готово',
+    'misc.user_config': 'Конфигурация пользователя',
+    'misc.raw_config': 'Сырая конфигурация (JSON)',
+    'misc.save_config': 'Сохранить конфигурацию',
+    'misc.configure_instance': 'Конфигурация вашего экземпляра Jenn',
+    'skill.add_instance': 'Добавить инстанс',
+    'skill.instance_name': 'Имя инстанса',
+    'skill.router_instructions': 'Инструкция для роутера',
+    'skill.router_instructions_tooltip': 'Текст, который помогает AI понять, когда использовать этот инстанс навыка. Например: "Сохранять только рабочие задачи в Notion" или "Все сообщения о фильмах направлять в Excel". Пустая инструкция = AI решает сам.',
+    'skill.router_instructions_placeholder': 'Опишите, когда использовать этот инстанс (например, "Сохранять рабочие задачи в Notion")',
+    'skill.allowed_outputs': 'Разрешённые выходы',
+    'skill.no_outputs_available': 'Нет доступных выходов',
+    'skill.fallback_destination': 'Резервное назначение',
+    'skill.no_fallback': 'Нет резервного',
+    'skill.select_destination': 'Выберите назначение',
+    'skill.new_instance': 'Новый инстанс',
+    'misc.notion_dest_tooltip': 'Отмеченные базы данных и страницы синхронизируются с Jenn Core. Без активных галочек данные не сохраняются. Категории в таблицах синхронизируются автоматически.',
+    'misc.obsidian_dest_tooltip': 'Отмеченные папки будут доступны для маршрутизации. Без активных галочек заметки не создаются.',
+    'misc.notion_setup_guide': 'Руководство по настройке',
+  }
+};
+
+function t(key) {
+  return (translations[currentLang] && translations[currentLang][key]) || translations.en[key] || key;
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+  navigate(currentPage);
+  updateStaticUI();
+}
+
+function toggleLang() {
+  setLang(currentLang === 'en' ? 'ru' : 'en');
+}
+
+function updateStaticUI() {
+  const langLabel = currentLang === 'en' ? 'EN' : 'RU';
+  document.querySelectorAll('[data-nav-key]').forEach(el => {
+    const span = el.querySelector('span:last-child');
+    if (span) span.textContent = t(el.dataset.navKey);
+  });
+  const mobileLabel = document.getElementById('mobile-page-label');
+  if (mobileLabel) {
+    mobileLabel.textContent = ({ dashboard: t('nav.dashboard'), pipeline: t('nav.pipeline'), marketplace: t('nav.marketplace'), activity: t('nav.activity'), logs: t('nav.logs'), apikeys: t('nav.apikeys'), settings: t('nav.settings'), test: t('nav.devtest') })[currentPage] || 'Console';
+  }
+  const mh = document.getElementById('mob-nav-home'); if (mh) mh.textContent = t('mobile.home');
+  const mf = document.getElementById('mob-nav-flow'); if (mf) mf.textContent = t('mobile.flow');
+  const mm = document.getElementById('mob-nav-market'); if (mm) mm.textContent = t('mobile.market');
+  const ma = document.getElementById('mob-nav-activity'); if (ma) ma.textContent = t('mobile.activity');
+  const mo = document.getElementById('mob-nav-more'); if (mo) mo.textContent = t('mobile.more');
+  const da = document.getElementById('drawer-apikeys'); if (da) da.textContent = t('nav.apikeys');
+  const ds = document.getElementById('drawer-settings'); if (ds) ds.textContent = t('nav.settings');
+  const dso = document.getElementById('drawer-signout'); if (dso) dso.textContent = t('nav.signout');
+  const sll = document.getElementById('sidebar-lang-label'); if (sll) sll.textContent = langLabel;
+  const dll = document.getElementById('drawer-lang-label'); if (dll) dll.textContent = langLabel;
+  const lt = document.getElementById('lang-toggle'); if (lt) lt.textContent = langLabel;
+}
 
 // ── Debug Log ──
 const _dbg = (msg) => {
@@ -246,7 +898,9 @@ async function api(method, path, body) {
   if (body) opts.body = JSON.stringify(body);
   _dbg(`${method} ${API}${path}`);
   const res = await fetch(`${API}${path}`, opts);
-  const data = await res.json();
+  let data = null;
+  const text = await res.text();
+  try { data = text ? JSON.parse(text) : null; } catch { data = { message: text || res.statusText }; }
   _dbg(`  → ${res.status}: ${JSON.stringify(data).slice(0, 200)}`);
   return { status: res.status, ok: res.ok, data };
 }
@@ -259,17 +913,30 @@ function toast(msg, type = 'info') {
 }
 
 // ── Auth ──
+function applyAuthUI() {
+  document.getElementById('auth-subtitle').textContent = t('auth.subtitle');
+  document.getElementById('lbl-login-user').textContent = t('auth.username');
+  document.getElementById('lbl-login-pass').textContent = t('auth.password');
+  document.getElementById('btn-login').textContent = t('auth.signin');
+  document.getElementById('login-footer').innerHTML = t('auth.no_account') + ' <a onclick="showRegister()" class="text-primary cursor-pointer hover:underline">' + t('auth.register_link') + '</a>';
+  document.getElementById('lbl-reg-user').textContent = t('auth.username');
+  document.getElementById('lbl-reg-pass').textContent = t('auth.password');
+  document.getElementById('btn-register').textContent = t('auth.create_btn');
+  document.getElementById('reg-footer').innerHTML = t('auth.have_account') + ' <a onclick="showLogin()" class="text-primary cursor-pointer hover:underline">' + t('auth.signin_link') + '</a>';
+  const lt = document.getElementById('lang-toggle');
+  if (lt) lt.textContent = currentLang === 'en' ? 'EN' : 'RU';
+}
 function showLogin() {
   document.getElementById('login-form').classList.remove('hidden');
   document.getElementById('register-form').classList.add('hidden');
   document.getElementById('auth-alert').innerHTML = '';
-  document.getElementById('auth-subtitle').textContent = 'Sign in to your console';
+  applyAuthUI();
 }
 function showRegister() {
   document.getElementById('login-form').classList.add('hidden');
   document.getElementById('register-form').classList.remove('hidden');
   document.getElementById('auth-alert').innerHTML = '';
-  document.getElementById('auth-subtitle').textContent = 'Create your account';
+  applyAuthUI();
 }
 
 async function login() {
@@ -277,13 +944,14 @@ async function login() {
   const password = document.getElementById('login-password').value;
   const { status, data } = await api('POST', '/login', { username, password });
   if (status !== 200) {
-    document.getElementById('auth-alert').innerHTML = `<div class="text-error text-sm mb-3">${data.message || 'Login failed'}</div>`;
+    document.getElementById('auth-alert').innerHTML = `<div class="text-error text-sm mb-3">${data.message || t('auth.login_failed')}</div>`;
     return;
   }
   token = data.token;
   localStorage.setItem('jenn-console-token', token);
   document.getElementById('auth-screen').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
+  updateStaticUI();
   navigate('dashboard');
 }
 
@@ -292,13 +960,14 @@ async function register() {
   const password = document.getElementById('reg-password').value;
   const { status, data } = await api('POST', '/register', { username, password });
   if (status !== 201) {
-    document.getElementById('auth-alert').innerHTML = `<div class="text-error text-sm mb-3">${data.message || 'Registration failed'}</div>`;
+    document.getElementById('auth-alert').innerHTML = `<div class="text-error text-sm mb-3">${data.message || t('auth.register_failed')}</div>`;
     return;
   }
   token = data.token;
   localStorage.setItem('jenn-console-token', token);
   document.getElementById('auth-screen').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
+  updateStaticUI();
   navigate('dashboard');
 }
 
@@ -313,6 +982,7 @@ async function logout() {
 
 // Auto-login: restore token from localStorage, or get fresh token from cookie
 token = localStorage.getItem('jenn-console-token');
+applyAuthUI();
 api('GET', '/config').then(async ({ status }) => {
   if (status === 200) {
     if (!token) {
@@ -324,6 +994,7 @@ api('GET', '/config').then(async ({ status }) => {
     }
     document.getElementById('auth-screen').classList.add('hidden');
     document.getElementById('app').classList.remove('hidden');
+    updateStaticUI();
     navigate('dashboard');
   } else {
     token = null;
@@ -333,20 +1004,40 @@ api('GET', '/config').then(async ({ status }) => {
 
 // ── Navigation ──
 function navigate(page) {
+  currentPage = page;
   document.querySelectorAll('.sidebar-nav-item').forEach(el => el.classList.remove('sidebar-active'));
-  const navEl = document.querySelector(`.sidebar-nav-item[data-page="${page}"]`);
-  if (navEl) navEl.classList.add('sidebar-active');
+  document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll(`.sidebar-nav-item[data-page="${page}"]`).forEach(el => el.classList.add('sidebar-active'));
+  document.querySelectorAll(`.mobile-nav-item[data-page="${page}"]`).forEach(el => el.classList.add('active'));
+  const mobileLabel = document.getElementById('mobile-page-label');
+  if (mobileLabel) mobileLabel.textContent = ({ dashboard: t('nav.dashboard'), pipeline: t('nav.pipeline'), marketplace: t('nav.marketplace'), activity: t('nav.activity'), logs: t('nav.logs'), apikeys: t('nav.apikeys'), settings: t('nav.settings'), test: t('nav.devtest') })[page] || 'Console';
+  closeMobileDrawer();
   const main = document.getElementById('main-content');
+  main.scrollTop = 0;
   if (logsEventSource) { logsEventSource.close(); logsEventSource = null; }
   switch(page) {
     case 'dashboard': renderDashboard(main); break;
     case 'pipeline': renderPipeline(main); break;
+    case 'marketplace': renderMarketplace(main); break;
     case 'activity': renderActivity(main); break;
     case 'logs': renderLogs(main); break;
     case 'apikeys': renderApiKeys(main); break;
     case 'settings': renderSettings(main); break;
     case 'test': renderTest(main); break;
   }
+}
+
+function toggleMobileDrawer() {
+  const drawer = document.getElementById('mobile-drawer');
+  const open = drawer.classList.toggle('open');
+  drawer.setAttribute('aria-hidden', String(!open));
+}
+
+function closeMobileDrawer() {
+  const drawer = document.getElementById('mobile-drawer');
+  if (!drawer) return;
+  drawer.classList.remove('open');
+  drawer.setAttribute('aria-hidden', 'true');
 }
 
 // ── Developer Mode ──
@@ -357,21 +1048,72 @@ document.getElementById('settings-nav').addEventListener('click', () => {
     settingsClicks = 0;
     document.getElementById('dev-nav').classList.remove('hidden');
     document.getElementById('debug-log').style.display = 'flex';
-    toast('Developer mode activated', 'success');
+    toast(t('misc.dev_mode'), 'success');
     _dbg('Developer mode activated');
   }
 });
 
 // ── Modals ──
-function showModal(title, bodyHtml, footerHtml = '') {
+function showModal(title, bodyHtml, footerHtml = '', options = {}) {
+  closeModal();
   const overlay = document.createElement('div');
   overlay.className = 'modal-overlay';
   overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
-  overlay.innerHTML = `<div class="modal"><div class="modal-header"><h2 class="font-medium text-on-surface text-lg">${title}</h2><button onclick="this.closest('.modal-overlay').remove()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">close</span></button></div><div class="modal-body">${bodyHtml}</div>${footerHtml ? `<div class="modal-footer">${footerHtml}</div>` : ''}</div>`;
+  const sizeClass = options.large ? ' modal-lg' : '';
+  overlay.innerHTML = `<div class="modal${sizeClass}"><div class="modal-header"><h2 class="font-medium text-on-surface text-lg">${title}</h2><button onclick="this.closest('.modal-overlay').remove()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">close</span></button></div><div class="modal-body">${bodyHtml}</div>${footerHtml ? `<div class="modal-footer" id="modal-footer">${footerHtml}</div>` : ''}</div>`;
   document.body.appendChild(overlay);
   return overlay;
 }
 function closeModal() { const el = document.querySelector('.modal-overlay'); if (el) el.remove(); }
+
+function setMarketplaceTab(tab) {
+  activeMarketplaceTab = tab;
+  const browse = document.getElementById('marketplace-panel-browse');
+  const request = document.getElementById('marketplace-panel-request');
+  if (browse) browse.classList.toggle('hidden', tab !== 'browse');
+  if (request) request.classList.toggle('hidden', tab !== 'request');
+  document.getElementById('marketplace-tab-browse')?.classList.toggle('active', tab === 'browse');
+  document.getElementById('marketplace-tab-request')?.classList.toggle('active', tab === 'request');
+}
+
+function setSkillTab(tab) {
+  activeSkillTab = tab;
+  const browse = document.getElementById('skill-panel-browse');
+  const create = document.getElementById('skill-panel-create');
+  if (browse) browse.classList.toggle('hidden', tab !== 'browse');
+  if (create) create.classList.toggle('hidden', tab !== 'create');
+  document.getElementById('skill-tab-browse')?.classList.toggle('active', tab === 'browse');
+  document.getElementById('skill-tab-create')?.classList.toggle('active', tab === 'create');
+  const footer = document.getElementById('modal-footer');
+  if (footer) {
+    footer.innerHTML = tab === 'create'
+      ? `<button onclick="submitSkillCreation()" class="px-5 py-2 bg-primary text-on-primary rounded-full text-sm font-medium">${t('pipeline.create_skill')}</button><button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">${t('modal.close')}</button>`
+      : `<button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">${t('modal.close')}</button>`;
+  }
+}
+
+function skillTemplateCode(name, description, paramsText, icon = '⚡') {
+  const safeName = name || 'custom_skill'
+  const safeTitle = safeName.replace(/_/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase())
+  return `module.exports = {
+  name: ${JSON.stringify(safeName)},
+  title: ${JSON.stringify(safeTitle)},
+  description: ${JSON.stringify(description || 'Custom Jenn skill')},
+  icon: ${JSON.stringify(icon || '⚡')},
+  author: 'Jenn Core',
+  version: '1.0.0',
+  params: ${paramsText || '{}'},
+  async handler(params, message, outputFunctions, skillConfig) {
+    return {
+      preview: {
+        note: 'Replace this handler with your workflow logic.',
+        message: message.text,
+        params
+      }
+    }
+  }
+}`
+}
 
 // ── Dashboard ──
 async function renderDashboard(el) {
@@ -385,71 +1127,71 @@ async function renderDashboard(el) {
   const caps = capRes.data?.capabilities || [];
 
   el.innerHTML = `
-    <header class="flex justify-between items-end">
+    <header class="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-end">
       <div>
-        <h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">System Overview</h1>
+        <h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">${t('dashboard.title')}</h1>
         <div class="flex items-center space-x-2 text-on-surface-variant">
           <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span>
-          <span class="font-label-mono text-label-mono uppercase tracking-widest">Neural Buffer: Active</span>
+          <span class="font-label-mono text-label-mono uppercase tracking-widest">${t('dashboard.neural_buffer')}</span>
         </div>
       </div>
     </header>
-    <section class="grid grid-cols-4 gap-6">
-      <div class="glass-panel p-6 rounded-xl">
-        <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">Inputs</h4>
-        <span class="text-3xl font-headline-md italic text-primary">${inputs.length}</span>
-        <p class="text-xs text-on-surface-variant mt-1">Active sources</p>
+    <section class="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+      <div class="glass-panel p-4 sm:p-6 rounded-xl">
+        <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">${t('dashboard.inputs')}</h4>
+        <span class="text-2xl sm:text-3xl font-headline-md italic text-primary">${inputs.length}</span>
+        <p class="text-xs text-on-surface-variant mt-1">${t('dashboard.active_sources')}</p>
       </div>
-      <div class="glass-panel p-6 rounded-xl">
-        <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">Outputs</h4>
-        <span class="text-3xl font-headline-md italic text-primary">${outputs.length}</span>
-        <p class="text-xs text-on-surface-variant mt-1">Configured targets</p>
+      <div class="glass-panel p-4 sm:p-6 rounded-xl">
+        <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">${t('dashboard.outputs')}</h4>
+        <span class="text-2xl sm:text-3xl font-headline-md italic text-primary">${outputs.length}</span>
+        <p class="text-xs text-on-surface-variant mt-1">${t('dashboard.configured_targets')}</p>
       </div>
-      <div class="glass-panel p-6 rounded-xl">
-        <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">Skills</h4>
-        <span class="text-3xl font-headline-md italic text-primary">${caps.length}</span>
-        <p class="text-xs text-on-surface-variant mt-1">Capabilities</p>
+      <div class="glass-panel p-4 sm:p-6 rounded-xl">
+        <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">${t('dashboard.skills')}</h4>
+        <span class="text-2xl sm:text-3xl font-headline-md italic text-primary">${caps.length}</span>
+        <p class="text-xs text-on-surface-variant mt-1">${t('dashboard.capabilities')}</p>
       </div>
-      <div class="glass-panel p-6 rounded-xl">
-        <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">Messages</h4>
-        <span class="text-3xl font-headline-md italic text-primary">${messages.length}</span>
-        <p class="text-xs text-on-surface-variant mt-1">Recent entries</p>
+      <div class="glass-panel p-4 sm:p-6 rounded-xl">
+        <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-2">${t('dashboard.messages')}</h4>
+        <span class="text-2xl sm:text-3xl font-headline-md italic text-primary">${messages.length}</span>
+        <p class="text-xs text-on-surface-variant mt-1">${t('dashboard.recent_entries')}</p>
       </div>
     </section>
-    <section class="grid grid-cols-12 gap-8">
-      <div class="col-span-8">
-        <h3 class="font-headline-md text-2xl italic mb-6">Recent Activity</h3>
+    <section class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+      <div class="lg:col-span-8">
+        <h3 class="font-headline-md text-2xl italic mb-4 sm:mb-6">${t('dashboard.recent_activity')}</h3>
         <div class="space-y-3">
           ${messages.length ? messages.map(m => `
-            <div class="flex items-center justify-between p-4 glass-panel rounded-xl">
-              <div class="flex items-center space-x-4">
-                <div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center border border-primary/10">
-                  <span class="material-symbols-outlined text-primary text-[20px]">arrow_forward</span>
+            <div class="flex items-center justify-between p-3 sm:p-4 glass-panel rounded-xl">
+              <div class="flex items-center space-x-3 sm:space-x-4 min-w-0 flex-1">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-primary/5 flex items-center justify-center border border-primary/10 flex-shrink-0">
+                  <span class="material-symbols-outlined text-primary text-[18px] sm:text-[20px]">arrow_forward</span>
                 </div>
-                <div>
-                  <p class="text-on-surface font-medium text-sm">${escapeHtml((m.text || '').slice(0, 60))}</p>
-                  <p class="text-xs text-on-surface-variant">${escapeHtml(m.source || 'unknown')} → ${m.result?.output || 'processed'}</p>
+                <div class="min-w-0">
+                  <p class="text-on-surface font-medium text-sm truncate">${escapeHtml((m.text || '').slice(0, 60))}</p>
+                  <p class="text-xs text-on-surface-variant">${escapeHtml(m.source || t('dashboard.unknown'))} → ${m.result?.output || t('dashboard.processed')}</p>
                 </div>
               </div>
-              <div class="text-right">
-                <span class="font-label-mono text-[10px] text-primary uppercase">Success</span>
-                <p class="text-xs text-on-surface-variant">${timeAgo(m.receivedAt)}</p>
+              <div class="text-right flex-shrink-0 ml-2">
+                <span class="font-label-mono text-[10px] text-primary uppercase">${t('dashboard.success')}</span>
+                <p class="text-xs text-on-surface-variant">${timeAgo(m.received_at || m.receivedAt)}</p>
               </div>
             </div>
-          `).join('') : '<p class="text-on-surface-variant text-sm glass-panel p-6 rounded-xl text-center">No messages yet</p>'}
+          `).join('') : '<p class="text-on-surface-variant text-sm glass-panel p-6 rounded-xl text-center">' + t('dashboard.no_messages') + '</p>'}
         </div>
       </div>
-      <div class="col-span-4 space-y-6">
-        <div class="glass-panel p-6 rounded-xl">
-          <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-4">Inputs</h4>
+      <div class="space-y-4 sm:space-y-6 lg:col-span-4">
+        <div class="glass-panel p-4 sm:p-6 rounded-xl">
+          <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-4">${t('dashboard.inputs')}</h4>
           <div class="space-y-3">
-            ${inputs.map(i => `<div class="flex items-center justify-between"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary text-[18px]">${i.icon || 'plug'}</span><span class="text-sm text-on-surface">${escapeHtml(i.title)}</span></div><span class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase">Active</span></div>`).join('') || '<p class="text-xs text-on-surface-variant">None installed</p>'}
+            ${inputs.map(i => `<div class="flex items-center justify-between"><div class="flex items-center gap-3 min-w-0"><span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0">${i.icon || 'plug'}</span><span class="text-sm text-on-surface truncate">${escapeHtml(i.title)}</span></div><span class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase flex-shrink-0">${t('pipeline.active')}</span></div>`).join('') || '<p class="text-xs text-on-surface-variant">' + t('dashboard.none_installed') + '</p>'}
           </div>
         </div>
-        <div class="glass-panel p-6 rounded-xl">
-          <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-4">Outputs</h4>
+        <div class="glass-panel p-4 sm:p-6 rounded-xl">
+          <h4 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-4">${t('dashboard.outputs')}</h4>
           <div class="space-y-3">
-            ${outputs.map(o => `<div class="flex items-center justify-between"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary text-[18px]">${o.icon || 'description'}</span><span class="text-sm text-on-surface">${escapeHtml(o.title)}</span></div><span class="material-symbols-outlined text-primary text-sm">sync</span></div>`).join('') || '<p class="text-xs text-on-surface-variant">None installed</p>'}
+            ${outputs.map(o => `<div class="flex items-center justify-between"><div class="flex items-center gap-3 min-w-0"><span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0">${o.icon || 'description'}</span><span class="text-sm text-on-surface truncate">${escapeHtml(o.title)}</span></div><span class="material-symbols-outlined text-primary text-sm flex-shrink-0">sync</span></div>`).join('') || '<p class="text-xs text-on-surface-variant">' + t('dashboard.none_installed') + '</p>'}
           </div>
         </div>
       </div>
@@ -468,94 +1210,550 @@ async function renderPipeline(el) {
   const caps = capRes.data?.capabilities || [];
 
   el.innerHTML = `
-    <header>
-      <h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">Pipeline</h1>
-      <div class="flex items-center space-x-2 text-on-surface-variant">
-        <span class="font-label-mono text-label-mono uppercase tracking-widest">Inputs → Core → Outputs</span>
+    <div class="pipeline-shell space-y-8">
+      <header class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <div class="flex flex-wrap items-center gap-3">
+            <h1 class="font-headline-md text-headline-md text-on-surface italic">${t('pipeline.title')}</h1>
+            <span class="rounded-full border border-outline-variant bg-surface-container-low px-3 py-1 font-label-mono text-[10px] uppercase tracking-[0.22em] text-on-surface-variant">${t('pipeline.subtitle')}</span>
+          </div>
+          <p class="mt-2 text-sm leading-6 text-on-surface-variant">${t('pipeline.desc')}</p>
+        </div>
+        <div class="rounded-full border border-outline-variant bg-surface-container-low px-4 py-2 text-[10px] font-label-mono uppercase tracking-[0.24em] text-on-surface-variant self-start">${t('pipeline.compact')}</div>
+      </header>
+
+      <section class="pipeline-grid relative">
+        <div class="absolute inset-x-0 top-1/2 hidden xl:flex -translate-y-1/2 items-center justify-between px-8 pointer-events-none">
+          <div class="pipeline-line flex-1"></div>
+          <div class="w-36"></div>
+          <div class="pipeline-line flex-1"></div>
+        </div>
+
+        <div class="space-y-4 pipeline-column relative z-10">
+          <div class="flex items-center justify-between">
+            <h3 class="font-label-mono text-label-mono uppercase tracking-[0.22em] text-on-surface-variant">${t('pipeline.active_inputs')}</h3>
+            <button onclick="openMarketplaceHub('input')" class="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-sm text-primary transition-all hover:bg-primary/10 hover:border-primary/40"><span class="material-symbols-outlined text-[16px]">add</span><span>${t('pipeline.add')}</span></button>
+          </div>
+          <div class="space-y-3">
+            ${inputs.map(i => `
+              <div class="glass-panel rounded-2xl p-3 sm:p-4 cursor-pointer" onclick="openInputConfig('${escapeHtml(i.name)}')">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex items-start gap-3">
+                    <div class="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-surface-container-high text-primary flex-shrink-0"><span class="material-symbols-outlined text-[18px] sm:text-[20px]">${i.icon || 'plug'}</span></div>
+                    <div class="min-w-0">
+                      <h4 class="font-medium text-on-surface text-sm sm:text-base">${escapeHtml(i.title)}</h4>
+                      <p class="mt-1 text-xs leading-5 text-on-surface-variant">${escapeHtml(i.description || t('pipeline.input_source'))}</p>
+                    </div>
+                  </div>
+                  <span class="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary flex-shrink-0">${t('pipeline.active')}</span>
+                </div>
+                <p class="mt-3 text-[11px] font-label-mono uppercase tracking-[0.2em] text-on-surface-variant">${i.token ? 'ID: ' + i.token.slice(0, 16) + '…' : t('pipeline.no_token')}</p>
+              </div>
+            `).join('') || '<div class="glass-panel rounded-2xl p-5 text-center text-sm text-on-surface-variant">' + t('pipeline.no_inputs') + '</div>'}
+          </div>
+        </div>
+
+        <div class="pipeline-column relative z-20">
+          <div class="hub-surface rounded-[32px] p-5 shadow-[0_20px_80px_rgba(0,0,0,0.28)]">
+            <div class="flex flex-col items-center text-center">
+              <div class="flex h-28 w-28 sm:h-36 sm:w-36 md:h-44 md:w-44 items-center justify-center rounded-full border border-primary/20 bg-surface-container-low shadow-[0_0_80px_rgba(220,199,161,0.08)] pulse-gold">
+                <div>
+                  <span class="material-symbols-outlined mb-1 sm:mb-2 text-2xl sm:text-3xl md:text-4xl text-primary" style="font-variation-settings:'FILL' 1;">hub</span>
+                  <div class="font-headline-md text-lg sm:text-xl md:text-2xl italic">Jenn Core</div>
+                </div>
+              </div>
+
+              <div class="hub-note mt-4 sm:mt-5 w-full rounded-2xl p-3 sm:p-4 text-left">
+                <div class="font-label-mono text-[10px] uppercase tracking-[0.24em] text-on-surface-variant">${t('pipeline.core_note_label')}</div>
+                <p class="mt-2 text-sm leading-6 text-on-surface-variant">${t('pipeline.core_note')}</p>
+              </div>
+
+              <div class="mt-3 sm:mt-4 flex flex-wrap justify-center gap-2.5">
+                <button onclick="openSkillHub('create')" class="rounded-full bg-primary px-4 py-2 text-sm font-medium text-on-primary transition-all hover:opacity-90">${t('pipeline.create_skill')}</button>
+                <button onclick="openSkillHub('browse')" class="rounded-full border border-outline-variant bg-surface-container-low px-4 py-2 text-sm font-medium text-on-surface transition-all hover:border-primary hover:text-primary">${t('pipeline.browse_skills')}</button>
+              </div>
+            </div>
+
+            <div class="mt-6 space-y-3">
+              <div class="flex items-center justify-between">
+                <h3 class="font-label-mono text-label-mono uppercase tracking-[0.22em] text-on-surface-variant">${t('pipeline.skills')}</h3>
+                <span class="rounded-full bg-surface-container-low px-3 py-1 text-[10px] font-label-mono uppercase tracking-[0.22em] text-on-surface-variant">${caps.length} ${t('pipeline.installed')}</span>
+              </div>
+              <div class="space-y-2.5">
+                ${caps.map(c => `
+                  <button onclick="openSkillConfig('${escapeHtml(c.name)}')" class="flex w-full items-center justify-between rounded-2xl border border-outline-variant bg-surface-container-low px-3 sm:px-4 py-3 text-left transition-all hover:border-primary/40 hover:bg-primary/5">
+                    <div class="min-w-0 flex-1">
+                      <div class="flex items-center gap-2">
+                        <span class="text-sm text-primary flex-shrink-0">${escapeHtml(c.icon || '⚡')}</span>
+                        <span class="truncate text-sm font-medium text-on-surface">${escapeHtml(c.title)}</span>
+                      </div>
+                      <p class="mt-1 truncate text-xs text-on-surface-variant">${escapeHtml(c.description || t('pipeline.installed_cap'))}</p>
+                    </div>
+                    <span class="material-symbols-outlined text-[18px] text-on-surface-variant flex-shrink-0 ml-2">chevron_right</span>
+                  </button>
+                `).join('') || '<div class="rounded-2xl border border-dashed border-outline-variant bg-surface-container-low px-4 py-6 text-center text-sm text-on-surface-variant">' + t('pipeline.no_skills') + '</div>'}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4 pipeline-column relative z-10">
+          <div class="flex items-center justify-between">
+            <h3 class="font-label-mono text-label-mono uppercase tracking-[0.22em] text-on-surface-variant">${t('pipeline.outputs')}</h3>
+            <button onclick="openMarketplaceHub('output')" class="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-sm text-primary transition-all hover:bg-primary/10 hover:border-primary/40"><span class="material-symbols-outlined text-[16px]">add</span><span>${t('pipeline.add')}</span></button>
+          </div>
+          <div class="space-y-3">
+            ${outputs.map(o => `
+              <div class="glass-panel rounded-2xl p-3 sm:p-4 cursor-pointer" onclick="openOutputConfig('${escapeHtml(o.name)}')">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex items-start gap-3">
+                    <div class="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-surface-container-high text-primary flex-shrink-0"><span class="material-symbols-outlined text-[18px] sm:text-[20px]">${o.icon || 'description'}</span></div>
+                    <div class="min-w-0">
+                      <h4 class="font-medium text-on-surface text-sm sm:text-base">${escapeHtml(o.title)}</h4>
+                      <p class="mt-1 text-xs leading-5 text-on-surface-variant">${escapeHtml(o.description || t('pipeline.output_dest'))}</p>
+                    </div>
+                  </div>
+                  <span class="material-symbols-outlined text-[18px] text-primary flex-shrink-0">sync</span>
+                </div>
+                <p class="mt-3 text-[11px] font-label-mono uppercase tracking-[0.2em] text-on-surface-variant">${cachedConfig?.outputs?.[o.name]?.api_key ? t('pipeline.connected') : t('pipeline.not_configured')}</p>
+              </div>
+            `).join('') || '<div class="glass-panel rounded-2xl p-5 text-center text-sm text-on-surface-variant">' + t('pipeline.no_outputs') + '</div>'}
+          </div>
+        </div>
+      </section>
+    </div>
+  `;
+}
+
+async function openMarketplaceHub(type, defaultTab = 'browse') {
+  activeMarketplaceType = type === 'output' ? 'output' : 'input';
+  const endpoint = activeMarketplaceType === 'input' ? '/inputs' : '/outputs';
+  const libraryEndpoint = activeMarketplaceType === 'input' ? '/inputs/library' : '/outputs/library';
+  const docsHref = activeMarketplaceType === 'input' ? '/docs.html#admin-inputs' : '/docs.html#admin-outputs';
+  const browseLabel = activeMarketplaceType === 'input' ? t('misc.inputs_marketplace') : t('misc.outputs_marketplace');
+
+  const [libRes, instRes] = await Promise.all([api('GET', libraryEndpoint), api('GET', endpoint)]);
+  const library = libRes.data?.library || [];
+  const installed = new Set((instRes.data?.inputs || instRes.data?.outputs || []).map(item => item.name));
+
+  showModal(
+    activeMarketplaceType === 'input' ? t('misc.add_input') : t('misc.add_output'),
+    `
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-outline-variant bg-surface-container-low p-4">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div class="font-label-mono text-[10px] uppercase tracking-[0.22em] text-on-surface-variant">${browseLabel}</div>
+              <p class="mt-1 text-sm leading-6 text-on-surface-variant">${t('misc.browse_or_request')}</p>
+            </div>
+            <a href="${docsHref}" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-full border border-outline-variant bg-surface-container-low px-4 py-2 text-sm text-on-surface transition-all hover:border-primary hover:text-primary">
+              <span class="material-symbols-outlined text-[18px]">menu_book</span>
+              <span>${t('misc.documentation')}</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <button id="marketplace-tab-browse" onclick="setMarketplaceTab('browse')" class="tab-pill active rounded-full px-4 py-2 text-sm font-medium">${t('misc.browse')}</button>
+          <button id="marketplace-tab-request" onclick="setMarketplaceTab('request')" class="tab-pill rounded-full px-4 py-2 text-sm font-medium">${t('misc.submit_request')}</button>
+        </div>
+
+        <div id="marketplace-panel-browse" class="space-y-3">
+          ${library.map(item => marketplaceCard(item, activeMarketplaceType, installed.has(item.name))).join('') || '<p class="rounded-2xl border border-dashed border-outline-variant bg-surface-container-low p-5 text-center text-sm text-on-surface-variant">' + t('misc.no_items') + '</p>'}
+        </div>
+
+        <div id="marketplace-panel-request" class="hidden space-y-4">
+          <div class="rounded-2xl border border-primary/15 bg-primary/5 p-4 text-sm leading-6 text-on-surface-variant">
+            <div class="font-label-mono text-[10px] uppercase tracking-[0.22em] text-primary">${t('misc.always_include_docs')}</div>
+            <p class="mt-1">${t('misc.submission_docs_desc')}</p>
+          </div>
+          <div class="form-group">
+            <label>${t('misc.item_name')}</label>
+            <input id="marketplace-request-title" type="text" placeholder="${t('misc.github_placeholder')}">
+          </div>
+          <div class="form-group">
+            <label>${t('misc.github_repo')}</label>
+            <input id="marketplace-request-repository" type="url" placeholder="https://github.com/owner/repo">
+          </div>
+          <div class="form-group">
+            <label>${t('misc.desc_label')}</label>
+            <textarea id="marketplace-request-description" rows="5" placeholder="${t('misc.desc_placeholder')}"></textarea>
+          </div>
+          <div class="form-group">
+            <label>${t('misc.docs_link')}</label>
+            <input id="marketplace-request-docs" type="url" placeholder="https://docs.example.com">
+          </div>
+          <div class="rounded-2xl border border-outline-variant bg-surface-container-low p-4 text-xs leading-6 text-on-surface-variant">
+            <span class="font-label-mono uppercase tracking-[0.22em] text-on-surface-variant">${t('misc.need_reference')}</span>
+            <a href="${docsHref}" target="_blank" rel="noreferrer" class="ml-2 text-primary hover:underline">${t('misc.open_docs')}</a>
+          </div>
+        </div>
+      </div>
+    `,
+    `<button onclick="submitMarketplaceRequest()" class="px-5 py-2 bg-primary text-on-primary rounded-full text-sm">${t('misc.send_request')}</button><button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">${t('modal.close')}</button>`
+  )
+
+  setMarketplaceTab(defaultTab)
+}
+
+async function submitMarketplaceRequest() {
+  const payload = {
+    type: activeMarketplaceType,
+    title: document.getElementById('marketplace-request-title')?.value.trim() || '',
+    repositoryUrl: document.getElementById('marketplace-request-repository')?.value.trim() || '',
+    description: document.getElementById('marketplace-request-description')?.value.trim() || '',
+    documentationUrl: document.getElementById('marketplace-request-docs')?.value.trim() || '',
+  }
+
+  const { status, data } = await api('POST', '/marketplace-requests', payload)
+  if (status !== 201) {
+    toast(t('misc.request_failed'), 'error')
+    return
+  }
+
+  toast(t('misc.request_submitted'), 'success')
+  closeModal()
+}
+
+async function openSkillHub(defaultTab = 'browse') {
+  showModal(
+    t('dashboard.skills'),
+    `<div class="py-10 text-center text-sm text-on-surface-variant">${t('misc.loading_skills')}</div>`,
+    `<button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">${t('modal.close')}</button>`,
+    { large: true }
+  )
+
+  let libraryRes, installedRes
+  try {
+    ;[libraryRes, installedRes] = await Promise.all([
+      api('GET', '/skills/library'),
+      api('GET', '/skills'),
+    ])
+  } catch (err) {
+    closeModal()
+    toast(t('misc.install_failed') + ': ' + (err.message || 'network error'), 'error')
+    return
+  }
+
+  if (!libraryRes.ok && !installedRes.ok) {
+    closeModal()
+    toast(libraryRes.data?.message || t('modal.failed'), 'error')
+    return
+  }
+
+  const library = libraryRes.data?.library || []
+  const installed = new Set((installedRes.data?.skills || []).map(skill => skill.name))
+  const docsHref = '/docs.html#admin-skills'
+  const registryNote = libraryRes.data?.registryOnline
+    ? t('misc.marketplace_online')
+    : libraryRes.data?.registryConfigured
+      ? t('misc.marketplace_offline')
+      : t('misc.local_registry')
+
+  showModal(
+    t('dashboard.skills'),
+    `
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-outline-variant bg-surface-container-low p-4">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div class="font-label-mono text-[10px] uppercase tracking-[0.22em] text-on-surface-variant">${t('misc.skills_hub')}</div>
+              <p class="mt-1 text-sm leading-6 text-on-surface-variant">${t('misc.skills_hub_desc')}</p>
+              <p class="mt-2 font-label-mono text-[10px] uppercase tracking-[0.18em] text-on-surface-variant">${escapeHtml(registryNote)} · ${library.length} ${t('misc.available')}</p>
+            </div>
+            <a href="${docsHref}" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-full border border-outline-variant bg-surface-container-low px-4 py-2 text-sm text-on-surface transition-all hover:border-primary hover:text-primary">
+              <span class="material-symbols-outlined text-[18px]">menu_book</span>
+              <span>${t('misc.documentation')}</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <button id="skill-tab-browse" onclick="setSkillTab('browse')" class="tab-pill active rounded-full px-4 py-2 text-sm font-medium">${t('misc.browse')}</button>
+          <button id="skill-tab-create" onclick="setSkillTab('create')" class="tab-pill rounded-full px-4 py-2 text-sm font-medium">${t('misc.create')}</button>
+        </div>
+
+        <div id="skill-panel-browse" class="space-y-3">
+          ${library.map(skill => {
+            const name = escapeHtml(skill.name)
+            const title = escapeHtml(skill.title || skill.name)
+            const description = escapeHtml(skill.description || '—')
+            const icon = escapeHtml(skill.icon || '⚡')
+            const author = escapeHtml(skill.author || '')
+            const version = escapeHtml(skill.version || '')
+            const isInstalled = installed.has(skill.name)
+            return `
+              <div class="glass-panel rounded-2xl p-4">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div class="flex items-start gap-3 min-w-0">
+                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-surface-container-high text-lg text-primary">${icon}</div>
+                    <div class="min-w-0">
+                      <div class="flex flex-wrap items-center gap-2">
+                        <h4 class="font-medium text-on-surface">${title}</h4>
+                        ${isInstalled ? '<span class="rounded-full bg-turquoise/10 px-2 py-0.5 text-[10px] font-label-mono uppercase text-turquoise">' + t('misc.installed') + '</span>' : '<span class="rounded-full bg-surface-container-high px-2 py-0.5 text-[10px] font-label-mono uppercase text-on-surface-variant">' + t('misc.available') + '</span>'}
+                      </div>
+                      <p class="mt-1 text-sm leading-6 text-on-surface-variant">${description}</p>
+                      <p class="mt-1 font-label-mono text-[10px] uppercase tracking-[0.16em] text-on-surface-variant">${name}${version ? ' · v' + version : ''}${author ? ' · ' + author : ''}</p>
+                    </div>
+                  </div>
+                  <div class="flex flex-wrap items-center gap-2 shrink-0">
+                    ${isInstalled
+                      ? `<button onclick="openSkillConfig('${name}')" class="rounded-full bg-primary px-4 py-2 text-sm font-medium text-on-primary">${t('marketplace.configure')}</button><button onclick="uninstallSkill('${name}')" class="rounded-full border border-outline-variant bg-surface-container-low px-4 py-2 text-sm text-on-surface">${t('modal.remove')}</button>`
+                      : `<button onclick="installSkill('${name}')" class="rounded-full bg-primary px-4 py-2 text-sm font-medium text-on-primary">${t('marketplace.install')}</button>`}
+                  </div>
+                </div>
+              </div>
+            `
+          }).join('') || '<p class="rounded-2xl border border-dashed border-outline-variant bg-surface-container-low p-5 text-center text-sm text-on-surface-variant">' + t('misc.no_skills') + '</p>'}
+        </div>
+
+        <div id="skill-panel-create" class="hidden space-y-4">
+          <div class="rounded-2xl border border-primary/15 bg-primary/5 p-4 text-sm leading-6 text-on-surface-variant">
+            ${t('misc.create_skill_desc')} (<code class="font-label-mono text-xs">my_skill</code>).
+          </div>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div class="form-group md:col-span-1"><label>${t('misc.name')}</label><input id="skill-create-name" type="text" placeholder="custom_skill" autocomplete="off"></div>
+            <div class="form-group md:col-span-1"><label>${t('misc.icon')}</label><input id="skill-create-icon" type="text" placeholder="⚡" value="⚡"></div>
+            <div class="form-group md:col-span-2"><label>${t('misc.description')}</label><input id="skill-create-description" type="text" placeholder=""></div>
+            <div class="form-group md:col-span-2"><label>${t('misc.params_json')}</label><textarea id="skill-create-params" rows="3" placeholder='{"title":{"type":"string","description":"Optional title"}}'>{}</textarea></div>
+            <div class="form-group md:col-span-2"><label>${t('misc.code')}</label><textarea id="skill-create-code" rows="14" style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.5">${escapeHtml(skillTemplateCode('custom_skill', 'Custom Jenn skill', '{}', '⚡'))}</textarea></div>
+          </div>
+        </div>
+      </div>
+    `,
+    `<button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">${t('modal.close')}</button>`,
+    { large: true }
+  )
+
+  setSkillTab(defaultTab === 'create' ? 'create' : 'browse')
+}
+
+function refreshSkillTemplatePreview() {
+  const name = document.getElementById('skill-create-name')?.value.trim() || 'custom_skill'
+  const description = document.getElementById('skill-create-description')?.value.trim() || 'Custom Jenn skill'
+  const icon = document.getElementById('skill-create-icon')?.value.trim() || '⚡'
+  const paramsText = document.getElementById('skill-create-params')?.value.trim() || '{}'
+  let paramsOk = true
+  try { JSON.parse(paramsText || '{}') } catch { paramsOk = false }
+  if (!paramsOk) return
+  const code = skillTemplateCode(name, description, paramsText, icon)
+  const codeEl = document.getElementById('skill-create-code')
+  if (codeEl && !codeEl.dataset.manualEdit) codeEl.value = code
+}
+
+async function submitSkillCreation() {
+  const name = document.getElementById('skill-create-name')?.value.trim() || ''
+  const description = document.getElementById('skill-create-description')?.value.trim() || ''
+  const icon = document.getElementById('skill-create-icon')?.value.trim() || '⚡'
+  const paramsText = document.getElementById('skill-create-params')?.value.trim() || '{}'
+  const code = document.getElementById('skill-create-code')?.value || ''
+
+  if (!name) {
+    toast(t('misc.skill_name_required'), 'error')
+    return
+  }
+  if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(name)) {
+    toast(t('misc.name_invalid'), 'error')
+    return
+  }
+  if (!code.trim()) {
+    toast(t('misc.code_required'), 'error')
+    return
+  }
+
+  let params = {}
+  try {
+    params = JSON.parse(paramsText || '{}')
+  } catch {
+    toast(t('misc.params_invalid'), 'error')
+    return
+  }
+
+  try {
+    const { status, data } = await api('POST', '/skills/create', {
+      name,
+      description,
+      icon,
+      title: name.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+      params,
+      code,
+    })
+
+    if (status !== 201) {
+      toast(data?.message || 'Skill creation failed', 'error')
+      return
+    }
+
+    toast(t('misc.skill_created'), 'success')
+    closeModal()
+    navigate('pipeline')
+  } catch (err) {
+    toast(t('misc.skill_created') + ': ' + (err.message || 'network error'), 'error')
+  }
+}
+
+async function installSkill(name) {
+  try {
+    const { ok, data } = await api('POST', '/skills/' + encodeURIComponent(name) + '/install')
+    if (!ok) return toast(data?.message || 'Install failed', 'error')
+    toast(t('misc.installed'), 'success')
+    closeModal()
+    navigate(currentPage === 'pipeline' ? 'pipeline' : currentPage)
+  } catch (err) {
+    toast(t('misc.install_failed') + ': ' + (err.message || 'network error'), 'error')
+  }
+}
+
+async function uninstallSkill(name) {
+  if (!confirm(`${t('misc.remove_skill_confirm')} "${name}" ${t('misc.from_pipeline')}`)) return
+  try {
+    const { ok, data } = await api('DELETE', '/skills/' + encodeURIComponent(name))
+    if (!ok) return toast(data?.message || 'Remove failed', 'error')
+    toast(t('misc.removed'), 'success')
+    closeModal()
+    navigate(currentPage === 'pipeline' ? 'pipeline' : currentPage)
+  } catch (err) {
+    toast(t('misc.remove_failed') + ': ' + (err.message || 'network error'), 'error')
+  }
+}
+
+document.addEventListener('input', (event) => {
+  if (!event.target) return
+  if (event.target.id === 'skill-create-name' || event.target.id === 'skill-create-description' || event.target.id === 'skill-create-icon' || event.target.id === 'skill-create-params') {
+    if (event.target.id !== 'skill-create-code') refreshSkillTemplatePreview()
+  }
+  if (event.target.id === 'skill-create-code') {
+    event.target.dataset.manualEdit = 'true'
+  }
+})
+
+async function openInputsLibrary() { return openMarketplaceHub('input') }
+async function openOutputsLibrary() { return openMarketplaceHub('output') }
+
+// ── Activity ──
+async function renderMarketplace(el) {
+  el.innerHTML = `<div class="text-on-surface-variant text-sm">${t('misc.loading_marketplace')}</div>`;
+  const [inputsLibrary, outputsLibrary, inputsInstalled, outputsInstalled] = await Promise.all([
+    api('GET', '/inputs/library'), api('GET', '/outputs/library'), api('GET', '/inputs'), api('GET', '/outputs')
+  ]);
+  const inputNames = new Set((inputsInstalled.data?.inputs || []).map(item => item.name));
+  const outputNames = new Set((outputsInstalled.data?.outputs || []).map(item => item.name));
+  const inputCards = (inputsLibrary.data?.library || []).map(item => marketplaceCard(item, 'input', inputNames.has(item.name))).join('');
+  const outputCards = (outputsLibrary.data?.library || []).map(item => marketplaceCard(item, 'output', outputNames.has(item.name))).join('');
+  el.innerHTML = `
+    <header class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">${t('marketplace.title')}</h1><p class="text-on-surface-variant text-sm">${t('marketplace.subtitle')}</p></div>
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+        <button onclick="openMarketplaceHub('input', 'request')" class="inline-flex items-center gap-1.5 rounded-full border border-outline-variant bg-surface-container-low px-4 py-2 text-sm text-on-surface transition-all hover:border-primary hover:text-primary">
+          <span class="material-symbols-outlined text-[16px]">add_circle</span>
+          ${t('marketplace.request_input')}
+        </button>
+        <button onclick="openMarketplaceHub('output', 'request')" class="inline-flex items-center gap-1.5 rounded-full border border-outline-variant bg-surface-container-low px-4 py-2 text-sm text-on-surface transition-all hover:border-primary hover:text-primary">
+          <span class="material-symbols-outlined text-[16px]">add_circle</span>
+          ${t('marketplace.request_output')}
+        </button>
+        <div class="rounded-full border border-outline-variant px-3 py-1.5 font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant">${inputNames.size + outputNames.size} ${t('marketplace.installed')}</div>
       </div>
     </header>
-    <section class="grid grid-cols-12 gap-6 relative">
-      <div class="absolute inset-0 flex items-center justify-around pointer-events-none px-20">
-        <div class="pipeline-line flex-1"></div><div class="w-48"></div><div class="pipeline-line flex-1"></div>
-      </div>
-      <div class="col-span-4 space-y-4 relative z-10">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="font-label-mono text-label-mono uppercase text-on-surface-variant">Active Inputs</h3>
-          <button onclick="openInputsLibrary()" class="text-primary hover:underline text-sm flex items-center space-x-1"><span class="material-symbols-outlined text-sm">add</span><span>Add</span></button>
-        </div>
-        ${inputs.map(i => `
-          <div class="glass-panel p-5 rounded-xl cursor-pointer" onclick="openInputConfig('${escapeHtml(i.name)}')">
-            <div class="flex items-center justify-between mb-3">
-              <div class="bg-surface-container-high p-2.5 rounded-lg"><span class="material-symbols-outlined text-primary">${i.icon || 'plug'}</span></div>
-              <span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase tracking-wider">Active</span>
-            </div>
-            <h4 class="font-medium text-on-surface mb-1">${escapeHtml(i.title)}</h4>
-            <p class="text-xs text-on-surface-variant font-label-mono">${i.token ? 'ID: ' + i.token.slice(0,16) + '…' : 'No token'}</p>
-          </div>
-        `).join('') || '<div class="glass-panel p-5 rounded-xl text-center text-on-surface-variant text-sm">No inputs installed</div>'}
-      </div>
-      <div class="col-span-4 flex flex-col items-center justify-center relative z-20 pt-10">
-        <div class="w-48 h-48 rounded-full border border-primary/20 flex items-center justify-center pulse-gold relative bg-surface-container-low shadow-[0_0_80px_rgba(220,199,161,0.1)]">
-          <div class="text-center z-10">
-            <span class="material-symbols-outlined text-primary text-4xl mb-2" style="font-variation-settings:'FILL' 1;">hub</span>
-            <div class="font-headline-md text-2xl italic">Jenn Core</div>
-          </div>
-        </div>
-        <div class="mt-8 text-center max-w-[200px]">
-          <p class="text-sm text-on-surface-variant leading-relaxed">${caps.length} skill${caps.length !== 1 ? 's' : ''} routed through <span class="text-primary italic">Lumina Engine</span></p>
-        </div>
-        <div class="mt-6 space-y-2 w-full max-w-[240px]">
-          ${caps.map(c => `
-            <div class="glass-panel p-3 rounded-xl cursor-pointer text-center" onclick="openSkillConfig('${escapeHtml(c.name)}')">
-              <span class="text-sm text-on-surface">${escapeHtml(c.icon || '⚡')} ${escapeHtml(c.title)}</span>
-            </div>
-          `).join('') || '<p class="text-xs text-on-surface-variant text-center">No skills</p>'}
-        </div>
-      </div>
-      <div class="col-span-4 space-y-4 relative z-10">
-        <div class="flex justify-between items-center mb-4 flex-row-reverse">
-          <h3 class="font-label-mono text-label-mono uppercase text-on-surface-variant">Outputs</h3>
-          <button onclick="openOutputsLibrary()" class="text-primary hover:underline text-sm flex items-center space-x-1"><span class="material-symbols-outlined text-sm">add</span><span>Add</span></button>
-        </div>
-        ${outputs.map(o => `
-          <div class="glass-panel p-5 rounded-xl cursor-pointer text-right" onclick="openOutputConfig('${escapeHtml(o.name)}')">
-            <div class="flex items-center justify-between mb-3">
-              <div class="bg-surface-container-high p-2.5 rounded-lg"><span class="material-symbols-outlined text-primary">${o.icon || 'description'}</span></div>
-              <span class="material-symbols-outlined text-primary text-sm">sync</span>
-            </div>
-            <h4 class="font-medium text-on-surface mb-1">${escapeHtml(o.title)}</h4>
-            <p class="text-xs text-on-surface-variant font-label-mono">${cachedConfig?.outputs?.[o.name]?.api_key ? 'Connected' : 'Not configured'}</p>
-          </div>
-        `).join('') || '<div class="glass-panel p-5 rounded-xl text-center text-on-surface-variant text-sm">No outputs installed</div>'}
-      </div>
+    <section>
+      <div class="mb-3 sm:mb-4"><h2 class="font-headline-md text-xl sm:text-2xl italic">${t('marketplace.inputs_title')}</h2><p class="text-sm text-on-surface-variant">${t('marketplace.inputs_desc')}</p></div>
+      <div class="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2">${inputCards || '<p class="text-on-surface-variant text-sm">' + t('marketplace.no_inputs') + '</p>'}</div>
+    </section>
+    <section>
+      <div class="mb-3 sm:mb-4"><h2 class="font-headline-md text-xl sm:text-2xl italic">${t('marketplace.outputs_title')}</h2><p class="text-sm text-on-surface-variant">${t('marketplace.outputs_desc')}</p></div>
+      <div class="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2">${outputCards || '<p class="text-on-surface-variant text-sm">' + t('marketplace.no_outputs') + '</p>'}</div>
     </section>
   `;
 }
 
-// ── Activity ──
+function marketplaceCard(item, type, installed) {
+  const name = escapeHtml(item.name);
+  const title = escapeHtml(item.title || item.name);
+  const description = escapeHtml(item.description || '');
+  const icon = escapeHtml(item.icon || (type === 'input' ? 'Input' : 'Output'));
+  const configure = type === 'input' ? 'openInputConfig' : 'openOutputConfig';
+  const install = type === 'input' ? 'installInput' : 'installOutput';
+  const remove = type === 'input' ? 'uninstallInput' : 'uninstallOutput';
+  const primaryAction = installed
+    ? `<button onclick="${configure}('${name}')" class="px-4 py-2 rounded-full bg-primary text-on-primary text-sm font-medium">${t('marketplace.configure')}</button>`
+    : `<button onclick="${install}('${name}')" class="px-4 py-2 rounded-full bg-primary text-on-primary text-sm font-medium">${t('marketplace.install')}</button>`;
+  const secondaryAction = installed
+    ? `<button onclick="${remove}('${name}')" class="p-2 text-on-surface-variant hover:text-error" title="${t('modal.delete')}"><span class="material-symbols-outlined">delete</span></button>`
+    : '';
+  const installedBadge = installed ? `<span class="rounded-full bg-turquoise/10 px-2 py-0.5 text-[10px] font-label-mono uppercase text-turquoise">${t('misc.installed')}</span>` : '';
+  return `<article class="glass-panel rounded-xl p-4 sm:p-5"><div class="mb-4 sm:mb-5 flex items-start gap-3 sm:gap-4"><div class="flex h-10 w-10 sm:h-11 sm:w-11 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-xs text-primary">${icon}</div><div class="min-w-0 flex-1"><div class="mb-1 flex flex-wrap items-center gap-2"><h3 class="font-medium text-on-surface text-sm sm:text-base">${title}</h3>${installedBadge}</div><p class="text-sm leading-6 text-on-surface-variant">${description}</p></div></div><div class="flex items-center justify-end gap-2">${secondaryAction}${primaryAction}</div></article>`;
+}
+
 async function renderActivity(el) {
   const { data } = await api('GET', '/messages?limit=50');
   const messages = data?.messages || [];
   el.innerHTML = `
-    <header><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">Activity</h1><p class="text-on-surface-variant text-sm">Recent messages processed by Jenn</p></header>
+    <header><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">${t('activity.title')}</h1><p class="text-on-surface-variant text-sm">${t('activity.subtitle')}</p></header>
     <div class="space-y-3">
-      ${messages.length ? messages.map(m => `
-        <div class="flex items-center justify-between p-4 glass-panel rounded-xl">
-          <div class="flex items-center space-x-4">
-            <div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center border border-primary/10">
-              <span class="material-symbols-outlined text-primary text-[20px]">${m.result?.success !== false ? 'check_circle' : 'error'}</span>
+      ${messages.length ? messages.map(m => {
+        const r = m.result || {};
+        const action = r.action || {};
+        const dest = r.result || {};
+        const hasError = !!r.error;
+        const skill = r.skill || (action.output ? t('activity.direct_call') : null);
+        const tool = action.tool || r.tool;
+        const outputName = action.output;
+        const funcName = action.function;
+        const destName = dest.destination;
+        const destType = dest.destination_type;
+        const destUrl = dest.url;
+        const timestamp = m.received_at || m.receivedAt;
+        return `
+        <div class="glass-panel rounded-xl overflow-hidden">
+          <div class="flex items-start justify-between p-3 sm:p-4 pb-3">
+            <div class="flex items-start gap-3 min-w-0 flex-1">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full ${hasError ? 'bg-error/10 border-error/20' : 'bg-primary/5 border-primary/10'} flex items-center justify-center border flex-shrink-0">
+                <span class="material-symbols-outlined ${hasError ? 'text-error' : 'text-primary'} text-[18px] sm:text-[20px]">${hasError ? 'error' : 'check_circle'}</span>
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="text-on-surface font-medium text-sm leading-relaxed">${escapeHtml((m.text || '').slice(0, 120))}</p>
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2">
+                  <span class="inline-flex items-center gap-1 text-xs text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[14px]">input</span>
+                    ${escapeHtml(m.source || t('dashboard.unknown'))}
+                  </span>
+                  ${skill ? `<span class="inline-flex items-center gap-1 text-xs text-on-surface-variant">
+                    <span class="material-symbols-outlined text-[14px]">psychology</span>
+                    ${escapeHtml(skill)}
+                  </span>` : ''}
+                  ${tool ? `<span class="inline-flex items-center gap-1 text-xs text-lavender">
+                    <span class="material-symbols-outlined text-[14px]">route</span>
+                    ${escapeHtml(tool)}
+                  </span>` : ''}
+                </div>
+              </div>
             </div>
-            <div>
-              <p class="text-on-surface font-medium text-sm">${escapeHtml((m.text || '').slice(0, 80))}</p>
-              <p class="text-xs text-on-surface-variant">Source: ${escapeHtml(m.source || 'unknown')}${m.result?.output ? ' → ' + escapeHtml(m.result.output) : ''}</p>
+            <div class="text-right flex-shrink-0 ml-3">
+              <span class="font-label-mono text-[10px] ${hasError ? 'text-error' : 'text-primary'} uppercase">${hasError ? t('activity.failed') : t('activity.success')}</span>
+              <p class="text-xs text-on-surface-variant mt-0.5">${timeAgo(timestamp)}</p>
             </div>
           </div>
-          <div class="text-right">
-            <span class="font-label-mono text-[10px] ${m.result?.success !== false ? 'text-primary' : 'text-error'} uppercase">${m.result?.success !== false ? 'Success' : 'Failed'}</span>
-            <p class="text-xs text-on-surface-variant">${timeAgo(m.receivedAt)}</p>
-          </div>
+          ${(destName || destUrl || r.error) ? `
+          <div class="px-4 pb-3 pt-0">
+            <div class="flex flex-wrap items-center gap-2 text-xs">
+              ${destName ? `<span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-surface-container-high text-on-surface-variant">
+                <span class="text-[12px]">${destType === 'page' ? '📄' : '🗃️'}</span>
+                ${escapeHtml(destName)}
+                ${destType ? `<span class="text-[10px] uppercase tracking-wider opacity-60">${destType === 'page' ? t('misc.page') : t('misc.database')}</span>` : ''}
+              </span>` : ''}
+              ${destUrl ? `<a href="${escapeHtml(destUrl)}" target="_blank" class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+                <span class="material-symbols-outlined text-[12px]">open_in_new</span>
+                ${t('activity.open_result')}
+              </a>` : ''}
+              ${r.error ? `<span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-error/10 text-error">
+                <span class="material-symbols-outlined text-[12px]">warning</span>
+                ${escapeHtml(r.error)}
+              </span>` : ''}
+            </div>
+          </div>` : ''}
         </div>
-      `).join('') : '<p class="text-on-surface-variant glass-panel p-8 rounded-xl text-center">No messages yet. Send a message through an input to see it here.</p>'}
+        `;
+      }).join('') : '<p class="text-on-surface-variant glass-panel p-6 sm:p-8 rounded-xl text-center">' + t('activity.no_messages') + '</p>'}
     </div>
   `;
 }
@@ -563,9 +1761,9 @@ async function renderActivity(el) {
 // ── Logs ──
 async function renderLogs(el) {
   el.innerHTML = `
-    <header class="flex justify-between items-end">
-      <div><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">Logs</h1><p class="text-on-surface-variant text-sm">Real-time processing logs</p></div>
-      <button onclick="document.getElementById('logs-content').textContent=''" class="px-4 py-2 glass-panel rounded-full text-on-surface border border-outline-variant hover:border-primary transition-all text-sm">Clear</button>
+    <header class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3">
+      <div><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">${t('logs.title')}</h1><p class="text-on-surface-variant text-sm">${t('logs.subtitle')}</p></div>
+      <button onclick="document.getElementById('logs-content').textContent=''" class="px-4 py-2 glass-panel rounded-full text-on-surface border border-outline-variant hover:border-primary transition-all text-sm">${t('logs.clear')}</button>
     </header>
     <div id="logs-content" class="logs-console"></div>
   `;
@@ -579,7 +1777,7 @@ async function renderLogs(el) {
 function appendLog(el, entry) {
   const icons = { info: 'ℹ️', warn: '⚠️', error: '❌', success: '✅', route: '🔀', process: '⚙️' };
   const colors = { error: '#ffb4ab', warn: '#DCC7A1', success: '#87C5C5' };
-  const time = entry.time ? new Date(entry.time).toLocaleTimeString() : new Date().toLocaleTimeString();
+  const time = entry.time || new Date().toLocaleTimeString();
   const div = document.createElement('div');
   div.className = 'log-entry';
   div.innerHTML = `<span class="log-time">${time}</span><span class="log-icon">${icons[entry.level] || '•'}</span><span class="log-text" style="color:${colors[entry.level] || '#F9F8F6'}">${escapeHtml(entry.msg || entry.message || JSON.stringify(entry))}</span>`;
@@ -592,80 +1790,132 @@ async function renderApiKeys(el) {
   const { data } = await api('GET', '/sources');
   const sources = data?.sources || [];
   el.innerHTML = `
-    <header class="flex justify-between items-end">
-      <div><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">API Keys</h1><p class="text-on-surface-variant text-sm">Manage source tokens for input connections</p></div>
-      <button onclick="createSource()" class="px-6 py-2.5 bg-primary text-on-primary rounded-full hover:opacity-90 transition-all font-medium">Create Key</button>
+    <header class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3">
+      <div><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">${t('apikeys.title')}</h1><p class="text-on-surface-variant text-sm">${t('apikeys.subtitle')}</p></div>
+      <button onclick="createSource()" class="px-6 py-2.5 bg-primary text-on-primary rounded-full hover:opacity-90 transition-all font-medium text-sm">${t('apikeys.create')}</button>
     </header>
     <div class="glass-panel rounded-xl overflow-hidden">
-      <div class="grid grid-cols-12 gap-4 px-8 py-4 border-b border-outline-variant/30 bg-surface-container/50">
-        <div class="col-span-4 font-label-mono text-[11px] uppercase tracking-[0.2em] text-on-surface-variant">Source</div>
-        <div class="col-span-5 font-label-mono text-[11px] uppercase tracking-[0.2em] text-on-surface-variant">Token</div>
-        <div class="col-span-3 font-label-mono text-[11px] uppercase tracking-[0.2em] text-on-surface-variant text-right">Actions</div>
+      <div class="hidden sm:grid grid-cols-12 gap-4 px-8 py-4 border-b border-outline-variant/30 bg-surface-container/50">
+        <div class="col-span-4 font-label-mono text-[11px] uppercase tracking-[0.2em] text-on-surface-variant">${t('apikeys.source')}</div>
+        <div class="col-span-5 font-label-mono text-[11px] uppercase tracking-[0.2em] text-on-surface-variant">${t('apikeys.token')}</div>
+        <div class="col-span-3 font-label-mono text-[11px] uppercase tracking-[0.2em] text-on-surface-variant text-right">${t('apikeys.actions')}</div>
       </div>
       ${sources.map(s => `
-        <div class="grid grid-cols-12 gap-4 px-8 py-5 items-center border-b border-outline-variant/10 hover:bg-surface-container/30 transition-colors">
-          <div class="col-span-4 font-medium text-on-surface italic">${escapeHtml(s.source)}</div>
-          <div class="col-span-5 font-label-mono text-[13px] text-on-surface-variant">${escapeHtml(s.token.slice(0,12))}••••••</div>
-          <div class="col-span-3 flex justify-end items-center gap-3">
-            <button onclick="copyText('${escapeHtml(s.token)}')" class="p-2 hover:bg-white/5 rounded-full text-on-surface-variant transition-colors" title="Copy"><span class="material-symbols-outlined text-[18px]">content_copy</span></button>
-            <button onclick="deleteSource('${escapeHtml(s.source)}')" class="p-2 hover:bg-error/10 hover:text-error rounded-full text-on-surface-variant transition-colors" title="Delete"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+        <div class="sm:grid sm:grid-cols-12 gap-4 px-4 sm:px-8 py-4 items-center border-b border-outline-variant/10 hover:bg-surface-container/30 transition-colors">
+          <div class="sm:col-span-4 font-medium text-on-surface italic text-sm">${escapeHtml(s.source)}</div>
+          <div class="sm:col-span-5 font-label-mono text-[13px] text-on-surface-variant truncate">${escapeHtml(s.token.slice(0,12))}••••••</div>
+          <div class="sm:col-span-3 flex justify-end items-center gap-3">
+            <button onclick="copyText('${escapeHtml(s.token)}')" class="p-2 hover:bg-white/5 rounded-full text-on-surface-variant transition-colors" title="${t('modal.copy')}"><span class="material-symbols-outlined text-[18px]">content_copy</span></button>
+            <button onclick="deleteSource('${escapeHtml(s.source)}')" class="p-2 hover:bg-error/10 hover:text-error rounded-full text-on-surface-variant transition-colors" title="${t('modal.delete')}"><span class="material-symbols-outlined text-[18px]">delete</span></button>
           </div>
         </div>
-      `).join('') || '<div class="px-8 py-8 text-center text-on-surface-variant text-sm">No API keys yet</div>'}
+      `).join('') || '<div class="px-8 py-8 text-center text-on-surface-variant text-sm">' + t('apikeys.no_keys') + '</div>'}
     </div>
   `;
 }
 
 async function createSource() {
-  const name = prompt('Source name:');
+  const name = prompt(t('apikeys.source_name'));
   if (!name) return;
   const { status, data } = await api('POST', '/sources', { source: name });
-  if (status === 201) { toast('Key created', 'success'); navigate('apikeys'); }
-  else toast(data?.message || 'Failed', 'error');
+  if (status === 201) { toast(t('apikeys.created'), 'success'); navigate('apikeys'); }
+  else toast(data?.message || t('modal.failed'), 'error');
 }
 
 async function deleteSource(name) {
-  if (!confirm(`Delete key "${name}"?`)) return;
+  if (!confirm(`${t('apikeys.delete_confirm')} "${name}"?`)) return;
   await api('DELETE', '/sources/' + encodeURIComponent(name));
-  toast('Key deleted', 'success');
+  toast(t('apikeys.deleted'), 'success');
   navigate('apikeys');
 }
 
 // ── Settings ──
 async function renderSettings(el) {
-  const { data } = await api('GET', '/config');
-  cachedConfig = data?.config || {};
+  let meRes;
+  try { meRes = await api('GET', '/me'); } catch { meRes = { data: {} }; }
+  const username = meRes.data?.username || '';
   el.innerHTML = `
-    <header><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">Settings</h1><p class="text-on-surface-variant text-sm">Configure your Jenn instance</p></header>
-    <div class="glass-panel p-8 rounded-xl space-y-6">
-      <div>
-        <h3 class="font-label-mono text-label-mono uppercase text-on-surface-variant mb-4">User Config</h3>
-        <div class="form-group">
-          <label>Raw Configuration (JSON)</label>
-          <textarea id="config-editor" style="min-height:300px;font-family:'JetBrains Mono',monospace;font-size:12px">${escapeHtml(JSON.stringify(cachedConfig, null, 2))}</textarea>
+    <header><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">${t('settings.title')}</h1><p class="text-on-surface-variant text-sm">${t('settings.subtitle')}</p></header>
+
+    <div class="space-y-4 sm:space-y-6">
+      <div class="glass-panel p-4 sm:p-6 rounded-xl space-y-4">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="material-symbols-outlined text-primary">language</span>
+          <h3 class="font-medium text-on-surface">${t('settings.language')}</h3>
         </div>
-        <button onclick="saveConfigRaw()" class="px-6 py-2.5 bg-primary text-on-primary rounded-full hover:opacity-90 transition-all font-medium">Save Config</button>
+        <p class="text-xs text-on-surface-variant">${t('settings.language_desc')}</p>
+        <div class="flex gap-2">
+          <button onclick="setLang('en')" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${currentLang === 'en' ? 'bg-primary text-on-primary' : 'glass-panel text-on-surface-variant hover:text-primary'}">English</button>
+          <button onclick="setLang('ru')" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${currentLang === 'ru' ? 'bg-primary text-on-primary' : 'glass-panel text-on-surface-variant hover:text-primary'}">Русский</button>
+        </div>
+      </div>
+
+      <div class="glass-panel p-4 sm:p-6 rounded-xl space-y-4">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="material-symbols-outlined text-primary">person</span>
+          <h3 class="font-medium text-on-surface">${t('settings.account')}</h3>
+        </div>
+        <div class="form-group">
+          <label>${t('settings.username')}</label>
+          <input type="text" value="${escapeHtml(username)}" readonly class="opacity-60 cursor-not-allowed">
+        </div>
+      </div>
+
+      <div class="glass-panel p-4 sm:p-6 rounded-xl space-y-4">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="material-symbols-outlined text-primary">lock</span>
+          <h3 class="font-medium text-on-surface">${t('settings.change_password')}</h3>
+        </div>
+        <div class="form-group">
+          <label>${t('settings.current_password')}</label>
+          <input type="password" id="settings-current-pw" placeholder="••••••" autocomplete="current-password">
+        </div>
+        <div class="form-group">
+          <label>${t('settings.new_password')}</label>
+          <input type="password" id="settings-new-pw" placeholder="••••" autocomplete="new-password">
+        </div>
+        <div class="form-group">
+          <label>${t('settings.confirm_password')}</label>
+          <input type="password" id="settings-confirm-pw" placeholder="••••" autocomplete="new-password">
+        </div>
+        <button onclick="changePassword()" class="px-6 py-2.5 bg-primary text-on-primary rounded-full hover:opacity-90 transition-all font-medium">${t('settings.update_password')}</button>
+      </div>
+
+      <div class="glass-panel p-4 sm:p-6 rounded-xl">
+        <button onclick="logout()" class="flex items-center gap-3 text-on-surface-variant hover:text-error transition-all">
+          <span class="material-symbols-outlined">logout</span>
+          <span class="font-medium">${t('settings.signout')}</span>
+        </button>
       </div>
     </div>
   `;
 }
 
-async function saveConfigRaw() {
-  try {
-    const config = JSON.parse(document.getElementById('config-editor').value);
-    const { status } = await api('PUT', '/config', { config });
-    if (status === 200) { cachedConfig = config; toast('Config saved', 'success'); }
-    else toast('Failed', 'error');
-  } catch(e) { toast('Invalid JSON', 'error'); }
+async function changePassword() {
+  const currentPassword = document.getElementById('settings-current-pw').value;
+  const newPassword = document.getElementById('settings-new-pw').value;
+  const confirmPassword = document.getElementById('settings-confirm-pw').value;
+  if (!currentPassword || !newPassword) return toast(t('modal.failed'), 'error');
+  if (newPassword.length < 4) return toast(t('settings.password_too_short'), 'error');
+  if (newPassword !== confirmPassword) return toast(t('settings.password_mismatch'), 'error');
+  const { status, data } = await api('PUT', '/password', { currentPassword, newPassword });
+  if (status === 200) {
+    toast(t('settings.password_changed'), 'success');
+    document.getElementById('settings-current-pw').value = '';
+    document.getElementById('settings-new-pw').value = '';
+    document.getElementById('settings-confirm-pw').value = '';
+  } else {
+    toast(data?.message || t('settings.wrong_password'), 'error');
+  }
 }
 
 // ── Dev Test ──
 function renderTest(el) {
   el.innerHTML = `
-    <header><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">Dev Test</h1><p class="text-on-surface-variant text-sm">Send test messages through the processor</p></header>
+    <header><h1 class="font-headline-md text-headline-md text-on-surface mb-2 italic">${t('nav.devtest')}</h1><p class="text-on-surface-variant text-sm">${t('misc.send_test')}</p></header>
     <div class="glass-panel p-8 rounded-xl space-y-4">
-      <div class="form-group"><label>Test Message</label><textarea id="test-text" placeholder="Type a test message..." style="min-height:120px"></textarea></div>
-      <button onclick="sendTest()" class="px-6 py-2.5 bg-lavender text-on-primary rounded-full hover:opacity-90 transition-all font-medium">Send Test</button>
+      <div class="form-group"><label>${t('misc.test_message')}</label><textarea id="test-text" placeholder="${t('misc.type_test')}" style="min-height:120px"></textarea></div>
+      <button onclick="sendTest()" class="px-6 py-2.5 bg-lavender text-on-primary rounded-full hover:opacity-90 transition-all font-medium">${t('misc.send_test')}</button>
       <div id="test-result" class="mt-4"></div>
     </div>
   `;
@@ -675,27 +1925,66 @@ async function sendTest() {
   const text = document.getElementById('test-text').value.trim();
   if (!text) return;
   const el = document.getElementById('test-result');
-  el.innerHTML = '<p class="text-on-surface-variant text-sm">Processing...</p>';
+  el.innerHTML = `<p class="text-on-surface-variant text-sm">${t('misc.processing')}</p>`;
   const { status, data } = await api('POST', '/test-message', { text });
   if (status === 201) {
-    el.innerHTML = `<div class="glass-panel p-4 rounded-xl"><p class="text-primary text-sm font-medium mb-2">Success</p><pre class="text-xs text-on-surface-variant overflow-x-auto font-label-mono">${escapeHtml(JSON.stringify(data.result, null, 2))}</pre></div>`;
+    el.innerHTML = `<div class="glass-panel p-4 rounded-xl"><p class="text-primary text-sm font-medium mb-2">${t('dashboard.success')}</p><pre class="text-xs text-on-surface-variant overflow-x-auto font-label-mono">${escapeHtml(JSON.stringify(data.result, null, 2))}</pre></div>`;
   } else {
-    el.innerHTML = `<p class="text-error text-sm">${data?.message || 'Failed'}</p>`;
+    el.innerHTML = `<p class="text-error text-sm">${data?.message || t('modal.failed')}</p>`;
   }
 }
 
 // ── Input/Output/Skill Config Modals ──
 async function openInputConfig(name) {
   const { data } = await api('GET', '/inputs/' + encodeURIComponent(name) + '/config');
+  if (!data) return toast(t('modal.failed'), 'error');
   const fields = data.configFields || [];
-  const config = data.config || {};
-  let html = '';
+  const config = { ...(data.config || {}) };
+  if (config.bot_mode === undefined && fields.some(f => f.key === 'bot_mode')) config.bot_mode = 'self_hosted';
+  let html = data.instructions || '';
   for (const f of fields) {
-    const val = config[f.key] || '';
-    html += `<div class="form-group"><label>${escapeHtml(f.label)}</label><input type="${f.secret ? 'password' : 'text'}" value="${escapeHtml(val)}" data-key="${escapeHtml(f.key)}" class="input-cfg-field"></div>`;
+    const value = config[f.key] ?? '';
+    const dependency = f.showIf ? Object.entries(f.showIf)[0] : null;
+    const visible = !dependency || String(config[dependency[0]]) === String(dependency[1]);
+    const depAttrs = dependency ? ` data-depends="${escapeHtml(dependency[0])}" data-depval="${escapeHtml(dependency[1])}"` : '';
+    const style = visible ? '' : ' style="display:none"';
+    let control;
+    if (f.type === 'select') {
+      control = `<select data-key="${escapeHtml(f.key)}" class="input-cfg-field">${(f.options || []).map(option => {
+        const optionValue = typeof option === 'object' ? option.value : option;
+        const optionLabel = typeof option === 'object' ? option.label : option;
+        return `<option value="${escapeHtml(optionValue)}"${String(value) === String(optionValue) ? ' selected' : ''}>${escapeHtml(optionLabel)}</option>`;
+      }).join('')}</select>`;
+    } else {
+      const type = f.secret ? 'password' : (f.type === 'number' ? 'number' : 'text');
+      control = `<input type="${type}" value="${escapeHtml(value)}" data-key="${escapeHtml(f.key)}" class="input-cfg-field"${f.placeholder ? ` placeholder="${escapeHtml(f.placeholder)}"` : ''}>`;
+    }
+    html += `<div class="form-group"${depAttrs}${style}><label>${escapeHtml(f.label || f.key)}</label>${control}</div>`;
   }
-  if (data.token) html += `<div class="form-group"><label>Source Token</label><input type="text" value="${data.token}" readonly style="font-family:'JetBrains Mono';font-size:12px"></div>`;
-  showModal(data.title || name, html, `<button onclick="saveInputConfig('${escapeHtml(name)}')" class="px-5 py-2 bg-primary text-on-primary rounded-full text-sm">Save</button><button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">Cancel</button><button onclick="deleteInput('${escapeHtml(name)}')" class="px-5 py-2 text-error text-sm">Delete</button>`);
+  if (config.bot_mode === 'self_hosted') {
+    html += `<div class="p-3 rounded-xl bg-surface-container-high text-xs text-on-surface-variant mb-4">${t('misc.self_hosted_note')} <code>examples/tg-bot.js</code>.</div>`;
+  }
+  const isBuiltInTg = name === 'tg_bot' && (config.bot_mode || 'built_in') !== 'self_hosted';
+  if (data.token && !isBuiltInTg) html += `<div class="form-group" id="source-token-block"><label>Source Token</label><div class="flex gap-2"><input type="text" value="${escapeHtml(data.token)}" readonly style="font-family:'JetBrains Mono';font-size:12px"><button onclick="copyText('${escapeHtml(data.token)}')" class="px-3 rounded-xl glass-panel">${t('modal.copy')}</button></div></div>`;
+  html += '<div id="input-test-result"></div>';
+  const testButton = data.hasTest ? `<button onclick="testInputConnection('${escapeHtml(name)}')" class="px-5 py-2 glass-panel rounded-full text-sm">${t('modal.test')}</button>` : '';
+  showModal(data.title || name, html, `${testButton}<button onclick="saveInputConfig('${escapeHtml(name)}')" class="px-5 py-2 bg-primary text-on-primary rounded-full text-sm">${t('modal.save')}</button><button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">${t('modal.cancel')}</button><button onclick="deleteInput('${escapeHtml(name)}')" class="px-5 py-2 text-error text-sm">${t('modal.delete')}</button>`);
+  document.querySelectorAll('.input-cfg-field').forEach(field => field.addEventListener('change', () => {
+    document.querySelectorAll(`[data-depends="${field.dataset.key}"]`).forEach(group => { group.style.display = String(field.value) === group.dataset.depval ? '' : 'none'; });
+    if (name === 'tg_bot' && field.dataset.key === 'bot_mode') {
+      const tokenBlock = document.getElementById('source-token-block');
+      if (tokenBlock) tokenBlock.style.display = field.value === 'self_hosted' ? '' : 'none';
+    }
+  }));
+}
+
+async function testInputConnection(name) {
+  const config = {};
+  document.querySelectorAll('.input-cfg-field').forEach(field => { config[field.dataset.key] = field.value; });
+  const result = document.getElementById('input-test-result');
+  if (result) result.innerHTML = `<p class="text-xs text-on-surface-variant">${t('modal.testing')}</p>`;
+  const { status, data } = await api('POST', '/inputs/' + encodeURIComponent(name) + '/test', { config });
+  if (result) result.innerHTML = `<p class="text-xs ${status === 200 ? 'text-primary' : 'text-error'}">${status === 200 ? '✓ ' : '✕ '}${escapeHtml(data?.message || (status === 200 ? t('modal.connected') : t('modal.test_failed')))}</p>`;
 }
 
 async function saveInputConfig(name) {
@@ -703,75 +1992,285 @@ async function saveInputConfig(name) {
   const config = {};
   fields.forEach(f => config[f.dataset.key] = f.value);
   const { status } = await api('PUT', '/inputs/' + encodeURIComponent(name) + '/config', { config });
-  if (status === 200) { toast('Saved', 'success'); closeModal(); navigate('pipeline'); }
-  else toast('Failed', 'error');
+  if (status === 200) { toast(t('modal.saved'), 'success'); closeModal(); navigate('pipeline'); }
+  else toast(t('modal.failed'), 'error');
 }
 
 async function deleteInput(name) {
-  if (!confirm(`Remove input "${name}"?`)) return;
+  if (!confirm(`${t('misc.remove_input_confirm')} "${name}"?`)) return;
   await api('DELETE', '/inputs/' + encodeURIComponent(name));
-  closeModal(); toast('Removed', 'success'); navigate('pipeline');
+  closeModal(); toast(t('modal.removed'), 'success'); navigate('pipeline');
 }
 
 async function openOutputConfig(name) {
-  const { data: cfgData } = await api('GET', '/outputs/' + encodeURIComponent(name) + '/config');
-  const { data: libData } = await api('GET', '/outputs/library');
+  window._modalOutputDestinations = null;
+  window._modalOutputConfig = null;
+  const [{ data: cfgData }, { data: libData }] = await Promise.all([
+    api('GET', '/outputs/' + encodeURIComponent(name) + '/config'),
+    api('GET', '/outputs/library')
+  ]);
   const meta = (libData?.library || []).find(o => o.name === name) || {};
-  const authFields = meta.authFields || [];
-  const config = cfgData?.config || cachedConfig?.outputs?.[name] || {};
+  const config = { ...(cfgData?.config || cachedConfig?.outputs?.[name] || {}) };
+  window._modalOutputConfig = config;
   let html = '';
-  for (const f of authFields) {
-    html += `<div class="form-group"><label>${escapeHtml(f.label)}</label><input type="${f.secret ? 'password' : 'text'}" value="${escapeHtml(config[f.key] || '')}" data-key="${escapeHtml(f.key)}" class="output-cfg-field"></div>`;
+  for (const f of (meta.authFields || [])) {
+    html += `<div class="form-group"><label>${escapeHtml(f.label || f.key)}</label><input type="${f.secret ? 'password' : 'text'}" value="${escapeHtml(config[f.key] || '')}" data-key="${escapeHtml(f.key)}" class="output-cfg-field"></div>`;
   }
-  showModal(meta.title || name, html, `<button onclick="saveOutputConfig('${escapeHtml(name)}')" class="px-5 py-2 bg-primary text-on-primary rounded-full text-sm">Save</button><button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">Cancel</button><button onclick="deleteOutput('${escapeHtml(name)}')" class="px-5 py-2 text-error text-sm">Delete</button>`);
+  if (name === 'obsidian') {
+    html += `<div class="form-group"><label>WebSocket URL</label><div class="flex gap-2"><input type="text" value="${escapeHtml(config.ws_url || '')}" readonly style="font-family:'JetBrains Mono';font-size:12px"><button onclick="copyText('${escapeHtml(config.ws_url || '')}')" class="px-3 rounded-xl glass-panel">${t('modal.copy')}</button></div></div>`;
+    html += `<div class="form-group"><label>Obsidian API key</label><div class="flex gap-2"><input type="text" value="${escapeHtml(config.api_key || '')}" readonly style="font-family:'JetBrains Mono';font-size:12px"><button onclick="copyText('${escapeHtml(config.api_key || '')}')" class="px-3 rounded-xl glass-panel">${t('modal.copy')}</button></div><p class="text-xs text-on-surface-variant mt-2">${t('misc.obsidian_note')}</p></div>`;
+  }
+  if (meta.hasDestinations) {
+    const destTooltip = name === 'notion' ? t('misc.notion_dest_tooltip') : t('misc.obsidian_dest_tooltip');
+    const faqLink = name === 'notion' ? `<a href="/faq-notion.html" target="_blank" class="ml-2 text-primary hover:underline text-xs">${t('misc.notion_setup_guide')}</a>` : '';
+    html += `<div class="mt-5 pt-4 border-t border-outline-variant"><div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3"><div class="flex items-start gap-2"><p class="text-sm font-medium text-on-surface">${t('misc.destinations')}</p><span class="group relative mt-0.5 cursor-help"><span class="material-symbols-outlined text-[16px] text-on-surface-variant">help_outline</span><span class="tooltip-bubble">${destTooltip}</span></span></div><div class="flex items-center gap-2"><button onclick="loadOutputDestinations('${escapeHtml(name)}')" class="px-3 py-1.5 glass-panel rounded-full text-xs">${t('misc.refresh')}</button>${faqLink}</div></div><p class="text-xs text-on-surface-variant mb-3">${t('misc.destinations_desc')}</p><div id="output-destinations"></div></div>`;
+  }
+  html += '<div id="output-test-result"></div>';
+  const testButton = meta.hasTest ? `<button onclick="testOutputConnection('${escapeHtml(name)}')" class="px-5 py-2 glass-panel rounded-full text-sm">${t('modal.test')}</button>` : '';
+  showModal(meta.title || name, html || `<p class="text-on-surface-variant text-sm">${t('misc.no_config_fields_output')}</p>`, `${testButton}<button onclick="saveOutputConfig('${escapeHtml(name)}')" class="px-5 py-2 bg-primary text-on-primary rounded-full text-sm">${t('modal.save')}</button><button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">${t('modal.cancel')}</button><button onclick="deleteOutput('${escapeHtml(name)}')" class="px-5 py-2 text-error text-sm">${t('modal.delete')}</button>`);
+  if (meta.hasDestinations) loadOutputDestinations(name);
+}
+
+async function loadOutputDestinations(name) {
+  const el = document.getElementById('output-destinations');
+  if (!el) return;
+  const requestId = (window._outputDestinationRequestId || 0) + 1;
+  window._outputDestinationRequestId = requestId;
+  el.innerHTML = `<div class="flex items-center gap-3 rounded-2xl border border-outline-variant bg-surface-container-high/60 px-4 py-4 text-sm text-on-surface-variant"><span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-primary/30 border-t-primary"></span><span>${t('misc.connecting')}</span></div>`;
+  const config = { ...(window._modalOutputConfig || {}) };
+  document.querySelectorAll('.output-cfg-field').forEach(field => { config[field.dataset.key] = field.value; });
+  let response = null;
+  let lastError = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      response = await Promise.race([
+        api('POST', '/outputs/' + encodeURIComponent(name) + '/destinations', { config }),
+        new Promise(resolve => setTimeout(() => resolve({ status: 504, data: { message: 'Request timed out' } }), 10000))
+      ]);
+      if (response.status === 200) break;
+      lastError = response.data?.message || t('misc.load_failed');
+    } catch (error) {
+      lastError = error.message || t('misc.connect_failed');
+    }
+    if (attempt < 2) {
+      el.innerHTML = `<div class="flex items-center gap-3 rounded-2xl border border-outline-variant bg-surface-container-high/60 px-4 py-4 text-sm text-on-surface-variant"><span class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-primary/30 border-t-primary"></span><span>${t('misc.waiting')} ${attempt + 2} ${t('misc.of')} 3</span></div>`;
+      await new Promise(resolve => setTimeout(resolve, 900 * (attempt + 1)));
+    }
+  }
+  if (requestId !== window._outputDestinationRequestId || !document.getElementById('output-destinations')) return;
+  if (!response || response.status !== 200) {
+    el.innerHTML = `<div class="rounded-2xl border border-error/30 bg-error/5 px-4 py-3 text-sm text-error"><p>${escapeHtml(lastError || t('misc.load_failed'))}</p><button onclick="loadOutputDestinations('${escapeHtml(name)}')" class="mt-2 rounded-full border border-error/30 px-3 py-1 text-xs">${t('misc.retry')}</button></div>`;
+    return;
+  }
+  const destinations = response.data?.destinations || [];
+  window._modalOutputDestinations = destinations;
+  if (!destinations.length) { el.innerHTML = `<p class="text-xs text-on-surface-variant">${t('misc.no_dest_found')}</p>`; return; }
+  el.innerHTML = destinations.map((d, i) => `<div class="mb-3 rounded-2xl border border-outline-variant bg-surface-container-high/60 p-4 transition-colors hover:border-primary/40"><label class="flex items-start gap-3 normal-case tracking-normal font-sans text-sm text-on-surface"><input type="checkbox" class="output-destination-check mt-1 h-4 w-4 accent-primary" data-index="${i}"${d.enabled !== false ? ' checked' : ''}><span class="min-w-0"><span class="block font-medium">${d.type === 'page' ? '📄' : '🗃️'} ${escapeHtml(d.title || d.name || d.id)}</span><span class="mt-1 block text-[11px] uppercase tracking-wider text-on-surface-variant">${d.type === 'page' ? t('misc.page') : t('misc.database')}</span></span></label>${d.url ? `<a href="${escapeHtml(d.url)}" target="_blank" class="ml-7 mt-2 inline-block text-xs text-primary hover:underline">${t('misc.open_notion')}</a>` : ''}<div class="ml-7 mt-3 rounded-xl border border-outline-variant bg-surface-container-low/70 p-3"><label class="mb-1.5 block text-xs font-medium text-on-surface-variant">${t('misc.comment_for_jenn')}</label><textarea rows="3" class="output-destination-description block w-full resize-y rounded-lg border border-outline-variant bg-surface-container-low px-3 py-2 text-sm leading-5 text-on-surface outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" data-index="${i}" placeholder="${t('misc.save_placeholder')}">${escapeHtml(d.description || '')}</textarea></div></div>`).join('');
+}
+
+async function testOutputConnection(name) {
+  const config = {};
+  document.querySelectorAll('.output-cfg-field').forEach(field => { config[field.dataset.key] = field.value; });
+  const result = document.getElementById('output-test-result');
+  if (result) result.innerHTML = `<p class="text-xs text-on-surface-variant">${t('modal.testing')}</p>`;
+  const { status, data } = await api('POST', '/outputs/' + encodeURIComponent(name) + '/test', { config });
+  if (result) result.innerHTML = `<p class="text-xs ${status === 200 ? 'text-primary' : 'text-error'}">${status === 200 ? '✓ ' : '✕ '}${escapeHtml(data?.message || (status === 200 ? t('misc.ready') : t('modal.test_failed')))}</p>`;
 }
 
 async function saveOutputConfig(name) {
   const fields = document.querySelectorAll('.output-cfg-field');
   const config = {};
   fields.forEach(f => config[f.dataset.key] = f.value);
+  if (window._modalOutputDestinations) {
+    config.destinations = window._modalOutputDestinations.map((destination, index) => ({
+      ...destination,
+      enabled: document.querySelector(`.output-destination-check[data-index="${index}"]`)?.checked !== false,
+      description: document.querySelector(`.output-destination-description[data-index="${index}"]`)?.value || ''
+    }));
+    config.databases = config.destinations.filter(d => d.type === 'database').map(d => ({ id: d.id, name: d.name || d.title, database_id: d.database_id || d.notion_id, url: d.url || null, properties: d.properties || {}, categories: d.categories || [] }));
+  }
   const cfg = JSON.parse(JSON.stringify(cachedConfig || {}));
   if (!cfg.outputs) cfg.outputs = {};
   cfg.outputs[name] = { ...(cfg.outputs[name] || {}), ...config };
   const { status } = await api('PUT', '/config', { config: cfg });
-  if (status === 200) { cachedConfig = cfg; toast('Saved', 'success'); closeModal(); navigate('pipeline'); }
-  else toast('Failed', 'error');
+  let preferencesStatus = 200;
+  if (status === 200 && window._modalOutputDestinations) {
+    const preferencesResult = await api('PUT', '/outputs/' + encodeURIComponent(name) + '/destination-preferences', { destinations: config.destinations });
+    preferencesStatus = preferencesResult.status;
+  }
+  if (status === 200 && preferencesStatus === 200) { cachedConfig = cfg; toast(t('modal.saved'), 'success'); closeModal(); navigate('pipeline'); }
+  else toast(t('modal.failed'), 'error');
 }
 
 async function deleteOutput(name) {
-  if (!confirm(`Remove output "${name}"?`)) return;
+  if (!confirm(`${t('misc.remove_output_confirm')} "${name}"?`)) return;
   await api('DELETE', '/outputs/' + encodeURIComponent(name));
-  closeModal(); toast('Removed', 'success'); navigate('pipeline');
+  closeModal(); toast(t('modal.removed'), 'success'); navigate('pipeline');
 }
 
 async function openSkillConfig(name) {
-  const { data } = await api('GET', '/skills/' + encodeURIComponent(name) + '/config');
-  if (!data) { toast('Failed to load', 'error'); return; }
-  const { schema, config, outputs, outputDestinations } = data;
+  const { ok, data } = await api('GET', '/skills/' + encodeURIComponent(name) + '/config');
+  if (!ok || !data) { toast(data?.message || t('modal.failed'), 'error'); return; }
+  const { schema, instances, outputs, outputDestinations, skillOutputFunction, capability } = data;
+  
+  window._skillConfigData = { name, instances: instances || [], outputs: outputs || [], outputDestinations: outputDestinations || {} };
+
   let html = '';
-  for (const [key, field] of Object.entries(schema || {})) {
-    let val = config[key] !== undefined ? config[key] : (field.default || '');
-    if (field.type === 'output') {
-      html += `<div class="form-group"><label>${escapeHtml(field.label || key)}</label><select data-field="${key}">${(outputs||[]).map(o => `<option value="${o}"${val===o?' selected':''}>${o}</option>`).join('')}</select></div>`;
-    } else if (field.type === 'boolean') {
-      html += `<div class="form-group"><label>${escapeHtml(field.label || key)}</label><select data-field="${key}"><option value="true"${val?'  selected':''}>Yes</option><option value="false"${!val?' selected':''}>No</option></select></div>`;
-    } else {
-      html += `<div class="form-group"><label>${escapeHtml(field.label || key)}</label><input type="text" data-field="${key}" value="${escapeHtml(String(val))}"></div>`;
-    }
+  if (skillOutputFunction || capability) {
+    html += `<div class="rounded-2xl border border-primary/15 bg-primary/5 p-3 mb-4 text-xs leading-5 text-on-surface-variant">
+      ${capability ? `Capability: <strong class="text-on-surface">${escapeHtml(capability)}</strong>` : ''}
+      ${skillOutputFunction ? `${capability ? ' · ' : ''}Default function: <strong class="text-on-surface">${escapeHtml(skillOutputFunction)}</strong>` : ''}
+    </div>`;
   }
-  showModal(name, html || '<p class="text-on-surface-variant text-sm">No configuration</p>', `<button onclick="saveSkillConfig('${escapeHtml(name)}')" class="px-5 py-2 bg-primary text-on-primary rounded-full text-sm">Save</button><button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">Cancel</button>`);
+
+  html += `<div id="skill-instances-list" class="space-y-4 mb-4"></div>`;
+  html += `<button onclick="addSkillInstance()" class="w-full py-3 border border-dashed border-outline-variant rounded-xl text-on-surface-variant hover:border-primary hover:text-primary transition-all text-sm flex items-center justify-center gap-2">
+    <span class="material-symbols-outlined text-[18px]">add</span>
+    ${t('skill.add_instance')}
+  </button>`;
+
+  showModal(
+    escapeHtml(name),
+    html,
+    `<button onclick="saveAllSkillInstances('${escapeHtml(name)}')" class="px-5 py-2 bg-primary text-on-primary rounded-full text-sm font-medium">${t('modal.save')}</button><button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">${t('modal.cancel')}</button>`,
+    { large: true }
+  );
+
+  renderSkillInstances();
 }
 
-async function saveSkillConfig(name) {
-  const config = {};
-  document.querySelectorAll('[data-field]').forEach(el => {
-    let val = el.value;
-    if (el.tagName === 'SELECT' && val === 'true') val = true;
-    else if (el.tagName === 'SELECT' && val === 'false') val = false;
-    config[el.dataset.field] = val;
+function renderSkillInstances() {
+  const container = document.getElementById('skill-instances-list');
+  if (!container) return;
+  const { instances, outputs, outputDestinations } = window._skillConfigData;
+
+  container.innerHTML = instances.map((inst, idx) => {
+    const allDests = [];
+    for (const outName of (inst.outputs || [])) {
+      const dests = outputDestinations[outName] || [];
+      dests.filter(d => d.enabled !== false).forEach(d => {
+        allDests.push({ ...d, outputName: outName });
+      });
+    }
+
+    return `
+    <div class="glass-panel rounded-2xl p-4 sm:p-5 space-y-4" data-instance-idx="${idx}">
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center gap-3 flex-1 min-w-0">
+          <span class="material-symbols-outlined text-primary text-[20px] flex-shrink-0">tune</span>
+          <input type="text" value="${escapeHtml(inst.name)}" onchange="updateInstanceField(${idx}, 'name', this.value)" class="bg-transparent border-none text-on-surface font-medium text-sm focus:ring-0 focus:outline-none flex-1 px-0 min-w-0" placeholder="${t('skill.instance_name')}">
+        </div>
+        <div class="flex items-center gap-1 flex-shrink-0">
+          ${instances.length > 1 ? `<button onclick="removeSkillInstance(${idx})" class="p-1.5 text-on-surface-variant hover:text-error rounded-lg transition-colors" title="${t('modal.delete')}"><span class="material-symbols-outlined text-[18px]">delete</span></button>` : ''}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="flex items-center gap-1.5">
+          ${t('skill.router_instructions')}
+          <span class="group relative cursor-help">
+            <span class="material-symbols-outlined text-[14px] text-on-surface-variant">help_outline</span>
+            <span class="tooltip-bubble">${t('skill.router_instructions_tooltip')}</span>
+          </span>
+        </label>
+        <textarea rows="2" onchange="updateInstanceField(${idx}, 'routerInstructions', this.value)" class="block w-full resize-y rounded-lg border border-outline-variant bg-surface-container-low px-3 py-2 text-sm leading-5 text-on-surface outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20" placeholder="${t('skill.router_instructions_placeholder')}">${escapeHtml(inst.routerInstructions || '')}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label>${t('skill.allowed_outputs')}</label>
+        <div class="flex flex-wrap gap-2 mt-1">
+          ${(outputs || []).map(o => `
+            <label class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border cursor-pointer transition-all text-sm ${(inst.outputs || []).includes(o) ? 'border-primary bg-primary/10 text-primary' : 'border-outline-variant bg-surface-container-low text-on-surface-variant hover:border-primary/40'}">
+              <input type="checkbox" ${(inst.outputs || []).includes(o) ? 'checked' : ''} onchange="toggleInstanceOutput(${idx}, '${escapeHtml(o)}', this.checked)" class="sr-only">
+              ${escapeHtml(o)}
+            </label>
+          `).join('') || `<span class="text-xs text-on-surface-variant">${t('skill.no_outputs_available')}</span>`}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>${t('skill.fallback_destination')}</label>
+        <select onchange="updateInstanceField(${idx}, 'fallbackDestination', this.value)" class="block w-full rounded-lg border border-outline-variant bg-surface-container-low px-3 py-2 text-sm text-on-surface outline-none transition focus:border-primary">
+          <option value="">${t('skill.no_fallback')}</option>
+          ${allDests.map(d => {
+            const id = d.id || d.name || d.notion_id || '';
+            const label = `${d.type === 'page' ? '📄' : '🗃️'} ${d.title || d.name || id} (${d.outputName})`;
+            return `<option value="${escapeHtml(id)}"${inst.fallbackDestination === id ? ' selected' : ''}>${escapeHtml(label)}</option>`;
+          }).join('')}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>${t('misc.routing_mode')}</label>
+        <select onchange="updateInstanceField(${idx}, 'routingMode', this.value)" class="block w-full rounded-lg border border-outline-variant bg-surface-container-low px-3 py-2 text-sm text-on-surface outline-none transition focus:border-primary">
+          <option value="auto"${(inst.routingMode || 'auto') === 'auto' ? ' selected' : ''}>${t('misc.jenn_decides')}</option>
+          <option value="fixed"${inst.routingMode === 'fixed' ? ' selected' : ''}>${t('misc.always_use')}</option>
+        </select>
+      </div>
+
+      ${(inst.routingMode || 'auto') === 'fixed' && allDests.length ? `
+      <div class="form-group">
+        <label>${t('misc.default_destination')}</label>
+        <select onchange="updateInstanceField(${idx}, 'destination', this.value)" class="block w-full rounded-lg border border-outline-variant bg-surface-container-low px-3 py-2 text-sm text-on-surface outline-none transition focus:border-primary">
+          <option value="">${t('skill.select_destination')}</option>
+          ${allDests.map(d => {
+            const id = d.id || d.name || d.notion_id || '';
+            const label = `${d.type === 'page' ? '📄' : '🗃️'} ${d.title || d.name || id} (${d.outputName})`;
+            return `<option value="${escapeHtml(id)}"${inst.destination === id ? ' selected' : ''}>${escapeHtml(label)}</option>`;
+          }).join('')}
+        </select>
+      </div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function updateInstanceField(idx, field, value) {
+  if (!window._skillConfigData?.instances?.[idx]) return;
+  window._skillConfigData.instances[idx][field] = value;
+  if (field === 'routingMode') renderSkillInstances();
+}
+
+function toggleInstanceOutput(idx, outputName, checked) {
+  if (!window._skillConfigData?.instances?.[idx]) return;
+  const inst = window._skillConfigData.instances[idx];
+  if (!inst.outputs) inst.outputs = [];
+  if (checked) {
+    if (!inst.outputs.includes(outputName)) inst.outputs.push(outputName);
+  } else {
+    inst.outputs = inst.outputs.filter(o => o !== outputName);
+  }
+  renderSkillInstances();
+}
+
+function addSkillInstance() {
+  if (!window._skillConfigData) return;
+  window._skillConfigData.instances.push({
+    id: `inst_${Date.now()}`,
+    name: t('skill.new_instance'),
+    routerInstructions: '',
+    outputs: [],
+    destination: '',
+    routingMode: 'auto',
+    fallbackDestination: ''
   });
-  await api('POST', '/skills/' + encodeURIComponent(name) + '/config', { config });
-  toast('Saved', 'success'); closeModal(); navigate('pipeline');
+  renderSkillInstances();
+}
+
+function removeSkillInstance(idx) {
+  if (!window._skillConfigData?.instances) return;
+  if (window._skillConfigData.instances.length <= 1) return;
+  window._skillConfigData.instances.splice(idx, 1);
+  renderSkillInstances();
+}
+
+async function saveAllSkillInstances(name) {
+  if (!window._skillConfigData) return;
+  const { instances } = window._skillConfigData;
+  const { ok, data } = await api('POST', '/skills/' + encodeURIComponent(name) + '/config', { instances });
+  if (!ok) return toast(data?.message || t('misc.save_failed'), 'error');
+  toast(t('misc.skill_config_saved'), 'success');
+  closeModal();
+  navigate('pipeline');
 }
 
 // ── Libraries ──
@@ -780,37 +2279,37 @@ async function openInputsLibrary() {
   const { data: instData } = await api('GET', '/inputs');
   const installed = new Set((instData?.inputs || []).map(s => s.name));
   const library = libData?.library || [];
-  showModal('Inputs Library', `<div class="space-y-3">${library.map(inp => `
+  showModal(t('misc.inputs_library'), `<div class="space-y-3">${library.map(inp => `
     <div class="flex items-center justify-between p-4 glass-panel rounded-xl">
       <div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">${inp.icon || 'plug'}</span><div><p class="text-on-surface font-medium text-sm">${escapeHtml(inp.title || inp.name)}</p><p class="text-xs text-on-surface-variant">${escapeHtml((inp.description||'').slice(0,60))}</p></div></div>
-      ${installed.has(inp.name) ? `<button onclick="uninstallInput('${inp.name}')" class="px-4 py-1.5 glass-panel rounded-full text-xs text-on-surface-variant">Remove</button>` : `<button onclick="installInput('${inp.name}')" class="px-4 py-1.5 bg-primary text-on-primary rounded-full text-xs">Install</button>`}
+      ${installed.has(inp.name) ? `<button onclick="uninstallInput('${inp.name}')" class="px-4 py-1.5 glass-panel rounded-full text-xs text-on-surface-variant">${t('modal.remove')}</button>` : `<button onclick="installInput('${inp.name}')" class="px-4 py-1.5 bg-primary text-on-primary rounded-full text-xs">${t('marketplace.install')}</button>`}
     </div>
-  `).join('') || '<p class="text-on-surface-variant text-sm text-center p-4">No inputs available</p>'}</div>`, `<button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">Close</button>`);
+  `).join('') || `<p class="text-on-surface-variant text-sm text-center p-4">${t('misc.no_inputs_available')}</p>`}</div>`, `<button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">${t('modal.close')}</button>`);
 }
 
-async function installInput(name) { await api('POST', '/inputs/' + encodeURIComponent(name) + '/install'); closeModal(); navigate('pipeline'); toast('Installed', 'success'); }
-async function uninstallInput(name) { if (!confirm(`Remove "${name}"?`)) return; await api('DELETE', '/inputs/' + encodeURIComponent(name)); closeModal(); navigate('pipeline'); toast('Removed', 'success'); }
+async function installInput(name) { const { ok, data } = await api('POST', '/inputs/' + encodeURIComponent(name) + '/install'); if (!ok) return toast(data?.message || t('misc.install_failed'), 'error'); closeModal(); navigate(currentPage); toast(t('marketplace.install') + ' ✓', 'success'); }
+async function uninstallInput(name) { if (!confirm(`${t('misc.remove_input_confirm')} "${name}"?`)) return; const { ok, data } = await api('DELETE', '/inputs/' + encodeURIComponent(name)); if (!ok) return toast(data?.message || t('misc.remove_failed'), 'error'); closeModal(); navigate(currentPage); toast(t('modal.removed'), 'success'); }
 
 async function openOutputsLibrary() {
   const { data: libData } = await api('GET', '/outputs/library');
   const { data: instData } = await api('GET', '/outputs');
   const installed = new Set((instData?.outputs || []).map(s => s.name));
   const library = libData?.library || [];
-  showModal('Outputs Library', `<div class="space-y-3">${library.map(out => `
+  showModal(t('misc.outputs_library'), `<div class="space-y-3">${library.map(out => `
     <div class="flex items-center justify-between p-4 glass-panel rounded-xl">
       <div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">${out.icon || 'description'}</span><div><p class="text-on-surface font-medium text-sm">${escapeHtml(out.title || out.name)}</p><p class="text-xs text-on-surface-variant">${escapeHtml((out.description||'').slice(0,60))}</p></div></div>
-      ${installed.has(out.name) ? `<button onclick="uninstallOutput('${out.name}')" class="px-4 py-1.5 glass-panel rounded-full text-xs text-on-surface-variant">Remove</button>` : `<button onclick="installOutput('${out.name}')" class="px-4 py-1.5 bg-primary text-on-primary rounded-full text-xs">Install</button>`}
+      ${installed.has(out.name) ? `<button onclick="uninstallOutput('${out.name}')" class="px-4 py-1.5 glass-panel rounded-full text-xs text-on-surface-variant">${t('modal.remove')}</button>` : `<button onclick="installOutput('${out.name}')" class="px-4 py-1.5 bg-primary text-on-primary rounded-full text-xs">${t('marketplace.install')}</button>`}
     </div>
-  `).join('') || '<p class="text-on-surface-variant text-sm text-center p-4">No outputs available</p>'}</div>`, `<button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">Close</button>`);
+  `).join('') || `<p class="text-on-surface-variant text-sm text-center p-4">${t('misc.no_outputs_available')}</p>`}</div>`, `<button onclick="closeModal()" class="px-5 py-2 glass-panel rounded-full text-sm text-on-surface">${t('modal.close')}</button>`);
 }
 
-async function installOutput(name) { await api('POST', '/outputs/' + encodeURIComponent(name) + '/install'); closeModal(); navigate('pipeline'); toast('Installed', 'success'); }
-async function uninstallOutput(name) { if (!confirm(`Remove "${name}"?`)) return; await api('DELETE', '/outputs/' + encodeURIComponent(name)); closeModal(); navigate('pipeline'); toast('Removed', 'success'); }
+async function installOutput(name) { const { ok, data } = await api('POST', '/outputs/' + encodeURIComponent(name) + '/install'); if (!ok) return toast(data?.message || t('misc.install_failed'), 'error'); closeModal(); navigate(currentPage); toast(t('marketplace.install') + ' ✓', 'success'); }
+async function uninstallOutput(name) { if (!confirm(`${t('misc.remove_output_confirm')} "${name}"?`)) return; const { ok, data } = await api('DELETE', '/outputs/' + encodeURIComponent(name)); if (!ok) return toast(data?.message || t('misc.remove_failed'), 'error'); closeModal(); navigate(currentPage); toast(t('modal.removed'), 'success'); }
 
 // ── Helpers ──
 function escapeHtml(s) { if (!s) return ''; const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-function timeAgo(dateStr) { if (!dateStr) return ''; const d = new Date(dateStr); const diff = (Date.now() - d.getTime()) / 1000; if (diff < 60) return 'just now'; if (diff < 3600) return Math.floor(diff/60) + 'm ago'; if (diff < 86400) return Math.floor(diff/3600) + 'h ago'; return Math.floor(diff/86400) + 'd ago'; }
-function copyText(text) { navigator.clipboard.writeText(text).then(() => toast('Copied', 'success')); }
+function timeAgo(dateStr) { if (!dateStr) return ''; const d = new Date(dateStr); const diff = (Date.now() - d.getTime()) / 1000; if (diff < 60) return t('time.just_now'); if (diff < 3600) return Math.floor(diff/60) + t('time.m_ago'); if (diff < 86400) return Math.floor(diff/3600) + t('time.h_ago'); return Math.floor(diff/86400) + t('time.d_ago'); }
+function copyText(text) { navigator.clipboard.writeText(text).then(() => toast(t('misc.copied'), 'success')); }
 </script>
 </body>
 </html>

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jenn Console | Центр знаний</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#131314",
+                    "inverse-primary": "#6c5c3d",
+                    "tertiary-container": "#d4c1f2",
+                    "secondary-container": "#584725",
+                    "on-error-container": "#ffdad6",
+                    "on-primary": "#3b2f14",
+                    "gold": "#DCC7A1",
+                    "surface-container-lowest": "#0e0e0f",
+                    "primary-container": "#dcc7a1",
+                    "outline-variant": "#4c463c",
+                    "surface-container": "#201f20",
+                    "on-surface": "#e5e2e3",
+                    "primary": "#f9e3bb",
+                    "tertiary-fixed-dim": "#d1beef",
+                    "secondary": "#dcc398",
+                    "primary-fixed": "#f6e0b9",
+                    "on-error": "#690005",
+                    "surface": "#131314",
+                    "background": "#131314",
+                    "on-tertiary-fixed": "#21143a",
+                    "inverse-surface": "#e5e2e3",
+                    "tertiary-fixed": "#ebdcff",
+                    "on-primary-fixed-variant": "#534528",
+                    "primary-fixed-dim": "#d9c49e",
+                    "error": "#ffb4ab",
+                    "inverse-on-surface": "#313031",
+                    "sand": "#E8D5B5",
+                    "surface-bright": "#1E1E21",
+                    "surface-tint": "#d9c49e",
+                    "on-secondary-fixed": "#261900",
+                    "outline": "#989084",
+                    "surface-variant": "#353436",
+                    "on-secondary": "#3d2e0f",
+                    "on-surface-variant": "#cfc5b8",
+                    "on-tertiary-fixed-variant": "#4e4068",
+                    "surface-container-high": "#2a2a2b",
+                    "secondary-fixed-dim": "#dcc398",
+                    "on-tertiary-container": "#5c4d77",
+                    "error-container": "#93000a",
+                    "surface-container-low": "#1c1b1c",
+                    "lavender": "#C3B1E1",
+                    "on-secondary-fixed-variant": "#554423",
+                    "tertiary": "#ede0ff",
+                    "on-secondary-container": "#ceb58b",
+                    "on-tertiary": "#372950",
+                    "on-primary-container": "#625234",
+                    "turquoise": "#87C5C5",
+                    "secondary-fixed": "#fadfb2",
+                    "surface-container-highest": "#353436",
+                    "on-primary-fixed": "#251a03",
+                    "on-background": "#e5e2e3"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-safe": "32px",
+                    "unit": "8px",
+                    "container-max": "1200px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "label-lg": ["Inter"],
+                    "headline-lg": ["Cormorant Garamond"],
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Cormorant Garamond"],
+                    "title-lg": ["Inter"],
+                    "display": ["Cormorant Garamond"],
+                    "code": ["JetBrains Mono"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-lg": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "title-lg": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "display": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                    "code": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["15px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #131314;
+            color: #e5e2e3;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(30, 30, 33, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(152, 144, 132, 0.1);
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
+        }
+        .spotlight-search:focus-within {
+            box-shadow: 0 0 40px rgba(220, 199, 161, 0.15);
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Light Theme */
+        html.light body {
+            background-color: #f9f8f6;
+            color: #1c1c1a;
+        }
+        html.light .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+            .bento-grid > div {
+                grid-column: span 1 !important;
+            }
+        }
+
+        /* Mobile Menu Active State */
+        .mobile-menu-active {
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+
+        /* Hamburger Animation */
+        .menu-active #menu-line-1 {
+            transform: rotate(45deg) translate(4px, 4px);
+        }
+        .menu-active #menu-line-2 {
+            opacity: 0;
+        }
+        .menu-active #menu-line-3 {
+            transform: rotate(-45deg) translate(4px, -4px);
+        }
+    </style>
+</head>
+<body class="selection:bg-primary selection:text-on-primary">
+<!-- Global Background Shader -->
+
+<!-- Top Navigation -->
+<nav class="fixed top-0 left-0 w-full z-50 grid grid-cols-[1fr_auto_1fr] items-center px-6 md:px-8 py-4 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20">
+<a href="/" class="justify-self-start font-display text-2xl font-bold text-primary tracking-tight italic">Jenn</a>
+<div class="hidden md:flex justify-self-center gap-6 items-center">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label text-sm" href="/faq.html">FAQ</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label text-sm" href="/docs.html" data-i18n="nav_docs">API Docs</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label text-sm" href="/products.html" data-i18n="nav_products">Products</a>
+</div>
+<div class="col-start-3 md:col-auto justify-self-end flex gap-3 items-center">
+<button onclick="toggleLang()" class="w-8 h-8 rounded-full border border-outline-variant/50 hover:border-primary flex items-center justify-center text-xs font-label-lg text-on-surface-variant hover:text-primary transition-all" title="Language"><span id="lang-label">RU</span></button>
+<button onclick="toggleTheme()" class="w-8 h-8 rounded-full border border-outline-variant/50 hover:border-primary flex items-center justify-center text-on-surface-variant hover:text-primary transition-all" title="Theme"><span class="material-symbols-outlined text-[16px]" id="theme-icon">dark_mode</span></button>
+<button onclick="location.href='/console'" class="hidden md:block text-on-surface-variant hover:text-primary transition-all font-label text-sm" data-i18n="signin">Sign In</button>
+<button onclick="location.href='/console'" class="hidden md:block bg-primary text-on-primary px-5 py-2 rounded-full font-bold font-label text-sm hover:scale-105 active:scale-95 transition-transform" data-i18n="console_btn">Console</button>
+<button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-surface-container-high transition-colors">
+<span class="w-5 h-0.5 bg-on-surface-variant transition-all" id="menu-line-1"></span>
+<span class="w-5 h-0.5 bg-on-surface-variant transition-all" id="menu-line-2"></span>
+<span class="w-5 h-0.5 bg-on-surface-variant transition-all" id="menu-line-3"></span>
+</button>
+</div>
+</nav>
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="fixed top-[64px] left-0 w-full z-40 bg-surface/95 backdrop-blur-xl transform -translate-y-full opacity-0 transition-all duration-300 pointer-events-none border-b border-outline-variant/20">
+<div class="flex flex-col p-6 gap-4">
+<a class="text-primary font-bold py-2 font-label text-sm border-b border-outline-variant/30" href="/faq.html">FAQ</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label text-sm border-b border-outline-variant/30" href="/docs.html" data-i18n="nav_docs">API Docs</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label text-sm" href="/products.html" data-i18n="nav_products">Products</a>
+<div class="flex gap-3 pt-4">
+<button onclick="location.href='/console'" class="flex-1 py-3 bg-primary text-on-primary rounded-full font-bold font-label text-sm" data-i18n="signin">Sign In</button>
+<button onclick="location.href='/console'" class="flex-1 py-3 border border-primary text-primary rounded-full font-bold font-label text-sm" data-i18n="console_btn">Console</button>
+</div>
+</div>
+</div>
+<main class="relative z-10 pt-32 pb-24 px-gutter max-w-container-max mx-auto overflow-hidden">
+<!-- Hero Section -->
+<section class="flex flex-col lg:flex-row items-center justify-between gap-16 mb-32">
+<div class="w-full lg:w-1/2 fade-in">
+<h1 class="font-display text-display italic mb-6 leading-tight" data-i18n="hero_title">
+                    Explore the <br/>Architecture of Thought
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg mb-12" data-i18n="hero_desc">
+                    Access the neural repository of Jenn Console. From foundational logic to complex API orchestrations, navigate the flow of intelligence.
+                </p>
+<!-- Spotlight Search Bar -->
+<div class="spotlight-search glass-panel rounded-2xl p-4 flex items-center gap-4 transition-all duration-300 w-full group">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 w-full text-title-lg font-title-lg placeholder:text-outline-variant" placeholder="Search the console..." type="text" data-i18n="search_ph"/>
+<div class="flex items-center gap-1 px-2 py-1 bg-surface-container rounded border border-outline-variant/30 text-outline-variant font-code text-code">
+<span>⌘</span><span>K</span>
+</div>
+</div>
+</div>
+<!-- 3D Scene Hero Asset -->
+<div class="w-full lg:w-1/2 h-[500px] relative">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent rounded-full blur-[100px] opacity-30"></div>
+
+</div>
+</section>
+<!-- Categories Section (Asymmetric Floating Cards) -->
+<section class="mb-32">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+<!-- Category 1 -->
+<div class="glass-panel p-8 rounded-[2rem] hover:bg-surface-container-high transition-colors cursor-pointer group lg:mt-12">
+<span class="material-symbols-outlined text-gold mb-6 block" data-icon="architecture">architecture</span>
+<h3 class="font-title-lg text-title-lg mb-2" data-i18n="cat_core">Core Concepts</h3>
+<p class="font-label-lg text-label-lg text-on-surface-variant" data-i18n="cat_core_desc">Foundational logic flows.</p>
+</div>
+<!-- Category 2 -->
+<div class="glass-panel p-8 rounded-[2rem] hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-turquoise mb-6 block" data-icon="hub">hub</span>
+<h3 class="font-title-lg text-title-lg mb-2" data-i18n="cat_neural">Neural Flow</h3>
+<p class="font-label-lg text-label-lg text-on-surface-variant" data-i18n="cat_neural_desc">Real-time data streams.</p>
+</div>
+<!-- Category 3 -->
+<div class="glass-panel p-8 rounded-[2rem] hover:bg-surface-container-high transition-colors cursor-pointer group lg:mt-8">
+<span class="material-symbols-outlined text-lavender mb-6 block" data-icon="shield">shield</span>
+<h3 class="font-title-lg text-title-lg mb-2" data-i18n="cat_security">Security</h3>
+<p class="font-label-lg text-label-lg text-on-surface-variant" data-i18n="cat_security_desc">Privacy &amp; encryptions.</p>
+</div>
+<!-- Category 4 -->
+<div class="glass-panel p-8 rounded-[2rem] hover:bg-surface-container-high transition-colors cursor-pointer group lg:mt-16">
+<span class="material-symbols-outlined text-sand mb-6 block" data-icon="dns">dns</span>
+<h3 class="font-title-lg text-title-lg mb-2" data-i18n="cat_hosting">Self Hosting</h3>
+<p class="font-label-lg text-label-lg text-on-surface-variant" data-i18n="cat_hosting_desc">Deployment architecture.</p>
+</div>
+<!-- Category 5 -->
+<div class="glass-panel p-8 rounded-[2rem] hover:bg-surface-container-high transition-colors cursor-pointer group lg:mt-4">
+<span class="material-symbols-outlined text-primary mb-6 block" data-icon="api">api</span>
+<h3 class="font-title-lg text-title-lg mb-2" data-i18n="cat_api">API Reference</h3>
+<p class="font-label-lg text-label-lg text-on-surface-variant" data-i18n="cat_api_desc">Integrate intelligence.</p>
+</div>
+</div>
+</section>
+<!-- Knowledge Feed (Bento Grid) -->
+<section>
+<div class="flex justify-between items-end mb-12">
+<h2 class="font-headline-lg text-headline-lg" data-i18n="trending">Trending Queries</h2>
+<div class="flex gap-2">
+<span class="bg-surface-container px-3 py-1 rounded-full text-label-lg font-label-lg border border-outline-variant/30" data-i18n="most_viewed">Most Viewed</span>
+<span class="bg-surface-container-low px-3 py-1 rounded-full text-label-lg font-label-lg border border-outline-variant/30 text-on-surface-variant" data-i18n="newest">Newest</span>
+</div>
+</div>
+<div class="bento-grid">
+<!-- Large Question Card -->
+<a href="/faq-article.html?id=1" class="col-span-12 lg:col-span-7 glass-panel p-10 rounded-[2.5rem] relative overflow-hidden group block hover:border-primary/30 transition-all">
+<div class="absolute top-0 right-0 p-8">
+<span class="material-symbols-outlined text-primary opacity-20 group-hover:opacity-100 transition-opacity" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="flex gap-4 mb-6">
+<span class="bg-turquoise/10 text-turquoise px-3 py-1 rounded-full text-[10px] uppercase font-bold tracking-widest" data-i18n="tag_complex">Complex</span>
+<span class="text-on-surface-variant font-label-lg text-label-lg" data-i18n="read_12">12 min read</span>
+</div>
+<h3 class="font-display text-4xl italic mb-6 leading-tight max-w-md" data-i18n="a1_title">
+                        How does the AI-Router determine semantic routing priorities?
+                    </h3>
+<p class="text-on-surface-variant font-body-md text-body-md mb-8 max-w-xl" data-i18n="a1_desc">
+                        Delve into the multi-layer filtering system that ensures low-latency execution by predicting intent before the full tokenization process begins.
+                    </p>
+<button class="flex items-center gap-2 text-primary font-title-lg group-hover:gap-4 transition-all">
+                        <span data-i18n="deep_dive">Deep Dive</span> <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</a>
+<!-- Small Image/Context Card -->
+<div class="col-span-12 lg:col-span-5 relative rounded-[2.5rem] overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A macro close-up of a sophisticated golden microchip with glowing lavender light pulses flowing through its architecture, shot in a high-end editorial style with deep space shadows and cinematic soft lighting that highlights tactile modernism." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCFTvOvG2CNLOOV6WMQ9Z9cqIIFhnyI6mzE4zx-mDdBLqRSn6uiHeaEjj6bqE5hzaCfSYqhznAs0XBV434TAZbEayQlaCHar9ZNHQrjWDRPR2ctOMSasm2cq_v5-6NmF27_mLjcfdUv0XUdn4ldBxXM34yaTIjh8169hSk6bgQpOOzll1hJb0-FJ1-71BkP_pjNJREHMXseg58nAGU3sq8E363HnVx9VxZAVLYINWo-EQx_7zhZL5ZdLA')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent p-10 flex flex-col justify-end">
+<span class="text-gold font-label-lg text-label-lg mb-2" data-i18n="neural_eff">Neural Efficiency</span>
+<h4 class="font-title-lg text-title-lg text-white" data-i18n="scaling">Scaling the Jenn Core</h4>
+</div>
+</div>
+<!-- Question Card 2 -->
+<a href="/faq-article.html?id=2" class="col-span-12 lg:col-span-4 glass-panel p-8 rounded-[2rem] hover:translate-y-[-4px] transition-transform block hover:border-primary/30">
+<div class="flex justify-between mb-4">
+<span class="bg-sand/10 text-sand px-3 py-1 rounded-full text-[10px] uppercase font-bold" data-i18n="tag_standard">Standard</span>
+<span class="text-on-surface-variant font-label-lg text-label-lg italic" data-i18n="read_4">4 min</span>
+</div>
+<h4 class="font-title-lg text-title-lg mb-4" data-i18n="a2_title">Managing API Keys via CLI</h4>
+<p class="text-on-surface-variant text-body-md font-body-md mb-6" data-i18n="a2_desc">Securely rotate and scope your console credentials.</p>
+<div class="flex items-center gap-2 text-gold">
+<span class="material-symbols-outlined text-[18px]" data-icon="link">link</span>
+<span class="font-label-lg text-label-lg" data-i18n="a2_link">Documentation</span>
+</div>
+</a>
+<!-- Question Card 3 -->
+<a href="/faq-article.html?id=3" class="col-span-12 lg:col-span-4 glass-panel p-8 rounded-[2rem] hover:translate-y-[-4px] transition-transform block hover:border-primary/30">
+<div class="flex justify-between mb-4">
+<span class="bg-lavender/10 text-lavender px-3 py-1 rounded-full text-[10px] uppercase font-bold" data-i18n="tag_advanced">Advanced</span>
+<span class="text-on-surface-variant font-label-lg text-label-lg italic" data-i18n="read_8">8 min</span>
+</div>
+<h4 class="font-title-lg text-title-lg mb-4" data-i18n="a3_title">Custom Model Integration</h4>
+<p class="text-on-surface-variant text-body-md font-body-md mb-6" data-i18n="a3_desc">Connecting proprietary LLMs to the Jenn pipeline.</p>
+<div class="flex items-center gap-2 text-gold">
+<span class="material-symbols-outlined text-[18px]" data-icon="terminal">terminal</span>
+<span class="font-label-lg text-label-lg" data-i18n="a3_link">API Guide</span>
+</div>
+</a>
+<!-- Question Card 4 -->
+<a href="/faq-article.html?id=4" class="col-span-12 lg:col-span-4 glass-panel p-8 rounded-[2rem] border-gold/30 block hover:border-primary/30 hover:translate-y-[-4px] transition-all">
+<div class="flex justify-between mb-4">
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-[10px] uppercase font-bold" data-i18n="tag_new">New</span>
+<span class="text-on-surface-variant font-label-lg text-label-lg italic" data-i18n="read_2">2 min</span>
+</div>
+<h4 class="font-title-lg text-title-lg mb-4" data-i18n="a4_title">Billing &amp; Credits</h4>
+<p class="text-on-surface-variant text-body-md font-body-md mb-6" data-i18n="a4_desc">How the adaptive token pricing model works.</p>
+<div class="flex items-center gap-2 text-gold">
+<span class="material-symbols-outlined text-[18px]" data-icon="payments">payments</span>
+<span class="font-label-lg text-label-lg" data-i18n="a4_link">Support</span>
+</div>
+</a>
+<!-- Notion Integration Guide -->
+<a href="/faq-notion.html" class="col-span-12 lg:col-span-7 glass-panel p-10 rounded-[2.5rem] relative overflow-hidden group block hover:border-primary/30 transition-all">
+<div class="flex justify-between mb-4">
+<span class="bg-turquoise/20 text-turquoise px-3 py-1 rounded-full text-[10px] uppercase font-bold" data-i18n="tag_integration">Integration</span>
+<span class="text-on-surface-variant font-label-lg text-label-lg italic" data-i18n="read_8">8 min</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-4" data-i18n="notion_title">Notion Setup Guide</h3>
+<p class="text-on-surface-variant text-body-md font-body-md mb-8" data-i18n="notion_desc">Complete guide to connecting Jenn with your Notion workspace. Database sync, categories, destinations.</p>
+<div class="flex items-center gap-2 text-turquoise">
+<span class="material-symbols-outlined text-[18px]">description</span>
+<span class="font-label-lg text-label-lg" data-i18n="step_by_step">Step-by-step</span>
+</div>
+</a>
+</div>
+</section>
+<!-- Dynamic Log Stream Simulation -->
+<section class="mt-32 glass-panel rounded-3xl p-6 border-outline-variant/20 overflow-hidden">
+<div class="flex items-center gap-4 mb-4 border-b border-outline-variant/20 pb-4">
+<div class="flex gap-1.5">
+<div class="w-2 h-2 rounded-full bg-error"></div>
+<div class="w-2 h-2 rounded-full bg-sand"></div>
+<div class="w-2 h-2 rounded-full bg-turquoise"></div>
+</div>
+<span class="text-on-surface-variant font-code text-code opacity-60">system.log --knowledge-sync</span>
+</div>
+<div class="space-y-2 font-code text-code text-on-surface-variant/80">
+<div class="flex gap-4"><span class="text-gold">[INFO]</span><span data-i18n="log1">Fetching latest architectural updates...</span></div>
+<div class="flex gap-4"><span class="text-turquoise">[OK]</span><span data-i18n="log2">Index successfully rebuilt in 14.2ms</span></div>
+<div class="flex gap-4"><span class="text-lavender">[CMD]</span><span class="animate-pulse">_</span></div>
+</div>
+</section>
+</main>
+<!-- Footer Anchor -->
+<footer class="w-full py-12 px-6 md:px-margin-safe border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-gutter bg-surface-container-lowest z-30 relative mt-auto flex-shrink-0">
+<div class="font-display text-headline-lg text-primary">Jenn</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="ft_docs">Documentation</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="ft_changelog">Changelog</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="ft_privacy">Privacy</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="ft_terms">Terms</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="ft_status">System Status</a>
+</div>
+<div class="text-on-surface-variant font-body-md text-body-md opacity-60" data-i18n="ft_copy">© 2024 Jenn. Architectural Intelligence.</div>
+</footer>
+<script>
+        // Mobile Menu Toggle
+        let mobileMenuOpen = false;
+        function toggleMobileMenu() {
+            mobileMenuOpen = !mobileMenuOpen;
+            const menu = document.getElementById('mobile-menu');
+            const hamburger = document.querySelector('[onclick="toggleMobileMenu()"]');
+            
+            if (mobileMenuOpen) {
+                menu.classList.add('mobile-menu-active');
+                hamburger.classList.add('menu-active');
+            } else {
+                menu.classList.remove('mobile-menu-active');
+                hamburger.classList.remove('menu-active');
+            }
+        }
+
+        // Theme Toggle
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.className = savedTheme;
+        updateThemeIcon(savedTheme);
+
+        function toggleTheme() {
+            const current = document.documentElement.className;
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.className = newTheme;
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-icon');
+            if (icon) {
+                icon.textContent = theme === 'dark' ? 'dark_mode' : 'light_mode';
+            }
+        }
+
+        // Language Toggle
+        const translations = {
+            en: {
+                'signin': 'Sign In',
+                'getstarted': 'Get Started',
+                'console_btn': 'Console',
+                'nav_docs': 'API Docs',
+                'nav_products': 'Products',
+                'hero_title': 'Explore the <br/>Architecture of Thought',
+                'hero_desc': 'Access the neural repository of Jenn Console. From foundational logic to complex API orchestrations, navigate the flow of intelligence.',
+                'search_ph': 'Search the console...',
+                'cat_core': 'Core Concepts',
+                'cat_core_desc': 'Foundational logic flows.',
+                'cat_neural': 'Neural Flow',
+                'cat_neural_desc': 'Real-time data streams.',
+                'cat_security': 'Security',
+                'cat_security_desc': 'Privacy & encryptions.',
+                'cat_hosting': 'Self Hosting',
+                'cat_hosting_desc': 'Deployment architecture.',
+                'cat_api': 'API Reference',
+                'cat_api_desc': 'Integrate intelligence.',
+                'trending': 'Trending Queries',
+                'most_viewed': 'Most Viewed',
+                'newest': 'Newest',
+                'tag_complex': 'Complex',
+                'read_12': '12 min read',
+                'a1_title': 'How does the AI-Router determine semantic routing priorities?',
+                'a1_desc': 'Delve into the multi-layer filtering system that ensures low-latency execution by predicting intent before the full tokenization process begins.',
+                'deep_dive': 'Deep Dive',
+                'neural_eff': 'Neural Efficiency',
+                'scaling': 'Scaling the Jenn Core',
+                'tag_standard': 'Standard',
+                'read_4': '4 min',
+                'a2_title': 'Managing API Keys via CLI',
+                'a2_desc': 'Securely rotate and scope your console credentials.',
+                'a2_link': 'Documentation',
+                'tag_advanced': 'Advanced',
+                'read_8': '8 min',
+                'a3_title': 'Custom Model Integration',
+                'a3_desc': 'Connecting proprietary LLMs to the Jenn pipeline.',
+                'a3_link': 'API Guide',
+                'tag_new': 'New',
+                'read_2': '2 min',
+                'a4_title': 'Billing & Credits',
+                'a4_desc': 'How the adaptive token pricing model works.',
+                'a4_link': 'Support',
+                'tag_integration': 'Integration',
+                'notion_title': 'Notion Setup Guide',
+                'notion_desc': 'Complete guide to connecting Jenn with your Notion workspace. Database sync, categories, destinations.',
+                'step_by_step': 'Step-by-step',
+                'log1': 'Fetching latest architectural updates...',
+                'log2': 'Index successfully rebuilt in 14.2ms',
+                'ft_docs': 'Documentation',
+                'ft_changelog': 'Changelog',
+                'ft_privacy': 'Privacy',
+                'ft_terms': 'Terms',
+                'ft_status': 'System Status',
+                'ft_copy': '© 2024 Jenn. Architectural Intelligence.'
+            },
+            ru: {
+                'signin': 'Войти',
+                'getstarted': 'Начать',
+                'console_btn': 'Консоль',
+                'nav_docs': 'Документация API',
+                'nav_products': 'Продукты',
+                'hero_title': 'Исследуйте <br/>архитектуру мышления',
+                'hero_desc': 'Получите доступ к нейронному репозиторию Jenn Console. От базовой логики до сложных API-оркестраций — управляйте потоком интеллекта.',
+                'search_ph': 'Поиск по консоли...',
+                'cat_core': 'Основы',
+                'cat_core_desc': 'Базовые логические потоки.',
+                'cat_neural': 'Нейронный поток',
+                'cat_neural_desc': 'Потоки данных в реальном времени.',
+                'cat_security': 'Безопасность',
+                'cat_security_desc': 'Приватность и шифрование.',
+                'cat_hosting': 'Самостоятельный хостинг',
+                'cat_hosting_desc': 'Архитектура развёртывания.',
+                'cat_api': 'Справочник API',
+                'cat_api_desc': 'Интеграция интеллекта.',
+                'trending': 'Популярные запросы',
+                'most_viewed': 'Популярные',
+                'newest': 'Новые',
+                'tag_complex': 'Сложный',
+                'read_12': '12 мин чтения',
+                'a1_title': 'Как AI-Router определяет приоритеты семантической маршрутизации?',
+                'a1_desc': 'Подробный обзор многоуровневой системы фильтрации, обеспечивающей низкую задержку за счёт предсказания намерения до начала полной токенизации.',
+                'deep_dive': 'Подробнее',
+                'neural_eff': 'Нейронная эффективность',
+                'scaling': 'Масштабирование ядра Jenn',
+                'tag_standard': 'Стандартный',
+                'read_4': '4 мин',
+                'a2_title': 'Управление API-ключами через CLI',
+                'a2_desc': 'Безопасное обновление и ограничение прав доступа к вашим учётным данным.',
+                'a2_link': 'Документация',
+                'tag_advanced': 'Продвинутый',
+                'read_8': '8 мин',
+                'a3_title': 'Интеграция пользовательских моделей',
+                'a3_desc': 'Подключение проприетарных LLM к конвейеру Jenn.',
+                'a3_link': 'Руководство API',
+                'tag_new': 'Новый',
+                'read_2': '2 мин',
+                'a4_title': 'Оплата и кредиты',
+                'a4_desc': 'Как работает адаптивная модель тарификации токенов.',
+                'a4_link': 'Поддержка',
+                'tag_integration': 'Интеграция',
+                'notion_title': 'Руководство по настройке Notion',
+                'notion_desc': 'Полное руководство по подключению Jenn к вашему рабочему пространству Notion. Синхронизация баз данных, категории, назначения.',
+                'step_by_step': 'Пошагово',
+                'log1': 'Загрузка последних обновлений архитектуры...',
+                'log2': 'Индекс успешно перестроен за 14.2мс',
+                'ft_docs': 'Документация',
+                'ft_changelog': 'История изменений',
+                'ft_privacy': 'Конфиденциальность',
+                'ft_terms': 'Условия',
+                'ft_status': 'Статус системы',
+                'ft_copy': '© 2024 Jenn. Архитектурный интеллект.'
+            }
+        };
+
+        let currentLang = localStorage.getItem('lang') || 'ru';
+        applyLanguage(currentLang);
+
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'ru' : 'en';
+            localStorage.setItem('lang', currentLang);
+            applyLanguage(currentLang);
+        }
+
+        function applyLanguage(lang) {
+            const langLabel = document.getElementById('lang-label');
+            if (langLabel) {
+                langLabel.textContent = lang === 'en' ? 'EN' : 'RU';
+            }
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    if (el.hasAttribute('placeholder')) {
+                        el.placeholder = translations[lang][key];
+                    } else {
+                        el.innerHTML = translations[lang][key];
+                    }
+                }
+            });
+        }
+
+        // Micro-interactions for the search bar
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                document.querySelector('input').focus();
+            }
+        });
+
+        // Simple parallax effect for glass cards
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.glass-panel');
+            const x = (window.innerWidth / 2 - e.pageX) / 50;
+            const y = (window.innerHeight / 2 - e.pageY) / 50;
+            
+            cards.forEach(card => {
+                if(card.classList.contains('hover:bg-surface-container-high')) {
+                    // Only apply to category cards for subtle movement
+                    // card.style.transform = `translate(${x}px, ${y}px)`;
+                }
+            });
+        });
+    </script>
+</body></html>

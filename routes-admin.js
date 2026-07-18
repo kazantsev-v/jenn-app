@@ -1,8 +1,10 @@
 const { Router } = require('express')
 const fs = require('fs')
 const path = require('path')
+const { randomUUID } = require('crypto')
 const store = require('./store')
 const { loadConfig, loadConfigRaw, saveConfig } = require('./config')
+const { prisma } = require('./db')
 const { hashPassword, verifyPassword, signToken, verifyToken } = require('./auth')
 
 function createAdminRouter(processor, loadedInputs = {}) {
@@ -88,6 +90,78 @@ function createAdminRouter(processor, loadedInputs = {}) {
     const token = signToken(req.username)
     setTokenCookie(res, token)
     res.json({ status: 'ok', token })
+  })
+
+  router.get('/me', authMiddleware, (req, res) => {
+    res.json({ username: req.username })
+  })
+
+  router.put('/password', authMiddleware, async (req, res) => {
+    const { currentPassword, newPassword } = req.body
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: 'missing_fields', message: 'Current and new password required' })
+    }
+    if (typeof newPassword !== 'string' || newPassword.length < 4) {
+      return res.status(400).json({ error: 'weak_password', message: 'Password must be at least 4 characters' })
+    }
+    const user = await store.getUser(req.username)
+    if (!user) return res.status(404).json({ error: 'not_found', message: 'User not found' })
+    const ok = await verifyPassword(currentPassword, user.passwordHash)
+    if (!ok) return res.status(401).json({ error: 'invalid_current', message: 'Current password is incorrect' })
+    const hash = await hashPassword(newPassword)
+    await store.updateUserPassword(req.username, hash)
+    res.json({ status: 'ok' })
+  })
+
+  const marketplaceRequestsPath = path.join(__dirname, 'data', 'marketplace-requests.json')
+
+  function getMarketplaceRequests() {
+    try {
+      const raw = fs.readFileSync(marketplaceRequestsPath, 'utf-8')
+      const parsed = JSON.parse(raw)
+      return Array.isArray(parsed) ? parsed : []
+    } catch {
+      return []
+    }
+  }
+
+  function saveMarketplaceRequests(requests) {
+    fs.writeFileSync(marketplaceRequestsPath, JSON.stringify(requests, null, 2), 'utf-8')
+  }
+
+  router.get('/marketplace-requests', authMiddleware, (req, res) => {
+    const requests = getMarketplaceRequests().filter(request => request.username === req.username)
+    res.json({ requests })
+  })
+
+  router.post('/marketplace-requests', authMiddleware, (req, res) => {
+    const type = req.body.type === 'output' ? 'output' : 'input'
+    const title = typeof req.body.title === 'string' ? req.body.title.trim() : ''
+    const repositoryUrl = typeof req.body.repositoryUrl === 'string' ? req.body.repositoryUrl.trim() : ''
+    const description = typeof req.body.description === 'string' ? req.body.description.trim() : ''
+    const documentationUrl = typeof req.body.documentationUrl === 'string' ? req.body.documentationUrl.trim() : ''
+
+    if (!repositoryUrl || !description || !documentationUrl) {
+      return res.status(400).json({ error: 'missing_fields', message: 'Repository URL, description, and documentation link are required' })
+    }
+
+    const request = {
+      id: randomUUID(),
+      type,
+      title: title || (type === 'input' ? 'Custom input request' : 'Custom output request'),
+      repositoryUrl,
+      description,
+      documentationUrl,
+      username: req.username,
+      status: 'new',
+      createdAt: new Date().toISOString(),
+    }
+
+    const requests = getMarketplaceRequests()
+    requests.unshift(request)
+    saveMarketplaceRequests(requests)
+
+    res.status(201).json({ status: 'ok', request })
   })
 
   router.get('/config', authMiddleware, (req, res) => {
@@ -374,6 +448,55 @@ function createAdminRouter(processor, loadedInputs = {}) {
     return req.body.config || (req.body.api_key ? { api_key: req.body.api_key } : (loadConfigRaw(req.username)?.outputs?.[name] || {}))
   }
 
+  async function getDestinationPreferences(username, outputName) {
+    const user = await prisma.user.findUnique({ where: { username }, select: { id: true } })
+    if (!user) return []
+    return prisma.$queryRaw`SELECT "destinationType", "destinationId", "enabled", "description" FROM "OutputDestinationPreference" WHERE "userId" = ${user.id} AND "outputName" = ${outputName}`
+  }
+
+  function preferenceKey(destination) {
+    const id = destination?.notion_id || destination?.database_id || destination?.page_id || destination?.id
+    return id ? `${destination.type || 'unknown'}:${id}` : null
+  }
+
+  async function applyDestinationPreferences(username, outputName, destinations) {
+    const preferences = await getDestinationPreferences(username, outputName)
+    if (!preferences.length) return destinations
+    const byKey = new Map(preferences.map(pref => [`${pref.destinationType}:${pref.destinationId}`, pref]))
+    return (destinations || []).map(destination => {
+      const pref = byKey.get(preferenceKey(destination))
+      return pref ? { ...destination, enabled: pref.enabled, description: pref.description } : destination
+    })
+  }
+
+  async function saveDestinationPreferences(username, outputName, destinations) {
+    const user = await prisma.user.findUnique({ where: { username }, select: { id: true } })
+    if (!user) throw new Error('User not found')
+    const rows = (Array.isArray(destinations) ? destinations : []).map(destination => {
+      const destinationId = destination?.notion_id || destination?.database_id || destination?.page_id || destination?.id
+      if (!destinationId) return null
+      return {
+        userId: user.id,
+        outputName,
+        destinationType: destination.type || 'unknown',
+        destinationId: String(destinationId),
+        enabled: destination.enabled !== false,
+        description: typeof destination.description === 'string' ? destination.description : ''
+      }
+    }).filter(Boolean)
+    const keys = rows.map(row => ({ destinationType: row.destinationType, destinationId: row.destinationId }))
+    await prisma.$transaction(async tx => {
+      for (const row of rows) {
+        await tx.$executeRaw`INSERT INTO "OutputDestinationPreference" ("id", "userId", "outputName", "destinationType", "destinationId", "enabled", "description", "createdAt", "updatedAt") VALUES (${require('crypto').randomUUID()}, ${row.userId}, ${outputName}, ${row.destinationType}, ${row.destinationId}, ${row.enabled}, ${row.description}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) ON CONFLICT ("userId", "outputName", "destinationType", "destinationId") DO UPDATE SET "enabled" = excluded."enabled", "description" = excluded."description", "updatedAt" = CURRENT_TIMESTAMP`
+      }
+      const existing = await tx.$queryRaw`SELECT "destinationType", "destinationId" FROM "OutputDestinationPreference" WHERE "userId" = ${user.id} AND "outputName" = ${outputName}`
+      const stale = existing.filter(item => !keys.some(key => key.destinationType === item.destinationType && key.destinationId === item.destinationId))
+      for (const item of stale) {
+        await tx.$executeRaw`DELETE FROM "OutputDestinationPreference" WHERE "userId" = ${user.id} AND "outputName" = ${outputName} AND "destinationType" = ${item.destinationType} AND "destinationId" = ${item.destinationId}`
+      }
+    })
+  }
+
   // List available destinations for an output
   router.post('/outputs/:name/destinations', authMiddleware, async (req, res) => {
     const name = req.params.name
@@ -383,9 +506,19 @@ function createAdminRouter(processor, loadedInputs = {}) {
     }
     try {
       const result = await output.listDestinations(outputConfig(req, name), req.username)
+      result.destinations = await applyDestinationPreferences(req.username, name, result.destinations)
       res.json(result)
     } catch (err) {
       res.status(400).json({ error: 'list_failed', message: err.message })
+    }
+  })
+
+  router.put('/outputs/:name/destination-preferences', authMiddleware, async (req, res) => {
+    try {
+      await saveDestinationPreferences(req.username, req.params.name, req.body.destinations)
+      res.json({ status: 'ok' })
+    } catch (err) {
+      res.status(500).json({ error: 'preferences_save_failed', message: err.message })
     }
   })
 
@@ -484,8 +617,33 @@ function createAdminRouter(processor, loadedInputs = {}) {
   // ── Skills endpoints ──
 
   function describeSkill(skill) {
-    if (typeof skill.describe === 'function') return skill.describe()
-    return { name: skill.name, description: skill.description || '', author: 'Jenn Core', version: '1.0.0', params: skill.params || {} }
+    if (typeof skill.describe === 'function') {
+      const meta = skill.describe()
+      return {
+        name: meta.name || skill.name,
+        title: meta.title || skill.title || meta.name || skill.name,
+        icon: meta.icon || skill.icon || '⚡',
+        description: meta.description || skill.description || '',
+        author: meta.author || skill.author || 'Jenn Core',
+        version: meta.version || skill.version || '1.0.0',
+        params: meta.params || skill.params || {},
+        configSchema: meta.configSchema || skill.configSchema || {},
+        capability: meta.capability || skill.capability || null,
+        outputFunction: meta.outputFunction || skill.outputFunction || null,
+      }
+    }
+    return {
+      name: skill.name,
+      title: skill.title || skill.name,
+      icon: skill.icon || '⚡',
+      description: skill.description || '',
+      author: skill.author || 'Jenn Core',
+      version: skill.version || '1.0.0',
+      params: skill.params || {},
+      configSchema: skill.configSchema || {},
+      capability: skill.capability || null,
+      outputFunction: skill.outputFunction || null,
+    }
   }
 
   function userSkillNames(username) {
@@ -498,15 +656,6 @@ function createAdminRouter(processor, loadedInputs = {}) {
     return path.join(__dirname, 'skills')
   }
 
-  // List user's installed skills
-  router.get('/skills', authMiddleware, (req, res) => {
-    const allowedNames = userSkillNames(req.username)
-    const allSkills = processor.getAllSkills()
-    const installed = allSkills.filter(s => allowedNames.includes(s.name))
-    res.json({ skills: installed.map(describeSkill) })
-  })
-
-  // Get local registry
   function getSkillsRegistry() {
     const registryPath = path.join(__dirname, 'data', 'skills-registry.json')
     try { return JSON.parse(fs.readFileSync(registryPath, 'utf-8')) } catch { return [] }
@@ -517,46 +666,112 @@ function createAdminRouter(processor, loadedInputs = {}) {
     fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2), 'utf-8')
   }
 
-  // Library: built-in registry + marketplace
+  function upsertSkillsRegistryEntry(entry) {
+    const cached = getSkillsRegistry()
+    const idx = cached.findIndex(c => c.name === entry.name)
+    if (idx !== -1) cached[idx] = { ...cached[idx], ...entry }
+    else cached.push(entry)
+    saveSkillsRegistry(cached)
+    return cached
+  }
+
+  /** Fetch text over http(s) with a hard timeout (destroys the socket on expiry). */
+  function fetchText(url, { method = 'GET', body = null, headers = {}, timeoutMs = 2000 } = {}) {
+    return new Promise((resolve, reject) => {
+      let settled = false
+      const done = (err, value) => {
+        if (settled) return
+        settled = true
+        clearTimeout(timer)
+        if (err) reject(err)
+        else resolve(value)
+      }
+
+      const transport = url.startsWith('https') ? require('https') : require('http')
+      const req = transport.request(url, {
+        method,
+        headers,
+        timeout: timeoutMs,
+      }, (resp) => {
+        let data = ''
+        resp.on('data', chunk => { data += chunk })
+        resp.on('end', () => done(null, { statusCode: resp.statusCode || 0, body: data }))
+        resp.on('error', err => done(err))
+      })
+
+      const timer = setTimeout(() => {
+        req.destroy(new Error(`Request timed out after ${timeoutMs}ms`))
+        done(new Error(`Request timed out after ${timeoutMs}ms`))
+      }, timeoutMs)
+
+      req.on('timeout', () => {
+        req.destroy(new Error(`Socket timed out after ${timeoutMs}ms`))
+        done(new Error(`Socket timed out after ${timeoutMs}ms`))
+      })
+      req.on('error', err => done(err))
+
+      if (body != null) req.write(body)
+      req.end()
+    })
+  }
+
+  function loadSkillModule(skillPath) {
+    const resolved = require.resolve(skillPath)
+    delete require.cache[resolved]
+    return require(resolved)
+  }
+
+  // List user's installed skills
+  router.get('/skills', authMiddleware, (req, res) => {
+    const allowedNames = userSkillNames(req.username)
+    const allSkills = processor.getAllSkills()
+    const installed = allSkills.filter(s => allowedNames.includes(s.name))
+    res.json({ skills: installed.map(describeSkill) })
+  })
+
+  // Library: local skills + local registry cache + optional remote marketplace
   router.get('/skills/library', authMiddleware, async (req, res) => {
     const allSkills = processor.getAllSkills()
     const local = allSkills.map(describeSkill)
+    const cached = getSkillsRegistry()
     let remote = []
     let registryOnline = false
-    const registryUrl = process.env.SKILLS_REGISTRY || 'https://registry.jenn.ai/v1/skills'
-    try {
-      const transport = registryUrl.startsWith('https') ? require('https') : require('http')
-      const body = await new Promise((resolve, reject) => {
-        const r = transport.get(registryUrl, { timeout: 5000 }, resp => {
-          let d = ''
-          resp.on('data', c => d += c)
-          resp.on('end', () => resolve(d))
-        })
-        r.on('error', reject)
-      })
-      remote = JSON.parse(body)
-      if (!Array.isArray(remote)) remote = []
-      registryOnline = true
-      // Update local registry cache
-      const cached = getSkillsRegistry()
-      for (const r of remote) {
-        const idx = cached.findIndex(c => c.name === r.name)
-        if (idx !== -1) cached[idx] = { ...r, local: true }
-        else cached.push({ ...r, local: true })
+    const registryUrl = process.env.SKILLS_REGISTRY || ''
+
+    // Only hit remote marketplace when explicitly configured — default registry is offline
+    // and previously hung the Browse Skills button for ~10s on DNS failure.
+    if (registryUrl) {
+      try {
+        const { body } = await fetchText(registryUrl, { timeoutMs: 2000 })
+        const parsed = JSON.parse(body)
+        remote = Array.isArray(parsed) ? parsed : []
+        registryOnline = true
+        for (const r of remote) {
+          upsertSkillsRegistryEntry({ ...r, local: false })
+        }
+      } catch (e) {
+        console.log(`[Skills] Marketplace unreachable: ${e.message}`)
       }
-      saveSkillsRegistry(cached)
-    } catch (e) {
-      console.log(`[Skills] Marketplace unreachable: ${e.message}`)
     }
-    // If marketplace offline, use local registry cache
+
     if (!registryOnline) {
-      const cached = getSkillsRegistry()
       remote = cached.filter(c => !local.find(l => l.name === c.name))
     }
-    // Merge: local overrides remote
+
     const localNames = new Set(local.map(s => s.name))
-    const merged = [...local, ...remote.filter(r => !localNames.has(r.name))]
-    res.json({ library: merged, local: local.length, remote: remote.length, registryOnline })
+    // Prefer live local modules, then registry entries not already loaded
+    const merged = [
+      ...local,
+      ...remote.filter(r => r && r.name && !localNames.has(r.name)),
+      ...cached.filter(c => c && c.name && !localNames.has(c.name) && !remote.find(r => r.name === c.name)),
+    ]
+    res.json({
+      library: merged,
+      local: local.length,
+      remote: remote.length,
+      registryOnline,
+      registryConfigured: Boolean(registryUrl),
+    })
   })
 
   // Install skill (add to user config, download from marketplace if needed)
@@ -565,29 +780,31 @@ function createAdminRouter(processor, loadedInputs = {}) {
     const allSkills = processor.getAllSkills()
     let skill = allSkills.find(s => s.name === name)
 
-    // Not registered locally — try downloading from marketplace
     if (!skill) {
       const registry = getSkillsRegistry()
       const entry = registry.find(r => r.name === name)
       if (!entry) return res.status(404).json({ error: 'not_found', message: `Skill "${name}" not found anywhere` })
       if (entry.download_url) {
         try {
-          const transport = entry.download_url.startsWith('https') ? require('https') : require('http')
-          const code = await new Promise((resolve, reject) => {
-            const r = transport.get(entry.download_url, { timeout: 10000 }, resp => {
-              let d = ''
-              resp.on('data', c => d += c)
-              resp.on('end', () => resolve(d))
-            })
-            r.on('error', reject)
-          })
+          const { body: code } = await fetchText(entry.download_url, { timeoutMs: 8000 })
           const skillPath = path.join(getSkillsDir(), `${name}.js`)
           fs.writeFileSync(skillPath, code, 'utf-8')
-          delete require.cache[require.resolve(skillPath)]
-          skill = require(skillPath)
+          skill = loadSkillModule(skillPath)
+          if (!skill?.name) {
+            return res.status(502).json({ error: 'invalid_skill', message: 'Downloaded skill is missing name export' })
+          }
           processor.registerSkill(skill)
         } catch (e) {
           return res.status(502).json({ error: 'download_failed', message: e.message })
+        }
+      } else if (entry.code) {
+        try {
+          const skillPath = path.join(getSkillsDir(), `${name}.js`)
+          fs.writeFileSync(skillPath, entry.code, 'utf-8')
+          skill = loadSkillModule(skillPath)
+          processor.registerSkill(skill)
+        } catch (e) {
+          return res.status(502).json({ error: 'load_failed', message: e.message })
         }
       } else {
         return res.status(404).json({ error: 'no_download', message: 'No download URL for this skill' })
@@ -608,61 +825,137 @@ function createAdminRouter(processor, loadedInputs = {}) {
     const cfg = loadConfigRaw(req.username) || {}
     if (!cfg.skills) cfg.skills = processor.getAllSkills().map(s => s.name)
     cfg.skills = cfg.skills.filter(s => s !== name)
-    // Also remove from skillsOutputs
     if (cfg.skillsOutputs && cfg.skillsOutputs[name]) delete cfg.skillsOutputs[name]
+    if (cfg.skillsConfig && cfg.skillsConfig[name]) delete cfg.skillsConfig[name]
     saveConfig(req.username, cfg)
     res.json({ status: 'ok', message: `Skill "${name}" uninstalled` })
   })
 
   // Create custom skill
   router.post('/skills/create', authMiddleware, async (req, res) => {
-    const { name, description, params, code } = req.body
+    const { name, description, params, code, icon, title, overwrite } = req.body || {}
     if (!name || !/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(name)) {
-      return res.status(400).json({ error: 'invalid_name', message: 'Invalid skill name' })
+      return res.status(400).json({ error: 'invalid_name', message: 'Skill name must be a valid identifier (letters, numbers, underscore)' })
     }
-    if (!code) return res.status(400).json({ error: 'no_code', message: 'Skill code required' })
+    if (!code || typeof code !== 'string' || !code.trim()) {
+      return res.status(400).json({ error: 'no_code', message: 'Skill code required' })
+    }
+    if (typeof code === 'string' && code.length > 100_000) {
+      return res.status(400).json({ error: 'code_too_large', message: 'Skill code is too large' })
+    }
+
     const skillPath = path.join(getSkillsDir(), `${name}.js`)
-    if (fs.existsSync(skillPath) && !req.body.overwrite) {
-      return res.status(409).json({ error: 'exists', message: 'Skill already exists' })
+    if (fs.existsSync(skillPath) && !overwrite) {
+      return res.status(409).json({ error: 'exists', message: 'Skill already exists. Enable overwrite to replace it.' })
     }
-    const wrappedCode = `module.exports = ${JSON.stringify({ name, description: description || '', params: params || {}, handler: null })}`
-    // For security, we write a wrapper. In production, use sandboxed evaluation.
-    fs.writeFileSync(skillPath, `// Custom skill: ${name}\n// Author: ${req.username}\n\n${code}`, 'utf-8')
-    delete require.cache[require.resolve(skillPath)]
-    const skill = require(skillPath)
-    processor.registerSkill(skill)
-    // Auto-install for creator
-    const cfg = loadConfigRaw(req.username) || {}
-    if (!cfg.skills) cfg.skills = processor.getAllSkills().map(s => s.name)
-    if (!cfg.skills.includes(name)) cfg.skills.push(name)
-    saveConfig(req.username, cfg)
-    res.status(201).json({ status: 'ok', message: `Skill "${name}" created and installed` })
+
+    const fileBody = `// Custom skill: ${name}\n// Author: ${req.username}\n// Created: ${new Date().toISOString()}\n\n${code.trim()}\n`
+    const existedBefore = fs.existsSync(skillPath)
+    const previousCode = existedBefore ? fs.readFileSync(skillPath, 'utf-8') : null
+    try {
+      fs.writeFileSync(skillPath, fileBody, 'utf-8')
+      const skill = loadSkillModule(skillPath)
+      if (!skill || typeof skill !== 'object') {
+        throw new Error('Skill module must export an object')
+      }
+      if (!skill.name) skill.name = name
+      if (skill.name !== name) {
+        throw new Error(`Skill export name "${skill.name}" does not match requested name "${name}"`)
+      }
+      if (typeof skill.handler !== 'function') {
+        throw new Error('Skill must export an async handler(params, message, outputFunctions, skillConfig) function')
+      }
+      if (description && !skill.description) skill.description = description
+      if (title && !skill.title) skill.title = title
+      if (icon && !skill.icon) skill.icon = icon
+      if (params && typeof params === 'object' && !skill.params) skill.params = params
+
+      processor.registerSkill(skill)
+
+      const meta = describeSkill(skill)
+      upsertSkillsRegistryEntry({
+        name: meta.name,
+        title: meta.title,
+        icon: meta.icon,
+        description: meta.description,
+        author: req.username,
+        version: meta.version || '1.0.0',
+        local: true,
+      })
+
+      const cfg = loadConfigRaw(req.username) || {}
+      if (!cfg.skills) cfg.skills = processor.getAllSkills().map(s => s.name)
+      if (!cfg.skills.includes(name)) cfg.skills.push(name)
+      saveConfig(req.username, cfg)
+
+      res.status(201).json({
+        status: 'ok',
+        message: `Skill "${name}" created and installed`,
+        skill: meta,
+      })
+    } catch (e) {
+      console.error(`[Skills] Create failed for ${name}:`, e.message)
+      try {
+        if (previousCode != null) {
+          fs.writeFileSync(skillPath, previousCode, 'utf-8')
+          try { loadSkillModule(skillPath) } catch { /* leave restored source */ }
+        } else if (fs.existsSync(skillPath)) {
+          fs.unlinkSync(skillPath)
+          try {
+            const resolved = require.resolve(skillPath)
+            delete require.cache[resolved]
+          } catch { /* not in cache */ }
+        }
+      } catch (rollbackErr) {
+        console.error(`[Skills] Rollback failed for ${name}:`, rollbackErr.message)
+      }
+      return res.status(400).json({
+        error: 'create_failed',
+        message: e.message || 'Failed to create skill',
+      })
+    }
   })
 
-  // Publish to marketplace
+  // Publish to marketplace (or local registry when remote is not configured)
   router.post('/skills/:name/publish', authMiddleware, async (req, res) => {
     const name = req.params.name
     const allSkills = processor.getAllSkills()
     const skill = allSkills.find(s => s.name === name)
     if (!skill) return res.status(404).json({ error: 'not_found', message: `Skill "${name}" not found` })
     const meta = describeSkill(skill)
-    const registryUrl = process.env.SKILLS_REGISTRY || 'https://registry.jenn.ai/v1/skills'
     const skillPath = path.join(getSkillsDir(), `${name}.js`)
     const code = fs.existsSync(skillPath) ? fs.readFileSync(skillPath, 'utf-8') : ''
-    try {
-      const transport = registryUrl.startsWith('https') ? require('https') : require('http')
-      const postData = JSON.stringify({ ...meta, code, author: req.username, action: 'publish' })
-      const result = await new Promise((resolve, reject) => {
-        const r = transport.request(registryUrl, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(postData) }, timeout: 10000 }, resp => {
-          let d = ''
-          resp.on('data', c => d += c)
-          resp.on('end', () => resolve(d))
-        })
-        r.on('error', reject)
-        r.write(postData)
-        r.end()
+    const registryUrl = process.env.SKILLS_REGISTRY || ''
+
+    // Always keep a local registry entry so Browse Skills can show it offline
+    upsertSkillsRegistryEntry({
+      ...meta,
+      author: req.username,
+      local: true,
+      code: code || undefined,
+      publishedAt: new Date().toISOString(),
+    })
+
+    if (!registryUrl) {
+      return res.json({
+        status: 'ok',
+        message: 'Published to local skills registry (no remote SKILLS_REGISTRY configured)',
+        local: true,
       })
-      res.json({ status: 'ok', registry: result.slice(0, 200) })
+    }
+
+    try {
+      const postData = JSON.stringify({ ...meta, code, author: req.username, action: 'publish' })
+      const { body: result, statusCode } = await fetchText(registryUrl, {
+        method: 'POST',
+        body: postData,
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(postData),
+        },
+        timeoutMs: 8000,
+      })
+      res.json({ status: 'ok', registryStatus: statusCode, registry: String(result || '').slice(0, 200) })
     } catch (e) {
       res.status(502).json({ error: 'registry_error', message: e.message })
     }
@@ -677,6 +970,31 @@ function createAdminRouter(processor, loadedInputs = {}) {
     const meta = describeSkill(skill)
     const cfg = loadConfigRaw(req.username) || {}
     const userConfig = cfg.skillsConfig?.[name] || {}
+    
+    let instances = userConfig.instances || []
+    if (instances.length === 0 && (userConfig.output || userConfig.destination)) {
+      instances = [{
+        id: 'default',
+        name: 'Default',
+        routerInstructions: '',
+        outputs: userConfig.output ? [userConfig.output] : [],
+        destination: userConfig.destination || '',
+        routingMode: userConfig.routingMode || 'auto',
+        fallbackDestination: userConfig.fallbackDestination || ''
+      }]
+    }
+    if (instances.length === 0) {
+      instances = [{
+        id: 'default',
+        name: 'Default',
+        routerInstructions: '',
+        outputs: [],
+        destination: '',
+        routingMode: 'auto',
+        fallbackDestination: ''
+      }]
+    }
+
     const outputs = [...processor.outputs.keys()]
     const outputFunctions = {}
     const outputFunctionDetails = {}
@@ -703,7 +1021,7 @@ function createAdminRouter(processor, loadedInputs = {}) {
     }
     res.json({
       schema: meta.configSchema || {},
-      config: userConfig,
+      instances,
       outputs,
       outputFunctions,
       outputFunctionDetails,
@@ -773,15 +1091,82 @@ function createAdminRouter(processor, loadedInputs = {}) {
   // Save skill config
   router.post('/skills/:name/config', authMiddleware, (req, res) => {
     const name = req.params.name
-    const { config } = req.body
-    if (!config || typeof config !== 'object') {
-      return res.status(400).json({ error: 'invalid_config', message: 'Config object required' })
+    const { instances } = req.body
+    if (!instances || !Array.isArray(instances)) {
+      return res.status(400).json({ error: 'invalid_config', message: 'Instances array required' })
     }
     const cfg = loadConfigRaw(req.username) || {}
     if (!cfg.skillsConfig) cfg.skillsConfig = {}
-    cfg.skillsConfig[name] = config
+    
+    const validatedInstances = instances.map((inst, idx) => ({
+      id: inst.id || `inst_${Date.now()}_${idx}`,
+      name: inst.name || `Instance ${idx + 1}`,
+      routerInstructions: inst.routerInstructions || '',
+      outputs: Array.isArray(inst.outputs) ? inst.outputs : [],
+      destination: inst.destination || '',
+      routingMode: inst.routingMode || 'auto',
+      fallbackDestination: inst.fallbackDestination || ''
+    }))
+    
+    cfg.skillsConfig[name] = { instances: validatedInstances }
     saveConfig(req.username, cfg)
-    res.json({ status: 'ok', message: `Config saved for skill "${name}"` })
+    res.json({ status: 'ok', message: `Config saved for skill "${name}"`, instances: validatedInstances })
+  })
+
+  router.post('/skills/:name/instance', authMiddleware, (req, res) => {
+    const name = req.params.name
+    const { instance } = req.body
+    if (!instance || typeof instance !== 'object') {
+      return res.status(400).json({ error: 'invalid_instance', message: 'Instance object required' })
+    }
+    const cfg = loadConfigRaw(req.username) || {}
+    if (!cfg.skillsConfig) cfg.skillsConfig = {}
+    if (!cfg.skillsConfig[name]) cfg.skillsConfig[name] = { instances: [] }
+    if (!cfg.skillsConfig[name].instances) cfg.skillsConfig[name].instances = []
+    
+    const newInstance = {
+      id: instance.id || `inst_${Date.now()}`,
+      name: instance.name || 'New Instance',
+      routerInstructions: instance.routerInstructions || '',
+      outputs: Array.isArray(instance.outputs) ? instance.outputs : [],
+      destination: instance.destination || '',
+      routingMode: instance.routingMode || 'auto',
+      fallbackDestination: instance.fallbackDestination || ''
+    }
+    
+    cfg.skillsConfig[name].instances.push(newInstance)
+    saveConfig(req.username, cfg)
+    res.json({ status: 'ok', instance: newInstance })
+  })
+
+  router.delete('/skills/:name/instance/:instanceId', authMiddleware, (req, res) => {
+    const name = req.params.name
+    const instanceId = req.params.instanceId
+    const cfg = loadConfigRaw(req.username) || {}
+    if (!cfg.skillsConfig?.[name]?.instances) {
+      return res.status(404).json({ error: 'not_found', message: 'No instances found' })
+    }
+    
+    const idx = cfg.skillsConfig[name].instances.findIndex(i => i.id === instanceId)
+    if (idx === -1) {
+      return res.status(404).json({ error: 'not_found', message: 'Instance not found' })
+    }
+    
+    cfg.skillsConfig[name].instances.splice(idx, 1)
+    if (cfg.skillsConfig[name].instances.length === 0) {
+      cfg.skillsConfig[name].instances = [{
+        id: 'default',
+        name: 'Default',
+        routerInstructions: '',
+        outputs: [],
+        destination: '',
+        routingMode: 'auto',
+        fallbackDestination: ''
+      }]
+    }
+    
+    saveConfig(req.username, cfg)
+    res.json({ status: 'ok' })
   })
 
   return router

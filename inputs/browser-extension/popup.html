@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=360">
+  <title>Jenn Input</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+  <!-- MAIN VIEW -->
+  <div id="view-main" class="view">
+    <div class="header">
+      <span class="logo">Jenn</span>
+      <button id="settings-btn" class="icon-btn" title="Настройки">⚙</button>
+    </div>
+
+    <div id="no-token" class="no-token hidden">
+      <span class="no-token-text">Нет токена</span>
+      <a href="#" id="open-settings-inline" class="no-token-link">Настроить →</a>
+    </div>
+
+    <div class="glass-panel input-wrap">
+      <textarea id="input" placeholder="Введите сообщение..." rows="4" autofocus></textarea>
+    </div>
+
+    <div class="actions">
+      <button id="send-btn" class="btn btn-primary">
+        <span class="btn-icon">↑</span> Отправить
+      </button>
+      <button id="bookmark-btn" class="btn btn-ghost" title="Сохранить текущую страницу">
+        <span class="btn-icon">★</span> Закладка
+      </button>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+  </div>
+
+  <!-- SETTINGS VIEW -->
+  <div id="view-settings" class="view hidden">
+    <div class="header">
+      <button id="back-btn" class="icon-btn" title="Назад">←</button>
+      <span class="header-title">Настройки</span>
+      <span></span>
+    </div>
+
+    <div class="settings-fields">
+      <div class="field">
+        <label class="field-label">URL СЕРВЕРА</label>
+        <div class="glass-panel field-input-wrap">
+          <input id="s-url" type="url" placeholder="http://localhost:3000">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">SOURCE TOKEN</label>
+        <div class="glass-panel field-input-wrap">
+          <input id="s-token" type="password" placeholder="eyJhbGciOi...">
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-actions">
+      <button id="save-btn" class="btn btn-primary">Сохранить</button>
+      <button id="test-btn" class="btn btn-ghost">Тест</button>
+    </div>
+
+    <div id="settings-msg" class="toast hidden"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

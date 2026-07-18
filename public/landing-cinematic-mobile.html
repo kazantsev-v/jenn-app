@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jenn Console | Route Your Thoughts</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@100..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-container": "#dcc7a1",
+                    "outline": "#989084",
+                    "background": "#131314",
+                    "surface-container-highest": "#353436",
+                    "surface": "#131314",
+                    "on-secondary-fixed": "#261900",
+                    "on-background": "#e5e2e3",
+                    "surface-container-high": "#2a2a2b",
+                    "lavender": "#C3B1E1",
+                    "on-primary-fixed-variant": "#534528",
+                    "error-container": "#93000a",
+                    "outline-variant": "#4c463c",
+                    "surface-container-lowest": "#0e0e0f",
+                    "on-error-container": "#ffdad6",
+                    "primary": "#f9e3bb",
+                    "on-tertiary-container": "#5c4d77",
+                    "on-primary": "#3b2f14",
+                    "surface-dim": "#131314",
+                    "tertiary-fixed": "#ebdcff",
+                    "on-surface": "#e5e2e3",
+                    "error": "#ffb4ab",
+                    "gold": "#DCC7A1",
+                    "on-error": "#690005",
+                    "on-tertiary-fixed": "#21143a",
+                    "on-tertiary": "#372950",
+                    "secondary-container": "#584725",
+                    "secondary-fixed-dim": "#dcc398",
+                    "on-surface-variant": "#cfc5b8",
+                    "sand": "#E8D5B5",
+                    "inverse-on-surface": "#313031",
+                    "surface-container-low": "#1c1b1c",
+                    "primary-fixed-dim": "#d9c49e",
+                    "tertiary": "#ede0ff",
+                    "on-secondary-container": "#ceb58b",
+                    "on-primary-container": "#625234",
+                    "turquoise": "#87C5C5",
+                    "secondary-fixed": "#fadfb2",
+                    "on-tertiary-fixed-variant": "#4e4068",
+                    "secondary": "#dcc398",
+                    "primary-fixed": "#f6e0b9",
+                    "inverse-surface": "#e5e2e3",
+                    "on-secondary-fixed-variant": "#554423",
+                    "surface-bright": "#39393a",
+                    "surface-tint": "#d9c49e",
+                    "on-primary-fixed": "#251a03",
+                    "on-secondary": "#3d2e0f",
+                    "inverse-primary": "#6c5c3d",
+                    "surface-container": "#201f20",
+                    "tertiary-fixed-dim": "#d1beef",
+                    "tertiary-container": "#d4c1f2",
+                    "surface-variant": "#353436"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1200px",
+                    "unit": "8px",
+                    "margin-safe": "32px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "label-lg": ["Inter"],
+                    "headline-lg": ["Cormorant Garamond"],
+                    "code": ["JetBrains Mono"],
+                    "display": ["Cormorant Garamond"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "headline-lg-mobile": ["Cormorant Garamond"]
+            },
+            "fontSize": {
+                    "label-lg": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "code": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "display": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                    "body-md": ["15px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "title-lg": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(220, 199, 161, 0.4); }
+            50% { box-shadow: 0 0 20px 5px rgba(220, 199, 161, 0.2); }
+        }
+        @keyframes signal-travel {
+            0% { offset-distance: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { offset-distance: 100%; opacity: 0; }
+        }
+        .float-anim { animation: float 6s ease-in-out infinite; }
+        .glass { background: rgba(30, 30, 33, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(152, 144, 132, 0.2); }
+        .glow-button:hover { animation: pulse-gold 2s infinite; }
+        .perspective-lg { perspective: 1000px; }
+        .parallax-target { transition: transform 0.1s ease-out; }
+        
+        .signal-pulse {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #DCC7A1;
+            border-radius: 50%;
+            filter: blur(2px);
+            offset-path: path('M0,0 Q50,100 100,200');
+            animation: signal-travel 3s infinite linear;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden selection:bg-gold selection:text-surface-container-lowest">
+<!-- Fixed Nav -->
+<nav class="fixed top-4 left-4 right-4 z-50 glass rounded-full px-6 py-3 flex justify-between items-center max-w-container-max mx-auto">
+<div class="font-display text-title-lg text-primary tracking-tight font-bold">Jenn Console</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant p-2">menu</button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative w-full h-screen flex flex-col justify-center items-center px-gutter overflow-hidden">
+<!-- Base Layer: Shader -->
+<!-- STITCH_SHADER_START:ANIMATION_91 class="absolute inset-0 w-full h-full opacity-60" -->
+<div class="absolute inset-0 w-full h-full opacity-60" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_91" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_91');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+varying vec2 v_texCoord;
+
+vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+
+float snoise(vec2 v){
+  const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+           -0.577350269189626, 0.024390243902439);
+  vec2 i  = floor(v + dot(v, C.yy) );
+  vec2 x0 = v -   i + dot(i, C.xx);
+  vec2 i1;
+  i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+  vec4 x12 = x0.xyxy + C.xxzz;
+  x12.xy -= i1;
+  i = mod(i, 289.0);
+  vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+  + i.x + vec3(0.0, i1.x, 1.0 ));
+  vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy),
+    dot(x12.zw,x12.zw)), 0.0);
+  m = m*m ;
+  m = m*m ;
+  vec3 x = 2.0 * fract(p * C.www) - 1.0;
+  vec3 h = abs(x) - 0.5;
+  vec3 a0 = x - floor(x + 0.5);
+  vec3 m0 = 1.0 - 1.5*abs(a0);
+  vec3 g;
+  g.x  = a0.x  * x0.x  + h.x  * x0.y;
+  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+  vec3 l = 1.79284291400159 - 0.85373472095314 * ( g*g + h*h );
+  vec3  v1;
+  v1.x  = g.x  * l.x;
+  v1.yz = g.yz * l.yz;
+  return 130.0 * dot(m, v1);
+}
+
+void main() {
+    vec2 uv = v_texCoord;
+    vec2 p = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
+    
+    // Background deep void
+    vec3 color = vec3(0.05, 0.05, 0.06);
+    
+    // Animated organic blobs - adjusted for vertical mobile flow
+    float n1 = snoise(p * 0.6 + u_time * 0.05);
+    float n2 = snoise(p * 1.0 - u_time * 0.08 + n1 * 0.4);
+    
+    // Warm gold highlights (#DCC7A1)
+    vec3 gold = vec3(0.86, 0.78, 0.63);
+    float glow = smoothstep(0.3, 0.9, n2);
+    color = mix(color, gold * 0.12, glow);
+    
+    // Interactive glow
+    float mouseDist = length(p - (u_mouse / u_resolution * 2.0 - 1.0));
+    color += gold * (0.04 / (mouseDist + 0.6));
+    
+    // Grain
+    float grain = fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453);
+    color += (grain - 0.5) * 0.025;
+
+    gl_FragColor = vec4(color, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_91 -->
+<!-- Background Scene: Three.js -->
+<!-- STITCH_THREEJS_START:ANIMATION_92 class="absolute inset-0 w-full h-full pointer-events-none" -->
+<div class="absolute inset-0 w-full h-full pointer-events-none" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_92" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_92');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  (function() {
+  const container = document.getElementById('threejs-container-ANIMATION_MOBILE');
+  const width = container.clientWidth || window.innerWidth;
+  const height = container.clientHeight || window.innerHeight;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  container.appendChild(renderer.domElement);
+
+  const group = new THREE.Group();
+  scene.add(group);
+
+  const material = new THREE.MeshPhongMaterial({
+    color: 0xdcc7a1,
+    shininess: 80,
+    transparent: true,
+    opacity: 0.6,
+    wireframe: true
+  });
+
+  // Mobile-optimized abstract shape: 3D neural loop
+  const geometry = new THREE.TorusKnotGeometry(2, 0.4, 100, 16);
+  const mesh = new THREE.Mesh(geometry, material);
+  group.add(mesh);
+
+  // Particles
+  const particlesCount = 150;
+  const positions = new Float32Array(particlesCount * 3);
+  for(let i=0; i<particlesCount * 3; i++) {
+    positions[i] = (Math.random() - 0.5) * 12;
+  }
+  const partGeo = new THREE.BufferGeometry();
+  partGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const partMat = new THREE.PointsMaterial({ color: 0xdcc7a1, size: 0.04, transparent: true, opacity: 0.4 });
+  const points = new THREE.Points(partGeo, partMat);
+  group.add(points);
+
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+  scene.add(ambientLight);
+  const pointLight = new THREE.PointLight(0xdcc7a1, 1.5, 50);
+  pointLight.position.set(5, 5, 5);
+  scene.add(pointLight);
+
+  camera.position.z = 6;
+
+  let mouseX = 0, mouseY = 0;
+  window.addEventListener('touchmove', (e) => {
+    mouseX = (e.touches[0].clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.touches[0].clientY / window.innerHeight - 0.5) * 2;
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+    group.rotation.y += 0.003;
+    group.rotation.z += 0.001;
+    group.position.x += (mouseX - group.position.x) * 0.05;
+    group.position.y += (-mouseY - group.position.y) * 0.05;
+    renderer.render(scene, camera);
+  }
+
+  window.addEventListener('resize', () => {
+    const w = container.clientWidth || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  });
+
+  animate();
+})();
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_92 -->
+<div class="relative z-10 text-center flex flex-col items-center">
+<h1 class="font-display text-headline-lg-mobile md:text-display leading-tight text-on-surface mb-4 whitespace-pre-line text-balance" id="hero-title">
+                Route Your
+                Thoughts.
+            </h1>
+<p class="font-display italic text-title-lg text-gold mb-10 opacity-90 tracking-wide">Amplify Your Intelligence.</p>
+<button class="glow-button bg-surface-container-lowest text-gold font-bold px-8 py-4 rounded-full border border-gold/40 flex items-center gap-3 group transition-all duration-300 active:scale-95">
+<span class="font-label-lg tracking-widest">GET EARLY ACCESS</span>
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+</button>
+</div>
+<!-- Floating UI Cards (Parallax) -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden">
+<div class="absolute top-[20%] -left-10 glass p-4 rounded-xl float-anim shadow-2xl z-20 w-48 parallax-target" data-speed="0.05">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-blue-400 text-sm">send</span>
+</div>
+<span class="font-code text-xs opacity-70">Telegram Bot</span>
+</div>
+<div class="h-2 w-full bg-surface-container-high rounded mb-2"></div>
+<div class="h-2 w-2/3 bg-surface-container-high rounded"></div>
+</div>
+<div class="absolute bottom-[20%] -right-10 glass p-4 rounded-xl float-anim shadow-2xl z-20 w-52 parallax-target" data-speed="-0.08" style="animation-delay: -2s">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm">description</span>
+</div>
+<span class="font-code text-xs opacity-70">Notion Sync</span>
+</div>
+<div class="flex flex-wrap gap-1">
+<div class="h-4 w-12 bg-lavender/20 rounded-full"></div>
+<div class="h-4 w-16 bg-turquoise/20 rounded-full"></div>
+</div>
+</div>
+</div>
+</header>
+<!-- Features Section -->
+<section class="relative py-32 px-gutter overflow-hidden">
+<div class="max-w-container-max mx-auto space-y-24">
+<div class="relative flex flex-col md:flex-row items-center gap-12 group">
+<div class="glass p-8 rounded-[2rem] w-full md:w-2/3 rotate-[3deg] group-hover:rotate-0 transition-transform duration-700 shadow-2xl bg-gradient-to-br from-surface-container-high to-surface">
+<span class="text-gold font-code text-xs mb-4 block tracking-tighter">FEATURE // 01</span>
+<h3 class="font-display text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">Neural Routing</h3>
+<p class="text-on-surface-variant text-body-lg mb-6 leading-relaxed">Intelligence isn't static. Jenn observes your input patterns and routes data to the optimal core processing unit, ensuring no thought is left unrefined.</p>
+<div class="aspect-video rounded-xl bg-surface-container-lowest border border-outline-variant/30 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover opacity-50" data-alt="A stylized 3D visualization of a neural network with glowing pathways in gold and lavender, set against a dark architectural void. High-end editorial aesthetic, clean and sophisticated." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC82YwmO4RWhd9xm0F9D_wJQIRTwkFibZqSuVUZs7TJE-jujHcqKOATNHVwa7V0RBiV2da5068yBFXfSk5I36B6DbVVb2zS4kGhZHK7fLxlUndnKGiZMaNqZma40RW8dR9pZSvzQNsaeqUxjzrYTIAXWwkwtlTWWN4OWtLp19oVfzcUfJtBBr5Myfj5qrJDBW1D4fwYY1gDf6q_8CpKX7Y4hv7osiKcmfvRZ9mHiI7NlnnTkg7oU9CnKQ"/>
+</div>
+</div>
+</div>
+<div class="relative flex flex-col md:flex-row-reverse items-center gap-12 group">
+<div class="glass p-8 rounded-[2.5rem] w-full md:w-2/3 -rotate-[2deg] group-hover:rotate-0 transition-transform duration-700 shadow-2xl bg-gradient-to-bl from-surface-container-high to-surface ml-auto">
+<span class="text-gold font-code text-xs mb-4 block tracking-tighter">FEATURE // 02</span>
+<h3 class="font-display text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">Multi-Source Input</h3>
+<p class="text-on-surface-variant text-body-lg mb-6 leading-relaxed">Capture via CLI, Telegram, or Obsidian. Jenn acts as a unified sensory layer, normalizing fragments into a cohesive stream of data.</p>
+<div class="grid grid-cols-2 gap-4">
+<div class="h-32 rounded-xl bg-surface-container-lowest p-4 flex flex-col justify-between border border-outline-variant/30">
+<span class="material-symbols-outlined text-gold">terminal</span>
+<span class="font-code text-[10px]">API_GATEWAY_ACTIVE</span>
+</div>
+<div class="h-32 rounded-xl bg-surface-container-lowest p-4 flex flex-col justify-between border border-outline-variant/30">
+<span class="material-symbols-outlined text-lavender">hub</span>
+<span class="font-code text-[10px]">SIGNAL_STRENGTH_MAX</span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative flex justify-center group">
+<div class="glass p-12 rounded-[3.5rem] w-full max-w-2xl transition-all duration-700 shadow-2xl bg-surface-container shadow-primary/5 border-primary/20">
+<div class="text-center">
+<span class="text-gold font-code text-xs mb-4 block tracking-tighter">FEATURE // 03</span>
+<h3 class="font-display text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">Plugin Ecosystem</h3>
+<p class="text-on-surface-variant text-body-lg mb-8 leading-relaxed">Extend your consciousness. Connect Jenn to your second brain apps with one-click plugins that live inside your existing workflow.</p>
+<div class="flex flex-wrap justify-center gap-4">
+<div class="glass px-6 py-3 rounded-full flex items-center gap-2 hover:bg-gold/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-sm">settings_input_component</span>
+<span class="font-label-lg">Zotero</span>
+</div>
+<div class="glass px-6 py-3 rounded-full flex items-center gap-2 hover:bg-gold/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-sm">data_object</span>
+<span class="font-label-lg">Raindrop</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Ecosystem Visualization -->
+<section class="relative py-32 bg-surface-container-lowest overflow-hidden">
+<div class="max-w-container-max mx-auto px-gutter text-center mb-16">
+<h2 class="font-display text-headline-lg text-on-surface mb-2">The Signal Network</h2>
+<p class="text-on-surface-variant font-body-md italic">Watch your thoughts manifest through the stack.</p>
+</div>
+<div class="relative h-[600px] flex items-center justify-center">
+<!-- Center Node -->
+<div class="relative z-30 w-32 h-32 rounded-full glass border-gold/50 flex items-center justify-center shadow-[0_0_50px_rgba(220,199,161,0.2)] animate-pulse">
+<div class="w-16 h-16 rounded-full bg-gold/10 flex items-center justify-center">
+<div class="w-8 h-8 rounded-full bg-gold"></div>
+</div>
+</div>
+<!-- Satellite Nodes -->
+<div class="absolute top-10 left-1/4 z-20 glass p-4 rounded-xl flex flex-col items-center gap-2 w-24">
+<span class="material-symbols-outlined text-blue-400">send</span>
+<span class="text-[10px] font-code">TELEGRAM</span>
+</div>
+<div class="absolute bottom-20 left-1/3 z-20 glass p-4 rounded-xl flex flex-col items-center gap-2 w-24">
+<span class="material-symbols-outlined text-white">description</span>
+<span class="text-[10px] font-code">NOTION</span>
+</div>
+<div class="absolute top-40 right-1/4 z-20 glass p-4 rounded-xl flex flex-col items-center gap-2 w-24">
+<span class="material-symbols-outlined text-lavender">diamond</span>
+<span class="text-[10px] font-code">OBSIDIAN</span>
+</div>
+<div class="absolute bottom-10 right-1/3 z-20 glass p-4 rounded-xl flex flex-col items-center gap-2 w-24">
+<span class="material-symbols-outlined text-turquoise">terminal</span>
+<span class="text-[10px] font-code">CLI</span>
+</div>
+<!-- Animated Connections (SVG Overlay) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" preserveaspectratio="xMidYMid slice" viewbox="0 0 400 600">
+<defs>
+<lineargradient id="lineGrad" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="rgba(220, 199, 161, 0)"></stop>
+<stop offset="50%" stop-color="rgba(220, 199, 161, 0.4)"></stop>
+<stop offset="100%" stop-color="rgba(220, 199, 161, 0)"></stop>
+</lineargradient>
+</defs>
+<path d="M100,50 Q200,300 200,300" fill="none" stroke="url(#lineGrad)" stroke-width="1"></path>
+<path d="M133,520 Q200,300 200,300" fill="none" stroke="url(#lineGrad)" stroke-width="1"></path>
+<path d="M300,160 Q200,300 200,300" fill="none" stroke="url(#lineGrad)" stroke-width="1"></path>
+<path d="M266,560 Q200,300 200,300" fill="none" stroke="url(#lineGrad)" stroke-width="1"></path>
+</svg>
+</div>
+</section>
+<!-- Plugin Showcase -->
+<section class="py-24 overflow-hidden relative">
+<div class="flex gap-6 animate-marquee whitespace-nowrap px-gutter py-8">
+<!-- Glass Capsules -->
+<div class="glass flex items-center gap-4 px-8 py-4 rounded-full border-gold/10">
+<span class="material-symbols-outlined text-gold">bolt</span>
+<span class="font-title-lg">Fast API</span>
+</div>
+<div class="glass flex items-center gap-4 px-8 py-4 rounded-full border-gold/10">
+<span class="material-symbols-outlined text-turquoise">history</span>
+<span class="font-title-lg">Time Travel</span>
+</div>
+<div class="glass flex items-center gap-4 px-8 py-4 rounded-full border-gold/10">
+<span class="material-symbols-outlined text-lavender">psychology</span>
+<span class="font-title-lg">Mental Maps</span>
+</div>
+<div class="glass flex items-center gap-4 px-8 py-4 rounded-full border-gold/10">
+<span class="material-symbols-outlined text-gold">share</span>
+<span class="font-title-lg">Auto-Publish</span>
+</div>
+<!-- Repeat for scroll effect -->
+<div class="glass flex items-center gap-4 px-8 py-4 rounded-full border-gold/10">
+<span class="material-symbols-outlined text-gold">bolt</span>
+<span class="font-title-lg">Fast API</span>
+</div>
+<div class="glass flex items-center gap-4 px-8 py-4 rounded-full border-gold/10">
+<span class="material-symbols-outlined text-turquoise">history</span>
+<span class="font-title-lg">Time Travel</span>
+</div>
+</div>
+</section>
+<!-- Vertical Timeline -->
+<section class="py-32 px-gutter relative bg-surface">
+<div class="max-w-container-max mx-auto relative">
+<h2 class="font-display text-headline-lg-mobile md:text-headline-lg text-center mb-24">From Inspiration to Insight</h2>
+<div class="relative pl-12 border-l border-outline-variant/30 space-y-24">
+<!-- Milestone 1 -->
+<div class="relative">
+<div class="absolute -left-[60px] w-6 h-6 rounded-full bg-gold border-4 border-background ring-4 ring-gold/10"></div>
+<h4 class="font-title-lg text-primary mb-2">The Spark</h4>
+<p class="text-on-surface-variant max-w-md">Capture raw, unedited thoughts on the go. A voice note, a quick terminal command, or a link shared via Telegram.</p>
+</div>
+<!-- Milestone 2 -->
+<div class="relative">
+<div class="absolute -left-[60px] w-6 h-6 rounded-full bg-lavender border-4 border-background ring-4 ring-lavender/10"></div>
+<h4 class="font-title-lg text-primary mb-2">The Refinement</h4>
+<p class="text-on-surface-variant max-w-md">Jenn's core processes the intent, cleaning up the syntax and extracting key entities automatically.</p>
+</div>
+<!-- Milestone 3 -->
+<div class="relative">
+<div class="absolute -left-[60px] w-6 h-6 rounded-full bg-turquoise border-4 border-background ring-4 ring-turquoise/10"></div>
+<h4 class="font-title-lg text-primary mb-2">The Integration</h4>
+<p class="text-on-surface-variant max-w-md">Data is seamlessly pushed to your preferred knowledge base, tagged, and linked to existing nodes.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="relative py-48 px-gutter overflow-hidden text-center bg-surface-container-lowest">
+<!-- Glowing Sphere Background -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40">
+<div class="w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-gold/40 via-transparent to-lavender/30 blur-[120px] animate-pulse"></div>
+</div>
+<div class="relative z-10 max-w-3xl mx-auto">
+<h2 class="font-display text-headline-lg md:text-display text-on-surface mb-8 leading-tight">Master the flow of your digital mind.</h2>
+<div class="max-w-md mx-auto">
+<div class="relative">
+<input class="w-full bg-surface-container-high border-none rounded-full py-5 px-8 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-gold transition-all duration-300 shadow-xl" placeholder="Enter your email" type="email"/>
+<button class="absolute right-2 top-2 bottom-2 bg-gold text-surface-container-lowest font-bold px-6 rounded-full hover:scale-105 transition-transform">
+                        Join Waitlist
+                    </button>
+</div>
+<p class="text-outline text-xs mt-6 font-code uppercase tracking-widest">Early access dropping weekly.</p>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest py-12 px-gutter">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center border-t border-outline-variant/10 pt-12">
+<div>
+<div class="font-display text-title-lg text-primary mb-2">Jenn Console</div>
+<p class="text-on-surface-variant text-sm font-body-md opacity-60">© 2024 Jenn Console. All rights reserved.</p>
+</div>
+<div class="flex flex-wrap gap-x-8 gap-y-4 md:justify-end">
+<a class="text-on-surface-variant hover:text-gold transition-colors text-sm font-label-lg" href="#">Documentation</a>
+<a class="text-on-surface-variant hover:text-gold transition-colors text-sm font-label-lg" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-gold transition-colors text-sm font-label-lg" href="#">Support</a>
+<a class="text-on-surface-variant hover:text-gold transition-colors text-sm font-label-lg" href="#">API Reference</a>
+</div>
+</div>
+</footer>
+<script>
+        // Parallax Effect
+        window.addEventListener('mousemove', (e) => {
+            const targets = document.querySelectorAll('.parallax-target');
+            const mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+            const mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+
+            targets.forEach(target => {
+                const speed = parseFloat(target.getAttribute('data-speed')) || 0.05;
+                const x = mouseX * speed * 100;
+                const y = mouseY * speed * 100;
+                target.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+
+        // Scroll Animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.classList.remove('translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section > div').forEach(div => {
+            div.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(div);
+        });
+
+        // Simple Smooth Scroll for internal links if any
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+<style>
+        /* Marquee Animation */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: fit-content;
+            animation: marquee 30s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+    </style>
+</body></html>

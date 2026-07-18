@@ -196,10 +196,20 @@ async function seedTestToken() {
   console.log('[Store] Seeded admin user + test token')
 }
 
+async function updateUserPassword(username, newPasswordHash) {
+  try {
+    await prisma.user.update({ where: { username }, data: { passwordHash: newPasswordHash } })
+    return true
+  } catch {
+    return false
+  }
+}
+
 module.exports = {
   getSourceByToken: getSourceByTokenSync,
   getUser,
   addUser,
+  updateUserPassword,
   getUserTokens,
   getUserToken,
   createToken,

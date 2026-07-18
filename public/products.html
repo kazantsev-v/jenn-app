@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jenn — Products</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#131314",
+                    "inverse-primary": "#6c5c3d",
+                    "tertiary-container": "#d4c1f2",
+                    "secondary-container": "#584725",
+                    "on-error-container": "#ffdad6",
+                    "on-primary": "#3b2f14",
+                    "gold": "#DCC7A1",
+                    "surface-container-lowest": "#0e0e0f",
+                    "primary-container": "#dcc7a1",
+                    "outline-variant": "#4c463c",
+                    "surface-container": "#201f20",
+                    "on-surface": "#e5e2e3",
+                    "primary": "#f9e3bb",
+                    "tertiary-fixed-dim": "#d1beef",
+                    "secondary": "#dcc398",
+                    "primary-fixed": "#f6e0b9",
+                    "on-error": "#690005",
+                    "surface": "#131314",
+                    "background": "#131314",
+                    "on-tertiary-fixed": "#21143a",
+                    "inverse-surface": "#e5e2e3",
+                    "tertiary-fixed": "#ebdcff",
+                    "on-primary-fixed-variant": "#534528",
+                    "primary-fixed-dim": "#d9c49e",
+                    "error": "#ffb4ab",
+                    "inverse-on-surface": "#313031",
+                    "sand": "#E8D5B5",
+                    "surface-bright": "#1E1E21",
+                    "surface-tint": "#d9c49e",
+                    "on-secondary-fixed": "#261900",
+                    "outline": "#989084",
+                    "surface-variant": "#353436",
+                    "on-secondary": "#3d2e0f",
+                    "on-surface-variant": "#cfc5b8",
+                    "on-tertiary-fixed-variant": "#4e4068",
+                    "surface-container-high": "#2a2a2b",
+                    "secondary-fixed-dim": "#dcc398",
+                    "on-tertiary-container": "#5c4d77",
+                    "error-container": "#93000a",
+                    "surface-container-low": "#1c1b1c",
+                    "lavender": "#C3B1E1",
+                    "on-secondary-fixed-variant": "#554423",
+                    "tertiary": "#ede0ff",
+                    "on-secondary-container": "#ceb58b",
+                    "on-tertiary": "#372950",
+                    "on-primary-container": "#625234",
+                    "turquoise": "#87C5C5",
+                    "secondary-fixed": "#fadfb2",
+                    "surface-container-highest": "#353436",
+                    "on-primary-fixed": "#251a03",
+                    "on-background": "#e5e2e3",
+                    "chrome": "#8ab4f8",
+                    "firefox": "#ffb86c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-safe": "32px",
+                    "unit": "8px",
+                    "container-max": "1200px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "label-lg": ["Inter"],
+                    "headline-lg": ["Cormorant Garamond"],
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Cormorant Garamond"],
+                    "title-lg": ["Inter"],
+                    "display": ["Cormorant Garamond"],
+                    "code": ["JetBrains Mono"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-lg": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "title-lg": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "display": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                    "code": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-md": ["15px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #131314;
+            color: #e5e2e3;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(30, 30, 33, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(152, 144, 132, 0.1);
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .product-card {
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(220, 199, 161, 0.35);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        html.light body {
+            background-color: #f9f8f6;
+            color: #1c1c1a;
+        }
+        html.light .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        .mobile-menu-active {
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+        .menu-active #menu-line-1 {
+            transform: rotate(45deg) translate(4px, 4px);
+        }
+        .menu-active #menu-line-2 {
+            opacity: 0;
+        }
+        .menu-active #menu-line-3 {
+            transform: rotate(-45deg) translate(4px, -4px);
+        }
+        @media (max-width: 768px) {
+            .text-display {
+                font-size: 2.5rem !important;
+            }
+        }
+
+        /* Action icons */
+        .icon-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 9999px;
+            border: 1px solid rgba(152, 144, 132, 0.25);
+            background: rgba(42, 42, 43, 0.65);
+            color: #cfc5b8;
+            transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+        }
+        .icon-btn:hover {
+            transform: scale(1.08);
+            border-color: rgba(220, 199, 161, 0.55);
+            color: #f9e3bb;
+            background: rgba(220, 199, 161, 0.08);
+            box-shadow: 0 0 0 1px rgba(220, 199, 161, 0.12), 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+        .icon-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+        .icon-btn--soon {
+            opacity: 0.38;
+            filter: grayscale(1);
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .icon-btn--soon .soon-badge {
+            position: absolute;
+            bottom: -7px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: "JetBrains Mono", monospace;
+            font-size: 8px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #DCC7A1;
+            background: rgba(19, 19, 20, 0.95);
+            border: 1px solid rgba(220, 199, 161, 0.35);
+            border-radius: 9999px;
+            padding: 1px 5px;
+            line-height: 1.2;
+            white-space: nowrap;
+            filter: none;
+            opacity: 1;
+        }
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 40px;
+            padding: 0 16px;
+            border-radius: 9999px;
+            background: #f9e3bb;
+            color: #3b2f14;
+            font-family: Inter, sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .btn-download:hover {
+            transform: scale(1.04);
+            box-shadow: 0 8px 24px rgba(249, 227, 187, 0.2);
+        }
+        .btn-download svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        .card-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-top: auto;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(152, 144, 132, 0.15);
+        }
+        html.light .icon-btn {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: rgba(0, 0, 0, 0.1);
+            color: #4c463c;
+        }
+        html.light .icon-btn:hover {
+            color: #3b2f14;
+            border-color: rgba(108, 92, 61, 0.4);
+            background: rgba(220, 199, 161, 0.25);
+        }
+        html.light .icon-btn--soon .soon-badge {
+            background: #f9f8f6;
+            color: #6c5c3d;
+        }
+        html.light .card-actions {
+            border-top-color: rgba(0, 0, 0, 0.08);
+        }
+
+        /* Inline previews */
+        .product-preview {
+            position: relative;
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(152, 144, 132, 0.18);
+            background: linear-gradient(160deg, rgba(42, 42, 43, 0.9), rgba(19, 19, 20, 0.95));
+            margin-bottom: 1.25rem;
+            min-height: 112px;
+        }
+        .product-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .product-preview--shot {
+            min-height: 0;
+            aspect-ratio: 16 / 9;
+        }
+        .product-preview--shot img {
+            aspect-ratio: 16 / 9;
+        }
+        .mock-ui {
+            padding: 12px 14px;
+            font-family: Inter, system-ui, sans-serif;
+            font-size: 11px;
+            line-height: 1.35;
+            color: #cfc5b8;
+            min-height: 112px;
+        }
+        .mock-ui .mock-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+            opacity: 0.85;
+        }
+        .mock-ui .mock-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0.45;
+        }
+        .mock-ui .mock-line {
+            height: 7px;
+            border-radius: 4px;
+            background: currentColor;
+            opacity: 0.18;
+        }
+        .mock-ui .mock-bubble {
+            border-radius: 10px;
+            padding: 8px 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-bottom: 6px;
+        }
+        .mock-ui .mock-bubble--accent {
+            background: color-mix(in srgb, var(--accent, #DCC7A1) 14%, transparent);
+            border-color: color-mix(in srgb, var(--accent, #DCC7A1) 28%, transparent);
+        }
+        .mock-ui .mock-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            margin-bottom: 5px;
+        }
+        .mock-ui .mock-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 5px;
+            background: color-mix(in srgb, var(--accent, #DCC7A1) 35%, transparent);
+            flex-shrink: 0;
+        }
+        .mock-ui .mock-kbd {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(0, 0, 0, 0.35);
+            font-family: "JetBrains Mono", monospace;
+            font-size: 10px;
+            color: #f9e3bb;
+        }
+        .mock-ui .mock-hotkey-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 88px;
+            text-align: center;
+        }
+        .mock-ui .mock-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            max-width: 200px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(220, 199, 161, 0.35);
+            background: rgba(19, 19, 20, 0.85);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+        }
+        .mock-ui--tg { --accent: #87C5C5; color: #a8d8d8; }
+        .mock-ui--desktop { --accent: #C3B1E1; color: #cfc5b8; }
+        .mock-ui--chrome { --accent: #8ab4f8; color: #b8cff8; }
+        .mock-ui--firefox { --accent: #ffb86c; color: #ffd0a0; }
+        .mock-ui--notion { --accent: #DCC7A1; color: #cfc5b8; }
+        .mock-ui--obsidian { --accent: #E8D5B5; color: #e0d4c0; }
+        .mock-ui--jennmd { --accent: #C3B1E1; color: #d4c8e8; }
+        .mock-ui--skill { --accent: #C3B1E1; color: #cfc5b8; }
+        .mock-ui--api { --accent: #87C5C5; color: #a8d8d8; }
+        html.light .product-preview {
+            background: linear-gradient(160deg, #f3f1ed, #eae7e1);
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+        html.light .mock-ui {
+            color: #4c463c;
+        }
+        html.light .mock-ui .mock-bubble,
+        html.light .mock-ui .mock-row {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 0, 0, 0.06);
+        }
+        html.light .mock-ui .mock-search {
+            background: #fff;
+            border-color: rgba(108, 92, 61, 0.25);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+        html.light .mock-ui .mock-kbd {
+            background: #fff;
+            color: #3b2f14;
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hidden SVG sprite */
+        .svg-sprite {
+            position: absolute;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="selection:bg-primary selection:text-on-primary min-h-screen flex flex-col">
+
+<!--
+  LINK SLOTS — paste real URLs into href on elements with these data-link values:
+  github-core, github-tg, github-desktop, github-chrome, github-firefox
+  github-obsidian, github-notion, github-jennmd, github-skill, github-api
+  tg-bot, desktop-download
+  store-chrome, store-firefox, store-obsidian
+-->
+
+<!-- SVG icon sprite -->
+<svg class="svg-sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-github" viewBox="0 0 24 24">
+    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+  </symbol>
+  <symbol id="i-telegram" viewBox="0 0 24 24">
+    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.486 4.476-1.487z"/>
+  </symbol>
+  <symbol id="i-download" viewBox="0 0 24 24">
+    <path d="M12 3a1 1 0 0 1 1 1v9.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-5 5a1 1 0 0 1-1.414 0l-5-5a1 1 0 1 1 1.414-1.414L11 13.586V4a1 1 0 0 1 1-1zM5 19a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H5z"/>
+  </symbol>
+  <symbol id="i-chrome" viewBox="0 0 24 24">
+    <path d="M12 0C8.21 0 4.831 1.757 2.632 4.501l3.953 6.848A5.454 5.454 0 0 1 12 6.545h10.691A12 12 0 0 0 12 0zM1.931 5.47A11.943 11.943 0 0 0 0 12c0 6.012 4.42 10.991 10.189 11.864l3.953-6.847a5.45 5.45 0 0 1-6.865-2.29zm13.342 2.166a5.446 5.446 0 0 1 1.45 7.09l.002.001h-.002l-5.344 9.257c.206.01.413.016.621.016 6.627 0 12-5.373 12-12 0-1.54-.29-3.011-.818-4.364zM12 16.364a4.364 4.364 0 1 1 0-8.728 4.364 4.364 0 0 1 0 8.728z"/>
+  </symbol>
+  <symbol id="i-firefox" viewBox="0 0 24 24">
+    <path d="M20.452 3.445a11.032 11.032 0 0 0-2.25-1.29 12.14 12.14 0 0 0-3.97-1.07c-.176-.01-.35-.018-.524-.018C6.816 1.067 1.5 6.383 1.5 12.9c0 .33.016.657.044.981A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12 0-2.9-1.03-5.56-2.746-7.65-.26-.318-.54-.62-.834-.905zm-5.27 15.72c-1.03.53-2.16.83-3.35.83-1.34 0-2.59-.38-3.66-1.04a7.48 7.48 0 0 1-2.61-2.72 7.48 7.48 0 0 1-.72-3.5c0-1.34.35-2.6.97-3.7a7.5 7.5 0 0 1 2.55-2.55 7.48 7.48 0 0 1 3.47-.85c.4 0 .79.03 1.17.1a6.9 6.9 0 0 0-1.48 3.85c0 .13.01.26.02.39a5.4 5.4 0 0 0 1.64 3.68 5.4 5.4 0 0 0 3.68 1.64c.13.01.26.02.39.02.2 0 .4-.01.59-.03.58.98 1.01 2.08 1.23 3.25a7.44 7.44 0 0 1-3.9 1.63z"/>
+  </symbol>
+  <symbol id="i-obsidian" viewBox="0 0 24 24">
+    <path d="M12.2 1.6 20.5 8.4c.4.33.5.9.24 1.36L16.1 18.9a1.1 1.1 0 0 1-1 .62l-8.1-.5a1.1 1.1 0 0 1-.92-.7L3.5 9.7a1.1 1.1 0 0 1 .32-1.2l7.2-6.5a1.1 1.1 0 0 1 1.18-.4zM8.4 10.2l1.9 7.2 5.7-.35 3-6.4-5.3-4.35-5.3 3.9z"/>
+  </symbol>
+  <symbol id="i-external" viewBox="0 0 24 24">
+    <path d="M14 3a1 1 0 1 0 0 2h3.586l-9.293 9.293a1 1 0 1 0 1.414 1.414L19 6.414V10a1 1 0 1 0 2 0V4a1 1 0 0 0-1-1h-6zM5 5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 1 0-2 0v5H5V7h5a1 1 0 1 0 0-2H5z"/>
+  </symbol>
+</svg>
+
+<!-- Top Navigation -->
+<nav class="fixed top-0 left-0 w-full z-50 grid grid-cols-[1fr_auto_1fr] items-center px-6 md:px-8 py-4 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20">
+<a href="/" class="justify-self-start font-display text-2xl font-bold text-primary tracking-tight italic">Jenn</a>
+<div class="hidden md:flex justify-self-center gap-6 items-center">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label text-sm" href="/faq.html">FAQ</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label text-sm" href="/docs.html">API Docs</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label text-sm" href="/products.html">Products</a>
+</div>
+<div class="col-start-3 md:col-auto justify-self-end flex gap-3 items-center">
+<button onclick="toggleLang()" class="w-8 h-8 rounded-full border border-outline-variant/50 hover:border-primary flex items-center justify-center text-xs font-label-lg text-on-surface-variant hover:text-primary transition-all" title="Language"><span id="lang-label">EN</span></button>
+<button onclick="toggleTheme()" class="w-8 h-8 rounded-full border border-outline-variant/50 hover:border-primary flex items-center justify-center text-on-surface-variant hover:text-primary transition-all" title="Theme"><span class="material-symbols-outlined text-[16px]" id="theme-icon">dark_mode</span></button>
+<button onclick="location.href='/console'" class="hidden md:block text-on-surface-variant hover:text-primary transition-all font-label text-sm" data-i18n="signin">Sign In</button>
+<button onclick="location.href='/console'" class="hidden md:block bg-primary text-on-primary px-5 py-2 rounded-full font-bold font-label text-sm hover:scale-105 active:scale-95 transition-transform">Console</button>
+<button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-surface-container-high transition-colors">
+<span class="w-5 h-0.5 bg-on-surface-variant transition-all" id="menu-line-1"></span>
+<span class="w-5 h-0.5 bg-on-surface-variant transition-all" id="menu-line-2"></span>
+<span class="w-5 h-0.5 bg-on-surface-variant transition-all" id="menu-line-3"></span>
+</button>
+</div>
+</nav>
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="fixed top-[64px] left-0 w-full z-40 bg-surface/95 backdrop-blur-xl transform -translate-y-full opacity-0 transition-all duration-300 pointer-events-none border-b border-outline-variant/20">
+<div class="flex flex-col p-6 gap-4">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label text-sm border-b border-outline-variant/30" href="/faq.html">FAQ</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label text-sm border-b border-outline-variant/30" href="/docs.html">API Docs</a>
+<a class="text-primary font-bold py-2 font-label text-sm" href="/products.html">Products</a>
+<div class="flex gap-3 pt-4">
+<button onclick="location.href='/console'" class="flex-1 py-3 bg-primary text-on-primary rounded-full font-bold font-label text-sm" data-i18n="signin">Sign In</button>
+<button onclick="location.href='/console'" class="flex-1 py-3 border border-primary text-primary rounded-full font-bold font-label text-sm">Console</button>
+</div>
+</div>
+</div>
+
+<main class="relative z-10 pt-32 pb-24 px-6 md:px-gutter max-w-container-max mx-auto flex-1 w-full">
+<!-- Hero -->
+<section class="text-center mb-20 md:mb-28 fade-in">
+<span class="inline-block px-3 py-1 rounded-full bg-gold/10 border border-gold/20 text-gold font-code text-[10px] uppercase tracking-widest mb-6" data-i18n="hero.badge">Modular ecosystem</span>
+<h1 class="font-display text-display italic mb-6 leading-tight" data-i18n="hero.title">Products of Jenn</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto" data-i18n="hero.desc">
+Everything you need to capture, route, and store knowledge — plug inputs and outputs into Jenn Core and let AI handle the rest.
+</p>
+</section>
+
+<!-- Core product (featured) -->
+<section class="mb-12 md:mb-16 fade-in">
+<div class="glass-panel product-card rounded-[2.5rem] p-8 md:p-12 border-gold/20 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-gold/10 blur-[100px] rounded-full pointer-events-none"></div>
+<div class="relative z-10 flex flex-col lg:flex-row gap-10 items-start">
+<div class="flex-1 min-w-0">
+<div class="flex flex-wrap items-center gap-3 mb-4">
+<div class="w-14 h-14 rounded-2xl bg-gold/10 border border-gold/30 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-gold text-3xl">hub</span>
+</div>
+<span class="px-3 py-1 rounded-full bg-gold/15 text-gold font-code text-[11px] uppercase tracking-wider" data-i18n="core.badge">Core</span>
+<span class="px-3 py-1 rounded-full bg-turquoise/10 text-turquoise font-code text-[11px] uppercase tracking-wider" data-i18n="status.available">Available</span>
+</div>
+<h2 class="font-display text-headline-lg mb-4" data-i18n="core.title">Jenn Core &amp; Console</h2>
+<p class="font-body-lg text-on-surface-variant mb-6 max-w-2xl" data-i18n="core.desc">
+Self-hosted AI router with multi-provider fallback (Groq → OpenRouter → GigaChat). Determines intent, runs skills, and ships results to your destinations. Full dashboard for pipeline, keys, and activity.
+</p>
+<ul class="grid sm:grid-cols-2 gap-3 mb-8">
+<li class="flex items-center gap-2 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-gold text-[18px]">check_circle</span><span data-i18n="core.f1">AI intent routing</span></li>
+<li class="flex items-center gap-2 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-gold text-[18px]">check_circle</span><span data-i18n="core.f2">Pipeline console</span></li>
+<li class="flex items-center gap-2 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-gold text-[18px]">check_circle</span><span data-i18n="core.f3">API keys &amp; logs</span></li>
+<li class="flex items-center gap-2 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-gold text-[18px]">check_circle</span><span data-i18n="core.f4">Open-source · self-hosted</span></li>
+</ul>
+<div class="card-actions !border-0 !pt-0">
+<button onclick="location.href='/console'" class="bg-primary text-on-primary px-6 py-3 rounded-full font-bold font-label text-sm hover:scale-105 active:scale-95 transition-transform" data-i18n="core.cta">Open Console</button>
+<a href="#" data-link="github-core" class="icon-btn" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+<svg><use href="#i-github"/></svg>
+</a>
+</div>
+</div>
+<div class="w-full lg:w-[46%] flex-shrink-0">
+<div class="product-preview product-preview--shot rounded-2xl shadow-2xl shadow-black/40">
+<img src="/img/console-dashboard.png" alt="Jenn Console" class="w-full"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Inputs -->
+<section class="mb-16 fade-in">
+<div class="flex items-end justify-between mb-8 gap-4">
+<div>
+<span class="text-gold font-label-lg uppercase tracking-widest text-xs mb-2 block" data-i18n="inputs.label">Inputs</span>
+<h2 class="font-display text-3xl md:text-4xl" data-i18n="inputs.title">Capture from anywhere</h2>
+</div>
+</div>
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+<!-- Telegram -->
+<div class="glass-panel product-card rounded-[2rem] p-6 md:p-7 flex flex-col">
+<div class="product-preview">
+<div class="mock-ui mock-ui--tg">
+<div class="mock-bar"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-line" style="width:40%"></span></div>
+<div class="mock-bubble mock-bubble--accent" data-i18n="preview.tg1">💡 Save this idea…</div>
+<div class="mock-bubble" data-i18n="preview.tg2">→ routed to Notion</div>
+<div class="mock-line" style="width:55%;margin-top:8px"></div>
+</div>
+</div>
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 rounded-2xl bg-turquoise/10 border border-turquoise/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-turquoise text-2xl">send</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-turquoise/10 text-turquoise font-code text-[10px] uppercase tracking-wider" data-i18n="status.available">Available</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-2" data-i18n="tg.title">Telegram Bot</h3>
+<p class="font-body-md text-on-surface-variant mb-4 flex-1 text-sm" data-i18n="tg.desc">
+Receive messages, forwards, and links from Telegram. Perfect for capture on the go — ideas, expenses, research notes.
+</p>
+<div class="flex flex-wrap gap-2 mb-1">
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]" data-i18n="tg.tag1">Mobile-first</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]" data-i18n="tg.tag2">Forward posts</span>
+</div>
+<div class="card-actions">
+<a href="https://t.me/jenn_input_bot" data-link="tg-bot" class="icon-btn" title="Telegram" aria-label="Telegram" target="_blank" rel="noopener noreferrer">
+<svg><use href="#i-telegram"/></svg>
+</a>
+<a href="#" data-link="github-tg" class="icon-btn" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+<svg><use href="#i-github"/></svg>
+</a>
+</div>
+</div>
+
+<!-- Desktop -->
+<div class="glass-panel product-card rounded-[2rem] p-6 md:p-7 flex flex-col">
+<div class="product-preview">
+<div class="mock-ui mock-ui--desktop">
+<div class="mock-hotkey-center">
+<span class="mock-kbd">Alt + Space</span>
+<div class="mock-search">
+<span class="material-symbols-outlined text-[14px] text-lavender">search</span>
+<span class="opacity-50" data-i18n="preview.desktop">Send to Jenn…</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 rounded-2xl bg-lavender/10 border border-lavender/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-lavender text-2xl">laptop_mac</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-lavender/10 text-lavender font-code text-[10px] uppercase tracking-wider" data-i18n="status.available">Available</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-2" data-i18n="desktop.title">Desktop Input</h3>
+<p class="font-body-md text-on-surface-variant mb-4 flex-1 text-sm" data-i18n="desktop.desc">
+Alt+Space overlay for Windows. Select text or type a thought — send straight to Jenn without leaving your workflow.
+</p>
+<div class="flex flex-wrap gap-2 mb-1">
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]">Alt+Space</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]" data-i18n="desktop.tag2">Windows</span>
+</div>
+<div class="card-actions">
+<a href="#" data-link="desktop-download" class="btn-download" title="Download" aria-label="Download">
+<svg><use href="#i-download"/></svg>
+<span data-i18n="desktop.download">Download</span>
+</a>
+<a href="#" data-link="github-desktop" class="icon-btn" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+<svg><use href="#i-github"/></svg>
+</a>
+</div>
+</div>
+
+<!-- Chrome Extension -->
+<div class="glass-panel product-card rounded-[2rem] p-6 md:p-7 flex flex-col">
+<div class="product-preview">
+<div class="mock-ui mock-ui--chrome">
+<div class="mock-bar"><span class="mock-dot"></span><span class="mock-line" style="width:50%"></span></div>
+<div class="mock-row"><span class="mock-icon"></span><span data-i18n="preview.chrome1">Send selection</span></div>
+<div class="mock-row"><span class="mock-icon"></span><span data-i18n="preview.chrome2">Bookmark page</span></div>
+<div class="mock-bubble mock-bubble--accent mt-1" style="margin-top:6px" data-i18n="preview.chrome3">Token · ready</div>
+</div>
+</div>
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 rounded-2xl bg-chrome/10 border border-chrome/20 flex items-center justify-center">
+<svg class="w-6 h-6 text-chrome" style="fill:currentColor"><use href="#i-chrome"/></svg>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-chrome/10 text-chrome font-code text-[10px] uppercase tracking-wider" data-i18n="status.available">Available</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-2" data-i18n="chrome.title">Chrome Extension</h3>
+<p class="font-body-md text-on-surface-variant mb-4 flex-1 text-sm" data-i18n="chrome.desc">
+One click to send selected text or bookmark the current tab to Jenn. Token and settings live in the popup.
+</p>
+<div class="flex flex-wrap gap-2 mb-1">
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]" data-i18n="chrome.tag1">Chromium</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]" data-i18n="chrome.tag2">One-click</span>
+</div>
+<div class="card-actions">
+<a href="https://github.com/kazantsev-v/jenn-chrome-extension" data-link="github-chrome" class="icon-btn" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+<svg><use href="#i-github"/></svg>
+</a>
+<span class="icon-btn icon-btn--soon" title="Chrome Web Store — soon" aria-label="Chrome Web Store soon" role="img">
+<svg><use href="#i-chrome"/></svg>
+<span class="soon-badge">soon</span>
+</span>
+</div>
+</div>
+
+<!-- Firefox Extension -->
+<div class="glass-panel product-card rounded-[2rem] p-6 md:p-7 flex flex-col">
+<div class="product-preview">
+<div class="mock-ui mock-ui--firefox">
+<div class="mock-bar"><span class="mock-dot"></span><span class="mock-line" style="width:45%"></span></div>
+<div class="mock-row"><span class="mock-icon"></span><span data-i18n="preview.ff1">Capture selection</span></div>
+<div class="mock-row"><span class="mock-icon"></span><span data-i18n="preview.ff2">Save tab</span></div>
+<div class="mock-bubble mock-bubble--accent" style="margin-top:6px" data-i18n="preview.ff3">Firefox · ready</div>
+</div>
+</div>
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 rounded-2xl bg-firefox/10 border border-firefox/20 flex items-center justify-center">
+<svg class="w-6 h-6 text-firefox" style="fill:currentColor"><use href="#i-firefox"/></svg>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-firefox/10 text-firefox font-code text-[10px] uppercase tracking-wider" data-i18n="status.available">Available</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-2" data-i18n="firefox.title">Firefox Extension</h3>
+<p class="font-body-md text-on-surface-variant mb-4 flex-1 text-sm" data-i18n="firefox.desc">
+Same capture power on Firefox — text and bookmarks into Jenn from any page, with local token in the popup.
+</p>
+<div class="flex flex-wrap gap-2 mb-1">
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]">Firefox</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]" data-i18n="firefox.tag2">Bookmarks</span>
+</div>
+<div class="card-actions">
+<a href="https://github.com/kazantsev-v/jenn-firefox-extension" data-link="github-firefox" class="icon-btn" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+<svg><use href="#i-github"/></svg>
+</a>
+<span class="icon-btn icon-btn--soon" title="Firefox Add-ons — soon" aria-label="Firefox Add-ons soon" role="img">
+<svg><use href="#i-firefox"/></svg>
+<span class="soon-badge">soon</span>
+</span>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- Outputs -->
+<section class="mb-16 fade-in">
+<div class="mb-8">
+<span class="text-gold font-label-lg uppercase tracking-widest text-xs mb-2 block" data-i18n="outputs.label">Outputs</span>
+<h2 class="font-display text-3xl md:text-4xl" data-i18n="outputs.title">Store where you already work</h2>
+</div>
+<div class="grid md:grid-cols-3 gap-6">
+
+<!-- Notion -->
+<div class="glass-panel product-card rounded-[2rem] p-6 md:p-7 flex flex-col">
+<div class="product-preview">
+<div class="mock-ui mock-ui--notion">
+<div class="mock-bar"><span class="mock-line" style="width:30%"></span></div>
+<div class="mock-row"><span class="mock-icon"></span><div class="flex-1"><div class="mock-line" style="width:70%;margin-bottom:4px"></div><div class="mock-line" style="width:40%"></div></div></div>
+<div class="mock-row"><span class="mock-icon"></span><div class="flex-1"><div class="mock-line" style="width:55%;margin-bottom:4px"></div><div class="mock-line" style="width:35%"></div></div></div>
+<div class="mock-bubble mock-bubble--accent" data-i18n="preview.notion">Database · Notes</div>
+</div>
+</div>
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 rounded-2xl bg-gold/10 border border-gold/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-gold text-2xl">description</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-gold/10 text-gold font-code text-[10px] uppercase tracking-wider" data-i18n="status.available">Available</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-2" data-i18n="notion.title">Notion</h3>
+<p class="font-body-md text-on-surface-variant mb-4 flex-1 text-sm" data-i18n="notion.desc">
+Write notes, tasks, and research into your Notion databases. Categories map to destinations you configure in Console.
+</p>
+<div class="flex flex-wrap gap-2 mb-1">
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]" data-i18n="notion.tag1">Databases</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]" data-i18n="notion.tag2">Destinations</span>
+</div>
+<div class="card-actions">
+<a href="#" data-link="github-notion" class="icon-btn" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+<svg><use href="#i-github"/></svg>
+</a>
+</div>
+</div>
+
+<!-- Obsidian -->
+<div class="glass-panel product-card rounded-[2rem] p-6 md:p-7 flex flex-col">
+<div class="product-preview">
+<div class="mock-ui mock-ui--obsidian">
+<div class="mock-bar"><span class="mock-line" style="width:28%"></span></div>
+<div class="mock-row"><span class="mock-icon"></span><span class="font-code text-[10px]">daily/2026-07-18.md</span></div>
+<div class="mock-row"><span class="mock-icon"></span><span class="font-code text-[10px]">inbox/idea.md</span></div>
+<div class="mock-bubble mock-bubble--accent" data-i18n="preview.obsidian">Local vault · graph</div>
+</div>
+</div>
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 rounded-2xl bg-sand/10 border border-sand/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-sand text-2xl">diamond</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-sand/10 text-sand font-code text-[10px] uppercase tracking-wider" data-i18n="status.available">Available</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-2" data-i18n="obsidian.title">Obsidian</h3>
+<p class="font-body-md text-on-surface-variant mb-4 flex-1 text-sm" data-i18n="obsidian.desc">
+Local vault output for knowledge graphs. Ideal for long-term notes, research, and private archives under your control.
+</p>
+<div class="flex flex-wrap gap-2 mb-1">
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]" data-i18n="obsidian.tag1">Local vault</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]" data-i18n="obsidian.tag2">Markdown</span>
+</div>
+<div class="card-actions">
+<a href="#" data-link="store-obsidian" class="icon-btn" title="Obsidian Community Plugins" aria-label="Obsidian marketplace" target="_blank" rel="noopener noreferrer">
+<svg><use href="#i-obsidian"/></svg>
+</a>
+<a href="#" data-link="github-obsidian" class="icon-btn" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+<svg><use href="#i-github"/></svg>
+</a>
+</div>
+</div>
+
+<!-- Jenn.MD -->
+<div class="glass-panel product-card rounded-[2rem] p-6 md:p-7 flex flex-col relative overflow-hidden">
+<div class="absolute -top-10 -right-10 w-40 h-40 bg-lavender/10 blur-[60px] rounded-full pointer-events-none"></div>
+<div class="product-preview relative z-10">
+<div class="mock-ui mock-ui--jennmd">
+<div class="mock-bar">
+<span class="font-display italic text-sm text-lavender">Jenn.MD</span>
+<span class="mock-line flex-1" style="opacity:0.12"></span>
+</div>
+<div class="mock-row"><span class="mock-icon"></span><span class="font-code text-[10px]">graph · notes</span></div>
+<div class="mock-row"><span class="mock-icon"></span><span class="font-code text-[10px]">inbox.md</span></div>
+<div class="mock-bubble mock-bubble--accent" data-i18n="preview.jennmd">Your vault · from Jenn</div>
+</div>
+</div>
+<div class="flex items-start justify-between mb-4 relative z-10">
+<div class="w-12 h-12 rounded-2xl bg-lavender/10 border border-lavender/25 flex items-center justify-center">
+<span class="material-symbols-outlined text-lavender text-2xl">edit_note</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-lavender/10 text-lavender font-code text-[10px] uppercase tracking-wider" data-i18n="status.soon">Coming soon</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-2 relative z-10" data-i18n="jennmd.title">Jenn.MD</h3>
+<p class="font-body-md text-on-surface-variant mb-4 flex-1 text-sm relative z-10" data-i18n="jennmd.desc">
+Our own local-first markdown notes — an Obsidian-class vault built for the Jenn pipeline. Capture, route, and grow your knowledge graph without leaving the ecosystem.
+</p>
+<div class="flex flex-wrap gap-2 mb-1 relative z-10">
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]">Markdown</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]" data-i18n="jennmd.tag2">Local-first</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]" data-i18n="jennmd.tag3">Knowledge graph</span>
+</div>
+<div class="card-actions relative z-10">
+<a href="#" data-link="github-jennmd" class="icon-btn" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+<svg><use href="#i-github"/></svg>
+</a>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- Skills + API row -->
+<section class="mb-16 fade-in">
+<div class="mb-8">
+<span class="text-gold font-label-lg uppercase tracking-widest text-xs mb-2 block" data-i18n="more.label">Skills &amp; API</span>
+<h2 class="font-display text-3xl md:text-4xl" data-i18n="more.title">What runs under the hood</h2>
+</div>
+<div class="grid md:grid-cols-2 gap-6">
+
+<!-- Skill -->
+<div class="glass-panel product-card rounded-[2rem] p-6 md:p-8 flex flex-col">
+<div class="product-preview">
+<div class="mock-ui mock-ui--skill">
+<div class="mock-bar"><span class="font-code text-[10px] opacity-70">save_entry</span></div>
+<div class="mock-bubble mock-bubble--accent" data-i18n="preview.skill1">intent → note · link · task</div>
+<div class="mock-bubble" data-i18n="preview.skill2">category AI · buffer fallback</div>
+</div>
+</div>
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 rounded-2xl bg-lavender/10 border border-lavender/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-lavender text-2xl">auto_awesome</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-lavender/10 text-lavender font-code text-[10px] uppercase tracking-wider" data-i18n="status.available">Available</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-2" data-i18n="skill.title">save_entry skill</h3>
+<p class="font-body-md text-on-surface-variant mb-4 flex-1 text-sm" data-i18n="skill.desc">
+Universal skill: notes, links, ideas, tasks. Category AI picks the right place — or creates a new category when nothing fits.
+</p>
+<div class="flex flex-wrap gap-2 mb-1">
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]" data-i18n="skill.tag1">Classification</span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-code text-[10px]" data-i18n="skill.tag2">Buffer fallback</span>
+</div>
+<div class="card-actions">
+<a href="#" data-link="github-skill" class="icon-btn" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+<svg><use href="#i-github"/></svg>
+</a>
+</div>
+</div>
+
+<!-- API -->
+<div class="glass-panel product-card rounded-[2rem] p-6 md:p-8 flex flex-col">
+<div class="product-preview">
+<div class="mock-ui mock-ui--api">
+<div class="mock-bar"><span class="font-code text-[10px] opacity-70">POST /v1/message</span></div>
+<div class="mock-bubble mock-bubble--accent font-code text-[10px]">Authorization: Bearer ···</div>
+<div class="mock-bubble font-code text-[10px]">{ "status": "ok" }</div>
+</div>
+</div>
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 rounded-2xl bg-turquoise/10 border border-turquoise/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-turquoise text-2xl">api</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-turquoise/10 text-turquoise font-code text-[10px] uppercase tracking-wider" data-i18n="status.available">Available</span>
+</div>
+<h3 class="font-title-lg text-title-lg mb-2" data-i18n="api.title">REST API</h3>
+<p class="font-body-md text-on-surface-variant mb-4 flex-1 text-sm" data-i18n="api.desc">
+POST /v1/message with a Bearer token. Build your own inputs and outputs — CLI, bots, browser extensions — on the same contract.
+</p>
+<div class="card-actions">
+<a href="/docs.html" class="inline-flex items-center gap-2 text-gold hover:text-primary transition-colors font-label text-sm group">
+<span data-i18n="api.cta">Read API Docs</span>
+<span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+<a href="#" data-link="github-api" class="icon-btn" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+<svg><use href="#i-github"/></svg>
+</a>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- CTA -->
+<section class="text-center fade-in">
+<div class="glass-panel rounded-[2.5rem] p-10 md:p-16 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-gold/5 via-transparent to-lavender/5 pointer-events-none"></div>
+<div class="relative z-10">
+<h2 class="font-display text-headline-lg mb-4" data-i18n="cta.title">Ready to route knowledge?</h2>
+<p class="font-body-md text-on-surface-variant max-w-lg mx-auto mb-8" data-i18n="cta.desc">
+Spin up Console, connect an input and an output, and send your first message.
+</p>
+<div class="flex flex-wrap justify-center gap-4">
+<button onclick="location.href='/console'" class="bg-primary text-on-primary px-8 py-3 rounded-full font-bold font-label text-sm hover:scale-105 active:scale-95 transition-transform" data-i18n="cta.console">Open Console</button>
+<a href="/docs.html" class="px-8 py-3 rounded-full border border-outline-variant hover:border-primary text-on-surface-variant hover:text-primary transition-all font-label text-sm font-medium" data-i18n="cta.docs">API Docs</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="w-full py-12 px-6 md:px-margin-safe border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-6 bg-surface-container-lowest z-30 relative mt-auto">
+<div class="font-display text-2xl text-primary italic">Jenn</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-sm" href="/docs.html" data-i18n="footer.docs">Documentation</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-sm" href="/faq.html">FAQ</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-sm" href="/products.html">Products</a>
+</div>
+<div class="text-on-surface-variant font-body-md text-sm opacity-60" data-i18n="footer.copyright">© 2024 Jenn. Open-Source AI Router.</div>
+</footer>
+
+<script>
+let mobileMenuOpen = false;
+function toggleMobileMenu() {
+    mobileMenuOpen = !mobileMenuOpen;
+    const menu = document.getElementById('mobile-menu');
+    const hamburger = document.querySelector('[onclick="toggleMobileMenu()"]');
+    if (mobileMenuOpen) {
+        menu.classList.add('mobile-menu-active');
+        hamburger.classList.add('menu-active');
+    } else {
+        menu.classList.remove('mobile-menu-active');
+        hamburger.classList.remove('menu-active');
+    }
+}
+
+const savedTheme = localStorage.getItem('theme') || 'dark';
+document.documentElement.className = savedTheme;
+updateThemeIcon(savedTheme);
+
+function toggleTheme() {
+    const current = document.documentElement.className;
+    const newTheme = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.className = newTheme;
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+}
+
+function updateThemeIcon(theme) {
+    const icon = document.getElementById('theme-icon');
+    if (icon) icon.textContent = theme === 'dark' ? 'dark_mode' : 'light_mode';
+}
+
+/**
+ * Paste real URLs here — applied to [data-link="…"] on load.
+ * Leave as '#' until you have the real link.
+ */
+const PRODUCT_LINKS = {
+    'github-core': '#',
+    'github-tg': '#',
+    'github-desktop': '#',
+    'github-chrome': '#',
+    'github-firefox': '#',
+    'github-obsidian': '#',
+    'github-notion': '#',
+    'github-jennmd': '#',
+    'github-skill': '#',
+    'github-api': '#',
+    'tg-bot': '#',
+    'desktop-download': '#',
+    'store-chrome': '#',
+    'store-firefox': '#',
+    'store-obsidian': '#'
+};
+
+function applyProductLinks() {
+    document.querySelectorAll('[data-link]').forEach(el => {
+        const key = el.getAttribute('data-link');
+        if (PRODUCT_LINKS[key] && PRODUCT_LINKS[key] !== '#') {
+            el.setAttribute('href', PRODUCT_LINKS[key]);
+        }
+    });
+}
+
+const translations = {
+    en: {
+        'signin': 'Sign In',
+        'hero.badge': 'Modular ecosystem',
+        'hero.title': 'Products of Jenn',
+        'hero.desc': 'Everything you need to capture, route, and store knowledge — plug inputs and outputs into Jenn Core and let AI handle the rest.',
+        'core.badge': 'Core',
+        'status.available': 'Available',
+        'status.soon': 'Coming soon',
+        'core.title': 'Jenn Core &amp; Console',
+        'core.desc': 'Self-hosted AI router with multi-provider fallback (Groq → OpenRouter → GigaChat). Determines intent, runs skills, and ships results to your destinations. Full dashboard for pipeline, keys, and activity.',
+        'core.f1': 'AI intent routing',
+        'core.f2': 'Pipeline console',
+        'core.f3': 'API keys &amp; logs',
+        'core.f4': 'Open-source · self-hosted',
+        'core.cta': 'Open Console',
+        'inputs.label': 'Inputs',
+        'inputs.title': 'Capture from anywhere',
+        'tg.title': 'Telegram Bot',
+        'tg.desc': 'Receive messages, forwards, and links from Telegram. Perfect for capture on the go — ideas, expenses, research notes.',
+        'tg.tag1': 'Mobile-first',
+        'tg.tag2': 'Forward posts',
+        'desktop.title': 'Desktop Input',
+        'desktop.desc': 'Alt+Space overlay for Windows. Select text or type a thought — send straight to Jenn without leaving your workflow.',
+        'desktop.tag2': 'Windows',
+        'desktop.download': 'Download',
+        'chrome.title': 'Chrome Extension',
+        'chrome.desc': 'One click to send selected text or bookmark the current tab to Jenn. Token and settings live in the popup.',
+        'chrome.tag1': 'Chromium',
+        'chrome.tag2': 'One-click',
+        'firefox.title': 'Firefox Extension',
+        'firefox.desc': 'Same capture power on Firefox — text and bookmarks into Jenn from any page, with local token in the popup.',
+        'firefox.tag2': 'Bookmarks',
+        'outputs.label': 'Outputs',
+        'outputs.title': 'Store where you already work',
+        'notion.title': 'Notion',
+        'notion.desc': 'Write notes, tasks, and research into your Notion databases. Categories map to destinations you configure in Console.',
+        'notion.tag1': 'Databases',
+        'notion.tag2': 'Destinations',
+        'obsidian.title': 'Obsidian',
+        'obsidian.desc': 'Local vault output for knowledge graphs. Ideal for long-term notes, research, and private archives under your control.',
+        'obsidian.tag1': 'Local vault',
+        'obsidian.tag2': 'Markdown',
+        'jennmd.title': 'Jenn.MD',
+        'jennmd.desc': 'Our own local-first markdown notes — an Obsidian-class vault built for the Jenn pipeline. Capture, route, and grow your knowledge graph without leaving the ecosystem.',
+        'jennmd.tag2': 'Local-first',
+        'jennmd.tag3': 'Knowledge graph',
+        'more.label': 'Skills &amp; API',
+        'more.title': 'What runs under the hood',
+        'skill.title': 'save_entry skill',
+        'skill.desc': 'Universal skill: notes, links, ideas, tasks. Category AI picks the right place — or creates a new category when nothing fits.',
+        'skill.tag1': 'Classification',
+        'skill.tag2': 'Buffer fallback',
+        'api.title': 'REST API',
+        'api.desc': 'POST /v1/message with a Bearer token. Build your own inputs and outputs — CLI, bots, browser extensions — on the same contract.',
+        'api.cta': 'Read API Docs',
+        'cta.title': 'Ready to route knowledge?',
+        'cta.desc': 'Spin up Console, connect an input and an output, and send your first message.',
+        'cta.console': 'Open Console',
+        'cta.docs': 'API Docs',
+        'footer.docs': 'Documentation',
+        'footer.copyright': '© 2024 Jenn. Open-Source AI Router.',
+        'preview.tg1': '💡 Save this idea…',
+        'preview.tg2': '→ routed to Notion',
+        'preview.desktop': 'Send to Jenn…',
+        'preview.chrome1': 'Send selection',
+        'preview.chrome2': 'Bookmark page',
+        'preview.chrome3': 'Token · ready',
+        'preview.ff1': 'Capture selection',
+        'preview.ff2': 'Save tab',
+        'preview.ff3': 'Firefox · ready',
+        'preview.notion': 'Database · Notes',
+        'preview.obsidian': 'Local vault · graph',
+        'preview.jennmd': 'Your vault · from Jenn',
+        'preview.skill1': 'intent → note · link · task',
+        'preview.skill2': 'category AI · buffer fallback'
+    },
+    ru: {
+        'signin': 'Войти',
+        'hero.badge': 'Модульная экосистема',
+        'hero.title': 'Продукты Jenn',
+        'hero.desc': 'Всё, чтобы ловить, маршрутизировать и хранить знания — подключайте inputs и outputs к Jenn Core, AI сделает остальное.',
+        'core.badge': 'Ядро',
+        'status.available': 'Доступно',
+        'status.soon': 'Скоро',
+        'core.title': 'Jenn Core и Console',
+        'core.desc': 'Self-hosted AI-роутер с fallback провайдеров (Groq → OpenRouter → GigaChat). Определяет намерение, запускает навыки и отправляет результат. Полный дашборд: пайплайн, ключи, активность.',
+        'core.f1': 'AI-маршрутизация намерений',
+        'core.f2': 'Консоль пайплайна',
+        'core.f3': 'API-ключи и логи',
+        'core.f4': 'Open-source · self-hosted',
+        'core.cta': 'Открыть Console',
+        'inputs.label': 'Источники',
+        'inputs.title': 'Захват откуда угодно',
+        'tg.title': 'Telegram Bot',
+        'tg.desc': 'Сообщения, пересылки и ссылки из Telegram. Удобно на ходу — идеи, расходы, заметки по исследованию.',
+        'tg.tag1': 'С телефона',
+        'tg.tag2': 'Пересылка постов',
+        'desktop.title': 'Desktop Input',
+        'desktop.desc': 'Оверлей Alt+Space для Windows. Выделили текст или написали мысль — сразу в Jenn, не выходя из работы.',
+        'desktop.tag2': 'Windows',
+        'desktop.download': 'Скачать',
+        'chrome.title': 'Chrome Extension',
+        'chrome.desc': 'Один клик — отправить выделенный текст или закладку вкладки в Jenn. Токен и настройки прямо в popup.',
+        'chrome.tag1': 'Chromium',
+        'chrome.tag2': 'В один клик',
+        'firefox.title': 'Firefox Extension',
+        'firefox.desc': 'Тот же захват в Firefox — текст и закладки в Jenn с любой страницы, токен локально в popup.',
+        'firefox.tag2': 'Закладки',
+        'outputs.label': 'Выходы',
+        'outputs.title': 'Храните там, где уже работаете',
+        'notion.title': 'Notion',
+        'notion.desc': 'Заметки, задачи и ресерч в ваших базах Notion. Категории мапятся на destinations в Console.',
+        'notion.tag1': 'Базы данных',
+        'notion.tag2': 'Destinations',
+        'obsidian.title': 'Obsidian',
+        'obsidian.desc': 'Локальный vault для графа знаний. Долгие заметки, исследования и личный архив под вашим контролем.',
+        'obsidian.tag1': 'Локальный vault',
+        'obsidian.tag2': 'Markdown',
+        'jennmd.title': 'Jenn.MD',
+        'jennmd.desc': 'Наши local-first markdown-заметки — vault уровня Obsidian, заточенный под пайплайн Jenn. Захват, маршрутизация и граф знаний в одной экосистеме.',
+        'jennmd.tag2': 'Local-first',
+        'jennmd.tag3': 'Граф знаний',
+        'more.label': 'Навыки и API',
+        'more.title': 'Что работает внутри',
+        'skill.title': 'Навык save_entry',
+        'skill.desc': 'Универсальный навык: заметки, ссылки, идеи, задачи. Category AI выбирает место — или создаёт новую категорию.',
+        'skill.tag1': 'Классификация',
+        'skill.tag2': 'Буфер-fallback',
+        'api.title': 'REST API',
+        'api.desc': 'POST /v1/message с Bearer-токеном. Свои inputs и outputs — CLI, боты, расширения — на одном контракте.',
+        'api.cta': 'Читать API Docs',
+        'cta.title': 'Готовы маршрутизировать знания?',
+        'cta.desc': 'Откройте Console, подключите input и output — и отправьте первое сообщение.',
+        'cta.console': 'Открыть Console',
+        'cta.docs': 'API Docs',
+        'footer.docs': 'Документация',
+        'footer.copyright': '© 2024 Jenn. Open-Source AI Router.',
+        'preview.tg1': '💡 Сохрани идею…',
+        'preview.tg2': '→ в Notion',
+        'preview.desktop': 'Отправить в Jenn…',
+        'preview.chrome1': 'Отправить выделение',
+        'preview.chrome2': 'Закладка страницы',
+        'preview.chrome3': 'Токен · готов',
+        'preview.ff1': 'Захватить выделение',
+        'preview.ff2': 'Сохранить вкладку',
+        'preview.ff3': 'Firefox · готов',
+        'preview.notion': 'База · Заметки',
+        'preview.obsidian': 'Локальный vault · граф',
+        'preview.jennmd': 'Ваш vault · от Jenn',
+        'preview.skill1': 'intent → note · link · task',
+        'preview.skill2': 'category AI · буфер-fallback'
+    }
+};
+
+let currentLang = localStorage.getItem('lang') || 'en';
+applyLanguage(currentLang);
+applyProductLinks();
+
+function toggleLang() {
+    currentLang = currentLang === 'en' ? 'ru' : 'en';
+    localStorage.setItem('lang', currentLang);
+    applyLanguage(currentLang);
+}
+
+function applyLanguage(lang) {
+    const langLabel = document.getElementById('lang-label');
+    if (langLabel) langLabel.textContent = lang === 'en' ? 'EN' : 'RU';
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+            el.innerHTML = translations[lang][key];
+        }
+    });
+}
+</script>
+</body>
+</html>

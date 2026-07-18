@@ -1,449 +1,683 @@
 <!DOCTYPE html>
 
-<html class="light" lang="ru"><head>
+<html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Jenn - Stop thinking about where to save. Just capture.</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700;800&amp;family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<title>Jenn — AI Knowledge Router</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
-  tailwind.config = {
-    darkMode: "class",
-    theme: {
-      extend: {
-        "colors": {
-                "tertiary-fixed": "#e3e2e0",
-                "on-surface-variant": "#444748",
-                "primary-container": "#1c1b1b",
-                "on-primary-container": "#858383",
-                "on-error": "#ffffff",
-                "primary": "#000000",
-                "on-tertiary-fixed-variant": "#464746",
-                "primary-fixed-dim": "#c8c6c5",
-                "tertiary-fixed-dim": "#c7c6c5",
-                "error-container": "#ffdad6",
-                "outline-variant": "#c4c7c7",
-                "on-error-container": "#93000a",
-                "inverse-surface": "#31302e",
-                "on-secondary-fixed": "#221b09",
-                "tertiary-container": "#1a1c1b",
-                "inverse-primary": "#c8c6c5",
-                "surface": "#fcf9f5",
-                "surface-container-high": "#eae8e4",
-                "secondary": "#D16FFF",
-                "secondary-fixed-dim": "#d4c5a9",
-                "on-secondary-fixed-variant": "#504630",
-                "surface-bright": "#fcf9f5",
-                "surface-container-highest": "#e5e2de",
-                "outline": "#747878",
-                "on-background": "#1c1c1a",
-                "surface-tint": "#5f5e5e",
-                "surface-container-lowest": "#ffffff",
-                "on-primary": "#ffffff",
-                "on-primary-fixed": "#1c1b1b",
-                "on-tertiary-container": "#838482",
-                "tertiary": "#000000",
-                "surface-container": "#f0ede9",
-                "on-tertiary": "#ffffff",
-                "on-surface": "#1c1c1a",
-                "on-primary-fixed-variant": "#474746",
-                "surface-dim": "#dcdad6",
-                "surface-variant": "#e5e2de",
-                "on-tertiary-fixed": "#1a1c1b",
-                "on-secondary": "#ffffff",
-                "background": "#fcf9f5",
-                "surface-container-low": "#f6f3ef",
-                "inverse-on-surface": "#f3f0ec",
-                "error": "#ba1a1a",
-                "secondary-fixed": "#f1e1c4",
-                "primary-fixed": "#e5e2e1",
-                "secondary-container": "#eedec1",
-                "on-secondary-container": "#6d614a"
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "lavender": "#C3B1E1",
+                    "inverse-primary": "#6c5c3d",
+                    "on-error": "#690005",
+                    "gold": "#DCC7A1",
+                    "on-primary-fixed": "#251a03",
+                    "surface-bright": "#1E1E21",
+                    "surface-tint": "#d9c49e",
+                    "tertiary": "#ede0ff",
+                    "primary": "#f9e3bb",
+                    "on-tertiary-container": "#5c4d77",
+                    "on-secondary-fixed": "#261900",
+                    "on-tertiary-fixed-variant": "#4e4068",
+                    "on-primary-fixed-variant": "#534528",
+                    "sand": "#E8D5B5",
+                    "tertiary-fixed": "#ebdcff",
+                    "on-primary-container": "#625234",
+                    "on-primary": "#3b2f14",
+                    "surface-variant": "#353436",
+                    "secondary-fixed-dim": "#dcc398",
+                    "secondary-container": "#584725",
+                    "surface": "#131314",
+                    "error-container": "#93000a",
+                    "on-error-container": "#ffdad6",
+                    "inverse-on-surface": "#313031",
+                    "primary-fixed-dim": "#d9c49e",
+                    "primary-container": "#dcc7a1",
+                    "on-secondary-container": "#ceb58b",
+                    "on-background": "#e5e2e3",
+                    "surface-container-low": "#1c1b1c",
+                    "primary-fixed": "#f6e0b9",
+                    "outline-variant": "#4c463c",
+                    "surface-container-high": "#2a2a2b",
+                    "on-secondary-fixed-variant": "#554423",
+                    "on-surface-variant": "#cfc5b8",
+                    "tertiary-fixed-dim": "#d1beef",
+                    "on-tertiary-fixed": "#21143a",
+                    "tertiary-container": "#d4c1f2",
+                    "on-secondary": "#3d2e0f",
+                    "secondary-fixed": "#fadfb2",
+                    "inverse-surface": "#e5e2e3",
+                    "surface-container-lowest": "#0e0e0f",
+                    "surface-dim": "#131315",
+                    "error": "#ffb4ab",
+                    "on-tertiary": "#372950",
+                    "outline": "#989084",
+                    "surface-container": "#201f20",
+                    "surface-container-highest": "#353436",
+                    "background": "#131314",
+                    "on-surface": "#e5e2e3",
+                    "turquoise": "#87C5C5",
+                    "secondary": "#dcc398"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "container-max": "1200px",
+                    "margin-safe": "32px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "display": ["Cormorant Garamond"],
+                    "title-lg": ["Inter"],
+                    "headline-lg": ["Cormorant Garamond"],
+                    "label-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "code": ["JetBrains Mono"],
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Cormorant Garamond"]
+            },
+            "fontSize": {
+                    "display": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                    "title-lg": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "headline-lg": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "label-lg": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "body-md": ["15px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "code": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "600"}]
+            }
+          },
         },
-        "borderRadius": {
-                "DEFAULT": "0.25rem",
-                "lg": "0.5rem",
-                "xl": "0.75rem",
-                "full": "9999px"
-        },
-        "spacing": {
-                "gutter": "32px",
-                "unit": "8px",
-                "page-margin-mobile": "24px",
-                "stack-md": "48px",
-                "stack-xl": "120px",
-                "page-margin-desktop": "80px"
-        },
-        "fontFamily": {
-                "headline-md": [
-                        "Inter"
-                ],
-                "body-lg": [
-                        "Inter"
-                ],
-                "display-lg": [
-                        "Inter"
-                ],
-                "label-mono": [
-                        "JetBrains Mono"
-                ],
-                "display-lg-mobile": [
-                        "Inter"
-                ],
-                "body-md": [
-                        "Inter"
-                ]
-        },
-        "fontSize": {
-                "headline-md": [
-                        "32px",
-                        {
-                                "lineHeight": "1.3",
-                                "letterSpacing": "-0.02em",
-                                "fontWeight": "500"
-                        }
-                ],
-                "body-lg": [
-                        "20px",
-                        {
-                                "lineHeight": "1.6",
-                                "letterSpacing": "-0.01em",
-                                "fontWeight": "400"
-                        }
-                ],
-                "display-lg": [
-                        "64px",
-                        {
-                                "lineHeight": "1.1",
-                                "letterSpacing": "-0.04em",
-                                "fontWeight": "600"
-                        }
-                ],
-                "label-mono": [
-                        "13px",
-                        {
-                                "lineHeight": "1.5",
-                                "letterSpacing": "0.05em",
-                                "fontWeight": "500"
-                        }
-                ],
-                "display-lg-mobile": [
-                        "40px",
-                        {
-                                "lineHeight": "1.2",
-                                "letterSpacing": "-0.03em",
-                                "fontWeight": "600"
-                        }
-                ],
-                "body-md": [
-                        "16px",
-                        {
-                                "lineHeight": "1.6",
-                                "letterSpacing": "0",
-                                "fontWeight": "400"
-                        }
-                ]
-        }
-},
-    },
-  }
-</script>
+      }
+    </script>
 <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
-        }
-        
         body {
-            background-color: #fcf9f5;
-            color: #1c1c1a;
-            -webkit-font-smoothing: antialiased;
-            transition: background-color 0.4s ease, color 0.4s ease;
+            background-color: #0e0e0f;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        .glass-nav {
-            background: rgba(252, 249, 245, 0.8);
+        .glass-panel {
+            background: rgba(30, 30, 33, 0.6);
             backdrop-filter: blur(20px);
-            transition: background 0.4s ease;
+            border: 1px solid rgba(220, 199, 161, 0.1);
         }
 
-        .btn-hover-effect {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .btn-hover-effect:active {
-            transform: scale(0.96);
+        .parallax-item {
+            will-change: transform;
+            transition: transform 0.1s ease-out;
         }
 
-        /* Dusty Bubble Animations */
-        @keyframes pulse-soft {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(209, 111, 255, 0.1); }
-            50% { transform: scale(1.03); box-shadow: 0 0 70px rgba(209, 111, 255, 0.2); }
-        }
-        .animate-pulse-soft { animation: pulse-soft 6s ease-in-out infinite; }
-
-        @keyframes drift {
-            0%, 100% { transform: translateY(0) rotate(var(--rot)); }
-            50% { transform: translateY(-10px) rotate(calc(var(--rot) + 2deg)); }
-        }
-        .animate-drift { animation: drift 4s ease-in-out infinite; }
-        
-        .card-stack-item {
-            --rot: 0deg;
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-        }
-        .card-stack-item:hover {
-            transform: translateY(-15px) scale(1.05) rotate(0deg) !important;
-            z-index: 50 !important;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        .tilt-card {
+            transition: transform 0.2s ease-out;
+            transform-style: preserve-3d;
         }
 
-        /* Flow Lines Animation */
-        .flow-line {
-            stroke-dasharray: 8;
-            animation: flow-dash 3s linear infinite;
-        }
-        @keyframes flow-dash {
-            to { stroke-dashoffset: -48; }
+        .tilt-card:hover {
+            border-color: #DCC7A1;
         }
 
-        @keyframes stream-progress {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
+        .jenn-core {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, #f9e3bb 0%, transparent 70%);
+            filter: blur(8px);
+            animation: pulse 4s infinite ease-in-out;
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            .animate-pulse-soft, .animate-drift, .flow-line, .stream-progress {
-                animation: none !important;
-                transition: none !important;
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 0.9; }
+        }
+
+        .orbit {
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .floating-particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #DCC7A1;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.4;
+            animation: float-up 10s infinite linear;
+        }
+
+        @keyframes float-up {
+            from { transform: translateY(100vh); opacity: 0; }
+            to { transform: translateY(-10vh); opacity: 0.4; }
+        }
+
+        .specular-highlight {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%, rgba(255,255,255,0.02) 100%);
+            pointer-events: none;
+        }
+
+        /* Light Theme */
+        html.light {
+            background-color: #f9f8f6;
+            color: #1c1c1a;
+        }
+        html.light .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        html.light body {
+            background-color: #f9f8f6;
+            color: #1c1c1a;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 16px 24px !important;
+            }
+            .hero-title {
+                font-size: 32px !important;
+            }
+            .hero-subtitle {
+                font-size: 20px !important;
+            }
+            section {
+                padding: 48px 24px !important;
+            }
+            .parallax-item {
+                transform: none !important;
+            }
+            .tilt-card:hover {
+                transform: none !important;
+            }
+            .jenn-core {
+                width: 80px;
+                height: 80px;
+            }
+            h1 {
+                font-size: 2rem !important;
+            }
+            h2 {
+                font-size: 1.5rem !important;
+            }
+            .text-display {
+                font-size: 2.5rem !important;
+            }
+            .text-headline-lg {
+                font-size: 1.5rem !important;
+            }
+            /* Hide floating cards on mobile */
+            .floating-card {
+                display: none !important;
             }
         }
 
-        /* Glassmorphism Layers */
-        .glass-layer-1 {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .glass-layer-2 {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 30px 60px -12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8);
-        }
-        
-        .glass-inner-panel {
-            background: rgba(240, 237, 233, 0.4);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-            border: 1px solid rgba(255,255,255,0.3);
+        /* Mobile Menu Active State */
+        .mobile-menu-active {
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
         }
 
-        html.dark body { background-color: #1a1a1a; color: #f0ede9; }
-        html.dark .glass-nav { background: rgba(26, 26, 26, 0.85); border-color: rgba(255,255,255,0.06); }
-        html.dark .glass-card { background: rgba(40,40,42,0.6); border-color: rgba(255,255,255,0.08); box-shadow: 0 30px 60px -12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05); }
-        html.dark .glass-layer-1 { background: rgba(40,40,42,0.5); border-color: rgba(255,255,255,0.06); }
-        html.dark .glass-layer-2 { background: rgba(30,30,32,0.4); border-color: rgba(255,255,255,0.04); }
-        html.dark .glass-inner-panel { background: rgba(20,20,22,0.5); border-color: rgba(255,255,255,0.04); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
-        html.dark .card-stack-item:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-
-        html.dark .bg-surface { background-color: #1a1a1a !important; }
-        html.dark .bg-background { background-color: #1a1a1a !important; }
-        html.dark .bg-surface-container { background-color: #242426 !important; }
-        html.dark .bg-surface-container-high { background-color: #2e2e30 !important; }
-        html.dark .bg-surface-container-low { background-color: #202022 !important; }
-        html.dark .bg-surface-container-highest { background-color: #383838 !important; }
-        html.dark .bg-surface-container-lowest { background-color: #141414 !important; }
-        html.dark .bg-surface-variant { background-color: #2e2e30 !important; }
-        html.dark .bg-primary-container { background-color: #2a2a2c !important; }
-        html.dark .bg-secondary-container { background-color: #3d3520 !important; }
-        html.dark .bg-surface-dim { background-color: #141414 !important; }
-
-        html.dark .text-primary { color: #f0ede9 !important; }
-        html.dark .text-on-surface { color: #f0ede9 !important; }
-        html.dark .text-on-surface-variant { color: #9CA3AF !important; }
-        html.dark .text-on-background { color: #f0ede9 !important; }
-        html.dark .text-outline { color: #747878 !important; }
-        html.dark .text-inverse-primary { color: #1a1a1a !important; }
-
-        html.dark .border-outline-variant { border-color: rgba(255,255,255,0.08) !important; }
-        html.dark .border-outline { border-color: rgba(255,255,255,0.15) !important; }
-
-        html.dark .hover\:text-primary:hover { color: #f0ede9 !important; }
-        html.dark .hover\:bg-surface-container:hover { background-color: #2e2e30 !important; }
-
-        html.dark .shadow-lg { --tw-shadow-color: rgba(0,0,0,0.3) !important; }
-        html.dark .shadow-2xl { --tw-shadow-color: rgba(0,0,0,0.4) !important; }
-
-        html.dark .selection\:bg-secondary\/30::selection { background-color: rgba(209,111,255,0.2) !important; }
-
-        .theme-toggle, .lang-toggle {
-            width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1);
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            transition: all 0.3s ease; background: transparent;
+        /* Hamburger Animation */
+        .menu-active #menu-line-1 {
+            transform: rotate(45deg) translate(4px, 4px);
         }
-        .theme-toggle:hover, .lang-toggle:hover { background: rgba(0,0,0,0.05); }
-        html.dark .theme-toggle, html.dark .lang-toggle { border-color: rgba(255,255,255,0.12); color: #f0ede9; }
-        html.dark .theme-toggle:hover, html.dark .lang-toggle:hover { background: rgba(255,255,255,0.08); }
+        .menu-active #menu-line-2 {
+            opacity: 0;
+        }
+        .menu-active #menu-line-3 {
+            transform: rotate(-45deg) translate(4px, -4px);
+        }
     </style>
 </head>
-<body class="selection:bg-secondary/30 selection:text-primary overflow-x-hidden">
-<!-- TopNavBar Component -->
-<header class="fixed top-0 w-full z-50 glass-nav border-b border-outline-variant/30 shadow-[0_32px_64px_-15px_rgba(0,0,0,0.03)]">
-<div class="max-w-[1280px] mx-auto px-page-margin-desktop md:px-page-margin-desktop flex justify-between items-center h-20">
-<a class="font-headline-md text-3xl font-bold tracking-tight text-primary" href="#">Jenn</a>
-<nav class="hidden md:flex items-center gap-gutter">
-<a class="font-body-md text-body-md text-primary font-medium border-b border-primary pb-1" href="#" data-i18n="nav.product">Product</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#" data-i18n="nav.pipeline">Pipeline</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#" data-i18n="nav.faq">FAQ (Ответы на вопросы)</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#" data-i18n="nav.docs">Documentation</a>
+<body class="font-body-md text-on-surface selection:bg-gold/30 min-h-screen flex flex-col">
+<!-- Global Background Shader -->
+<div class="fixed inset-0 z-0">
+<!-- STITCH_SHADER_START:ANIMATION_87 class="absolute inset-0 w-full h-full opacity-60" -->
+<div class="absolute inset-0 w-full h-full opacity-60" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_87" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_87');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+varying vec2 v_texCoord;
+
+// Simplex 2D noise
+vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+
+float snoise(vec2 v){
+  const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+           -0.577350269189626, 0.024390243902439);
+  vec2 i  = floor(v + dot(v, C.yy) );
+  vec2 x0 = v -   i + dot(i, C.xx);
+  vec2 i1;
+  i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+  vec4 x12 = x0.xyxy + C.xxzz;
+  x12.xy -= i1;
+  i = mod(i, 289.0);
+  vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+  + i.x + vec3(0.0, i1.x, 1.0 ));
+  vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy),
+    dot(x12.zw,x12.zw)), 0.0);
+  m = m*m ;
+  m = m*m ;
+  vec3 x = 2.0 * fract(p * C.www) - 1.0;
+  vec3 h = abs(x) - 0.5;
+  vec3 a0 = x - floor(x + 0.5);
+  vec3 m0 = 1.0 - 1.5*abs(a0);
+  vec3 g;
+  g.x  = a0.x  * x0.x  + h.x  * x0.y;
+  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+  vec3 l = 1.79284291400159 - 0.85373472095314 * ( g*g + h*h );
+  vec3  v1;
+  v1.x  = g.x  * l.x;
+  v1.yz = g.yz * l.yz;
+  return 130.0 * dot(m, v1);
+}
+
+void main() {
+    vec2 uv = v_texCoord;
+    vec2 p = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
+    
+    // Background deep void
+    vec3 color = vec3(0.05, 0.05, 0.06);
+    
+    // Animated organic blobs
+    float n1 = snoise(p * 0.8 + u_time * 0.1);
+    float n2 = snoise(p * 1.2 - u_time * 0.15 + n1 * 0.5);
+    
+    // Muted gold highlights (#DCC7A1)
+    vec3 gold = vec3(0.86, 0.78, 0.63);
+    float glow = smoothstep(0.4, 0.8, n2);
+    color = mix(color, gold * 0.15, glow);
+    
+    // Soft radial light tracking mouse
+    float mouseDist = length(p - (u_mouse / u_resolution * 2.0 - 1.0));
+    color += gold * (0.05 / (mouseDist + 0.5));
+    
+    // Noise grain
+    float grain = fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453);
+    color += (grain - 0.5) * 0.02;
+
+    gl_FragColor = vec4(color, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_87 -->
+</div>
+<!-- Navigation -->
+<nav class="fixed top-0 left-0 w-full z-50 grid grid-cols-[1fr_auto_1fr] items-center px-6 md:px-margin-safe py-4 bg-surface/80 backdrop-blur-xl">
+<a href="/" class="justify-self-start font-display text-headline-lg font-bold text-primary tracking-tight italic">Jenn</a>
+<div class="hidden md:flex justify-self-center gap-gutter items-center">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-lg text-label-lg" href="/faq.html">FAQ</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-lg text-label-lg" href="/docs.html">API Docs</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-lg text-label-lg" href="/products.html">Products</a>
+</div>
+<div class="col-start-3 md:col-auto justify-self-end flex gap-4 items-center">
+<button onclick="toggleLang()" class="w-8 h-8 rounded-full border border-outline-variant/50 hover:border-primary flex items-center justify-center text-xs font-label-lg text-on-surface-variant hover:text-primary transition-all" title="Language"><span id="lang-label">EN</span></button>
+<button onclick="toggleTheme()" class="w-8 h-8 rounded-full border border-outline-variant/50 hover:border-primary flex items-center justify-center text-on-surface-variant hover:text-primary transition-all" title="Theme"><span class="material-symbols-outlined text-[16px]" id="theme-icon">dark_mode</span></button>
+<button onclick="location.href='/console'" class="hidden md:block text-on-surface-variant hover:text-primary transition-all font-label-lg text-label-lg" data-i18n="signin">Sign In</button>
+<button onclick="location.href='/console'" class="hidden md:block bg-primary text-on-primary px-6 py-2 rounded-full font-bold font-label-lg text-label-lg hover:scale-105 active:scale-95 transition-transform" data-i18n="getstarted">Get Started</button>
+<button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-surface-container-high transition-colors">
+<span class="w-5 h-0.5 bg-on-surface-variant transition-all" id="menu-line-1"></span>
+<span class="w-5 h-0.5 bg-on-surface-variant transition-all" id="menu-line-2"></span>
+<span class="w-5 h-0.5 bg-on-surface-variant transition-all" id="menu-line-3"></span>
+</button>
+</div>
 </nav>
-<div class="flex items-center gap-4">
-<button class="lang-toggle" onclick="toggleLang()" title="RU / EN"><span class="font-label-mono text-[11px] font-bold" data-i18n="nav.lang">RU</span></button>
-<button class="theme-toggle" onclick="toggleTheme()" title="Theme"><span class="material-symbols-outlined text-[18px]" id="theme-icon">dark_mode</span></button>
-<button class="hidden md:block font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" data-i18n="nav.signin">Sign in</button>
-<button class="bg-secondary text-white px-6 py-2.5 rounded-full font-body-md text-body-md font-medium btn-hover-effect hover:bg-[#b05ee6] transition-colors shadow-lg shadow-secondary/20" data-i18n="nav.cta">Get Jenn</button>
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="fixed top-[72px] left-0 w-full z-40 bg-surface/95 backdrop-blur-xl transform -translate-y-full opacity-0 transition-all duration-300 pointer-events-none">
+<div class="flex flex-col p-6 gap-4">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label-lg text-label-lg border-b border-outline-variant/30" href="/faq.html">FAQ</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label-lg text-label-lg border-b border-outline-variant/30" href="/docs.html">API Docs</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors py-2 font-label-lg text-label-lg" href="/products.html">Products</a>
+<div class="flex gap-3 pt-4">
+<button onclick="location.href='/console'" class="flex-1 py-3 bg-primary text-on-primary rounded-full font-bold font-label-lg text-label-lg" data-i18n="signin">Sign In</button>
+<button onclick="location.href='/console'" class="flex-1 py-3 border border-primary text-primary rounded-full font-bold font-label-lg text-label-lg" data-i18n="getstarted">Get Started</button>
 </div>
 </div>
-</header>
-<main class="pt-20">
+</div>
 <!-- Hero Section -->
-<section class="relative pt-stack-xl pb-stack-md md:pt-[120px]">
-<div class="max-w-[1280px] mx-auto px-page-margin-mobile md:px-page-margin-desktop relative z-10">
-<div class="flex flex-col items-center text-center max-w-5xl mx-auto">
-<div class="mb-4 inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant text-on-surface-variant">
-<span class="font-label-mono text-[11px] uppercase tracking-widest font-bold" data-i18n="hero.badge">Альфа-тестирование</span>
+<section class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-margin-safe">
+<!-- Three.js Background Component -->
+<div class="absolute inset-0 z-10 pointer-events-none">
+<!-- STITCH_THREEJS_START:ANIMATION_88 class="w-full h-full opacity-70" -->
+<div class="w-full h-full opacity-70" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_88" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_88');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(width, height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+container.appendChild(renderer.domElement);
+
+// Lighting
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+const pointLight = new THREE.PointLight(0xdcc7a1, 2, 100);
+pointLight.position.set(10, 10, 10);
+scene.add(pointLight);
+
+// Neural Structure / Abstract Ring
+const group = new THREE.Group();
+scene.add(group);
+
+const material = new THREE.MeshPhongMaterial({
+    color: 0xdcc7a1,
+    shininess: 100,
+    transparent: true,
+    opacity: 0.8,
+    wireframe: true
+});
+
+// Large broken ring
+const ringGeo = new THREE.TorusGeometry(3, 0.05, 16, 100, Math.PI * 1.5);
+const ring = new THREE.Mesh(ringGeo, material);
+group.add(ring);
+
+// Orbiting particles
+const particlesCount = 200;
+const positions = new Float32Array(particlesCount * 3);
+for(let i=0; i<particlesCount * 3; i++) {
+    positions[i] = (Math.random() - 0.5) * 15;
+}
+const partGeo = new THREE.BufferGeometry();
+partGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+const partMat = new THREE.PointsMaterial({ color: 0xdcc7a1, size: 0.05, transparent: true, opacity: 0.5 });
+const points = new THREE.Points(partGeo, partMat);
+group.add(points);
+
+// Floating nodes
+const sphereGeo = new THREE.SphereGeometry(0.1, 16, 16);
+for(let i=0; i<12; i++) {
+    const sphere = new THREE.Mesh(sphereGeo, material);
+    sphere.position.set(
+        Math.cos(i) * 4,
+        Math.sin(i) * 4,
+        (Math.random() - 0.5) * 2
+    );
+    group.add(sphere);
+}
+
+camera.position.z = 8;
+
+let mouseX = 0;
+let mouseY = 0;
+window.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+function animate() {
+    requestAnimationFrame(animate);
+    
+    group.rotation.y += 0.002;
+    group.rotation.x += 0.001;
+    
+    // Parallax
+    group.position.x += (mouseX * 2 - group.position.x) * 0.05;
+    group.position.y += (-mouseY * 2 - group.position.y) * 0.05;
+    
+    renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+    const w = container.clientWidth || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+});
+
+animate();
+})();
+</script>
 </div>
-<div class="mb-8 inline-flex items-center px-4 py-1 rounded-full bg-surface-container-high border border-outline-variant text-on-surface">
+<!-- STITCH_THREEJS_END:ANIMATION_88 -->
 </div>
-<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-8 tracking-tighter leading-none" data-i18n="hero.title">Stop thinking about where to save. <span class="italic text-[#B8860B]" style="font-family: 'Cormorant Garamond', serif;">Just capture.</span></h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mb-stack-md leading-relaxed" data-i18n="hero.subtitle">
-                        Information overload is real. Notion is slow and laggy. Your brain is exhausted by decision fatigue. Jenn is the instant, open-source buffer that captures chaos and routes it perfectly. You control the engine.
-                    </p>
-<div class="flex flex-col sm:flex-row gap-4 mb-32">
-<button class="bg-primary text-white px-10 py-4 rounded-full font-body-lg text-body-lg font-medium btn-hover-effect hover:bg-on-surface-variant transition-colors shadow-lg shadow-primary/20" data-i18n="hero.cta1">Начать использовать</button>
-<button class="bg-transparent text-primary px-10 py-4 rounded-full font-body-lg text-body-lg font-medium btn-hover-effect border border-outline hover:bg-surface-container" data-i18n="hero.cta2">Self-host решение</button>
+<div class="relative z-20 text-center max-w-4xl">
+<h1 class="font-display text-display mb-6 tracking-tight parallax-item" data-speed="0.05" data-i18n="hero.title">
+                Capture Everything.<br/>
+<span class="text-gold italic">Route Intelligently.</span>
+</h1>
+<p class="font-display text-headline-lg italic text-on-surface-variant mb-12 parallax-item" data-speed="0.02" data-i18n="hero.subtitle">
+                The AI-powered knowledge router that captures from anywhere and delivers exactly where it matters. Open-source, self-hosted, yours.
+            </p>
+<div class="flex flex-wrap gap-6 justify-center">
+<button class="bg-gold text-surface-container-lowest px-10 py-4 rounded-full font-bold text-title-lg hover:shadow-[0_0_30px_rgba(220,199,161,0.3)] transition-all" data-i18n="hero.cta">
+                    Initiate Connection
+                </button>
 </div>
 </div>
-<!-- Reimaged Pipeline Section -->
-<div class="relative w-full max-w-[1200px] mx-auto min-h-[600px] flex flex-col xl:flex-row items-center justify-between gap-16 xl:gap-8">
-<!-- Animated Flow Lines -->
-<svg class="absolute inset-0 w-full h-full pointer-events-none -z-10 opacity-60 text-secondary" preserveaspectratio="none" viewbox="0 0 1200 600">
-<path class="flow-line" d="M 250 300 Q 450 260, 600 300" fill="none" stroke="currentColor" stroke-width="2.5"></path>
-<path class="flow-line" d="M 250 300 Q 450 340, 600 300" fill="none" stroke="currentColor" stroke-width="2.5" style="animation-delay: -1.5s"></path>
-<path class="flow-line" d="M 600 300 Q 750 260, 950 300" fill="none" stroke="currentColor" stroke-width="2.5"></path>
-<path class="flow-line" d="M 600 300 Q 750 340, 950 300" fill="none" stroke="currentColor" stroke-width="2.5" style="animation-delay: -1.5s"></path>
+<!-- Overlapping UI elements -->
+<div class="absolute top-[40%] right-[10%] z-30 glass-panel p-4 rounded-xl rotate-12 parallax-item tilt-card floating-card" data-speed="0.1">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 bg-turquoise rounded-full animate-pulse"></div>
+<span class="font-code text-label-lg text-turquoise">Neural Flow active</span>
+</div>
+</div>
+<div class="absolute top-[60%] left-[15%] z-30 glass-panel p-6 rounded-2xl -rotate-6 parallax-item tilt-card floating-card" data-speed="0.15">
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center gap-8">
+<span class="font-label-lg text-on-surface">Syncing Notion...</span>
+<span class="text-gold material-symbols-outlined text-[18px]">sync</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="w-2/3 h-full bg-gold"></div>
+</div>
+</div>
+</div>
+<div class="absolute top-[25%] left-[8%] z-30 glass-panel p-5 rounded-2xl rotate-3 parallax-item tilt-card floating-card" data-speed="0.12">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 bg-surface-container-high rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-lavender">chrome_reader_mode</span>
+</div>
+<div>
+<div class="font-title-lg text-on-surface">Chrome Extension</div>
+<div class="text-xs text-turquoise font-code">Active • 3 tabs</div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-[20%] right-[12%] z-30 glass-panel p-5 rounded-2xl -rotate-3 parallax-item tilt-card floating-card" data-speed="0.08">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 bg-surface-container-high rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-sand">diamond</span>
+</div>
+<div>
+<div class="font-title-lg text-on-surface">Obsidian Vault</div>
+<div class="text-xs text-on-surface-variant font-code">1,247 notes</div>
+</div>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="w-4/5 h-full bg-lavender"></div>
+</div>
+</div>
+<div class="absolute bottom-[35%] left-[5%] z-30 glass-panel p-5 rounded-2xl rotate-2 parallax-item tilt-card floating-card" data-speed="0.11">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container-high rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-gold">edit_note</span>
+</div>
+<div>
+<div class="font-title-lg text-on-surface">Jenn Notes</div>
+<div class="flex items-center gap-2 mt-1">
+<div class="w-2 h-2 bg-gold rounded-full"></div>
+<span class="text-xs text-gold font-code">Auto-saving...</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Experimental Features Section -->
+<section class="relative py-32 bg-surface-container-lowest/40 backdrop-blur-sm z-20">
+<div class="max-w-container-max mx-auto px-margin-safe">
+<div class="mb-24">
+<span class="text-gold font-label-lg uppercase tracking-widest mb-4 block" data-i18n="core.label">How It Works</span>
+<h2 class="font-display text-display" data-i18n="core.title">The Jenn Pipeline</h2>
+</div>
+<!-- Living Node-Graph Pipeline -->
+<div class="relative grid md:grid-cols-12 gap-8 items-start">
+<div class="md:col-span-7 relative">
+<div class="glass-panel p-10 rounded-[4rem] rounded-tr-none border-l-4 border-gold relative overflow-hidden tilt-card">
+<div class="specular-highlight"></div>
+<h3 class="font-display text-headline-lg mb-6" data-i18n="pipeline.title">AI-Powered Routing</h3>
+<p class="font-body-lg text-on-surface-variant mb-8 max-w-lg" data-i18n="pipeline.desc">
+                            Messages flow from Telegram, Desktop, CLI through Jenn Core — an AI router that understands intent and routes to Notion, Obsidian, or any output you configure.
+                        </p>
+<!-- Visual Node Graph Placeholder -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-gold">psychology</span>
+</div>
+<div class="flex-1 h-px bg-gradient-to-r from-gold/50 to-transparent"></div>
+<div class="px-4 py-2 bg-surface-container-high rounded-lg font-code text-label-lg text-gold">Input stream: Active</div>
+</div>
+<div class="ml-16 flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container-high rounded-full flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-lavender">hub</span>
+</div>
+<div class="flex-1 h-px bg-gradient-to-r from-lavender/50 to-transparent"></div>
+<div class="px-4 py-2 bg-surface-container-high rounded-lg font-code text-label-lg text-lavender">Classification layer</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md:col-span-5 flex flex-col gap-12 pt-24">
+<!-- Plugin Marketplace Floating Cards -->
+<div class="relative h-64">
+<div class="absolute top-0 right-0 glass-panel p-4 rounded-xl border border-gold/20 z-10 hover:scale-105 transition-transform tilt-card">
+<span class="material-symbols-outlined text-gold mb-2 block">send</span>
+<div class="font-title-lg">Telegram</div>
+</div>
+<div class="absolute bottom-0 left-0 glass-panel p-4 rounded-xl border border-lavender/20 z-20 hover:scale-105 transition-transform tilt-card">
+<span class="material-symbols-outlined text-lavender mb-2 block">laptop_mac</span>
+<div class="font-title-lg">Desktop</div>
+</div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 glass-panel p-4 rounded-xl border border-turquoise/20 z-0 opacity-50 tilt-card">
+<span class="material-symbols-outlined text-turquoise mb-2 block">description</span>
+<div class="font-title-lg">Notion</div>
+</div>
+<!-- Connection Lines SVG -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" style="filter: drop-shadow(0 0 5px rgba(220,199,161,0.2));">
+<path d="M 300 50 L 150 150 M 150 150 L 50 200" fill="none" stroke="#DCC7A1" stroke-dasharray="4 4" stroke-width="0.5"></path>
 </svg>
-<!-- Inputs Side -->
-<div class="flex flex-col items-center gap-10 relative">
-<span class="font-label-mono text-label-mono uppercase tracking-[0.3em] text-outline/80 font-bold" data-i18n="pipeline.inputs">Input Stream</span>
-<div class="relative w-[340px] h-[320px]">
-<div class="card-stack-item absolute inset-0 glass-card p-6 rounded-2xl animate-drift flex flex-col gap-5" style="--rot: -2deg; z-index: 30; transform: rotate(-2deg);">
-<div class="flex items-center justify-between border-b border-outline-variant/40 pb-4">
-<div class="flex items-center gap-4">
-<div class="w-14 h-14 rounded-xl bg-surface-container-high border border-white/60 shadow-sm flex items-center justify-center">
-<span class="material-symbols-outlined text-primary text-2xl">extension</span>
+</div>
+<!-- Security Volumetric Effect -->
+<div class="relative group">
+<div class="absolute -inset-4 bg-gold/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="glass-panel p-8 rounded-3xl border-outline-variant relative z-10 flex items-center gap-6 tilt-card">
+<div class="w-16 h-16 rounded-2xl bg-surface-container-highest flex items-center justify-center relative">
+<span class="material-symbols-outlined text-gold text-4xl" data-weight="fill">shield</span>
+<div class="absolute inset-0 bg-gold/20 blur-xl rounded-full animate-pulse"></div>
 </div>
 <div>
-<div class="text-lg font-bold text-primary" data-i18n="pipeline.chrome">Chrome Extension</div>
-<div class="text-[11px] font-label-mono text-[#B8860B] uppercase tracking-widest flex items-center gap-2 mt-1"><span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Active</div>
-</div>
-</div>
-</div>
-<div class="flex-1 glass-inner-panel rounded-xl p-4 font-label-mono text-[11px] text-on-surface-variant overflow-hidden relative flex flex-col gap-2">
-<div class="flex justify-between items-center"><span class="text-outline">Latency</span> <span class="font-medium text-primary">12ms</span></div>
-<div class="flex justify-between items-center"><span class="text-outline">Throughput</span> <span class="font-medium text-primary">2.4 MB/s</span></div>
-<div class="flex justify-between items-center mt-2 border-t border-outline-variant/30 pt-2">
-<span class="text-secondary/80">[REQ] /capture/clip</span>
-<span class="text-green-600 font-bold">200 OK</span>
-</div>
-<div class="text-outline mt-1 truncate">Payload: {"url":"github.com/...", "type":"code"}</div>
-</div>
-<div class="w-full bg-surface-variant/50 h-2 rounded-full overflow-hidden mt-auto border border-outline-variant/20">
-<div class="bg-gradient-to-r from-transparent via-secondary to-transparent h-full w-[200%] animate-[stream-progress_2s_linear_infinite]"></div>
-</div>
-</div>
-<div class="card-stack-item absolute inset-0 glass-card p-6 rounded-2xl animate-drift opacity-60 scale-95" style="--rot: 4deg; z-index: 20; transform: rotate(4deg) translate(10px, 15px); animation-delay: -1s;">
-<div class="flex items-center gap-4 border-b border-outline-variant/40 pb-4">
-<div class="w-14 h-14 rounded-xl bg-surface-container-high border border-white/60 flex items-center justify-center">
-<span class="material-symbols-outlined text-primary text-2xl">send</span>
-</div>
-<div>
-<div class="text-lg font-bold text-primary" data-i18n="pipeline.telegram">Telegram Bot</div>
-<div class="text-[11px] font-label-mono text-outline uppercase tracking-widest mt-1">Standby</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Jenn Core (Dusty Bubble) -->
-<div class="relative flex items-center justify-center w-96 h-96">
-<!-- Glow / Halo -->
-<div class="absolute inset-0 bg-secondary/10 rounded-full blur-[100px]"></div>
-<!-- Layered Glass Sphere -->
-<div class="animate-pulse-soft relative w-72 h-72 rounded-full glass-layer-1 flex items-center justify-center overflow-hidden shadow-2xl border-2 border-white/40">
-<div class="absolute inset-0 glass-layer-2 rounded-full m-6"></div>
-<!-- Internal Content -->
-<div class="relative z-10 flex flex-col items-center text-center">
-<div class="mb-5 inline-flex items-center px-4 py-2 rounded-full bg-surface-container-high/80 backdrop-blur-md border border-white/50 text-on-surface-variant shadow-inner">
-<span class="material-symbols-outlined text-primary text-4xl">bubble_chart</span>
-</div>
-<div class="text-2xl font-bold tracking-tight text-primary" data-i18n="pipeline.core">Jenn Core</div>
-<div class="text-[11px] font-label-mono uppercase tracking-[0.3em] text-[#B8860B] mt-2 font-medium" data-i18n="pipeline.neural">Neural Processing</div>
-</div>
-<!-- "Dusty" Particles -->
-<div class="absolute inset-0 pointer-events-none">
-<div class="absolute top-1/4 left-1/4 w-1.5 h-1.5 bg-secondary/60 rounded-full blur-[1px]"></div>
-<div class="absolute bottom-1/3 right-1/4 w-2.5 h-2.5 bg-secondary/80 rounded-full blur-[2px]"></div>
-<div class="absolute top-1/2 right-8 w-2 h-2 bg-secondary/50 rounded-full"></div>
-<div class="absolute top-10 left-1/2 w-1.5 h-1.5 bg-secondary/70 rounded-full"></div>
-<div class="absolute bottom-10 left-1/3 w-1 h-1 bg-primary/40 rounded-full"></div>
-</div>
-</div>
-</div>
-<!-- Outputs Side -->
-<div class="flex flex-col items-center gap-10 relative">
-<span class="font-label-mono text-label-mono uppercase tracking-[0.3em] text-outline/80 font-bold" data-i18n="pipeline.outputs">Output Nodes</span>
-<div class="relative w-[340px] h-[320px]">
-<div class="card-stack-item absolute inset-0 glass-card p-6 rounded-2xl animate-drift flex flex-col gap-5" style="--rot: 3deg; z-index: 30; transform: rotate(3deg);">
-<div class="flex items-center justify-between border-b border-outline-variant/40 pb-4">
-<div class="flex items-center gap-4">
-<div class="w-14 h-14 rounded-xl bg-surface-container-high border border-white/60 shadow-sm flex items-center justify-center">
-<span class="material-symbols-outlined text-primary text-2xl">sticky_note_2</span>
-</div>
-<div>
-<div class="text-lg font-bold text-primary" data-i18n="pipeline.notes">Jenn Notes</div>
-<div class="text-[11px] font-label-mono text-[#B8860B] uppercase tracking-widest flex items-center gap-2 mt-1"><span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span> Syncing</div>
-</div>
-</div>
-</div>
-<div class="flex-1 glass-inner-panel rounded-xl p-4 font-label-mono text-[11px] text-on-surface-variant overflow-hidden relative flex flex-col gap-2">
-<div class="flex justify-between items-center"><span class="text-outline">Blocks Written</span> <span class="font-medium text-primary">1,402</span></div>
-<div class="flex justify-between items-center"><span class="text-outline">Sync State</span> <span class="font-medium text-primary">Real-time</span></div>
-<div class="flex justify-between items-center mt-2 border-t border-outline-variant/30 pt-2">
-<span class="text-secondary/80">Writing to index...</span>
-<span class="text-primary font-bold animate-pulse">_</span>
-</div>
-<div class="text-outline mt-1 truncate">ID: jn_8f2a9b • 12kb</div>
-</div>
-<div class="w-full bg-surface-variant/50 h-2 rounded-full overflow-hidden mt-auto border border-outline-variant/20 flex justify-end">
-<div class="bg-gradient-to-l from-transparent via-secondary to-transparent h-full w-[200%] animate-[stream-progress_2.5s_linear_infinite_reverse]"></div>
-</div>
-</div>
-<div class="card-stack-item absolute inset-0 glass-card p-6 rounded-2xl animate-drift opacity-60 scale-95" style="--rot: -5deg; z-index: 20; transform: rotate(-5deg) translate(-10px, 15px); animation-delay: -0.5s;">
-<div class="flex items-center gap-4 border-b border-outline-variant/40 pb-4">
-<div class="w-14 h-14 rounded-xl bg-surface-container-high border border-white/60 flex items-center justify-center">
-<span class="material-symbols-outlined text-primary text-2xl">edit_document</span>
-</div>
-<div>
-<div class="text-lg font-bold text-primary" data-i18n="pipeline.obsidian">Obsidian Vault</div>
-<div class="text-[11px] font-label-mono text-outline uppercase tracking-widest mt-1">Local Mode</div>
-</div>
+<div class="font-title-lg mb-1">Open Source</div>
+<p class="text-on-surface-variant text-label-lg">
+Fully open source. Audit the code, extend it, or contribute to the project.
+</p>
 </div>
 </div>
 </div>
@@ -451,138 +685,380 @@
 </div>
 </div>
 </section>
-<!-- Open Source Architecture Showcase -->
-<section class="max-w-[1280px] mx-auto px-page-margin-desktop py-stack-xl relative z-10"><div class="bg-surface-container-low border border-outline-variant rounded-3xl p-8 md:p-12 overflow-hidden relative shadow-sm"><div class="relative z-10 flex flex-col lg:flex-row items-center gap-12"><div class="lg:w-1/2 space-y-6"><span class="font-label-mono text-label-mono text-on-surface-variant mb-2 block font-bold uppercase tracking-widest" data-i18n="oss.label">The Modular Ecosystem</span><h3 class="font-headline-md text-headline-md text-[#B8860B] italic" style="font-family: 'Cormorant Garamond', serif;" data-i18n="oss.title">Build your own nodes.</h3><p class="font-body-md text-body-md text-on-surface-variant" data-i18n="oss.desc">Jenn is built on a plug-and-play architecture. Anyone can build their own input or output nodes using the Jenn API. Our developer-first approach ensures that your workflow is never limited by our integrations.</p><button class="font-label-mono text-label-mono uppercase tracking-widest flex items-center gap-2 hover:gap-4 transition-all text-primary hover:text-on-surface-variant mt-4"><span data-i18n="oss.cta">Explore API Docs</span> <span class="material-symbols-outlined text-[16px]">arrow_forward</span></button></div><div class="lg:w-1/2 w-full bg-primary-container p-6 rounded-2xl border border-outline/30 font-label-mono text-sm text-outline font-medium shadow-2xl"><div class="flex items-center justify-between mb-4 pb-2 border-b border-outline/20 text-on-surface-variant"><span class="text-xs tracking-widest uppercase">node_definition.ts</span></div><pre class="text-xs leading-relaxed overflow-x-auto text-inverse-primary"><code><span class="text-secondary">export</span> <span class="text-secondary">const</span> <span class="text-white">myCustomNode</span> = <span class="text-white">describe</span>({
-  id: <span class="text-secondary-fixed">"custom-input"</span>,
-  type: <span class="text-secondary-fixed">"SOURCE"</span>,
-  schema: { ... },
-  handler: <span class="text-secondary">async</span> (data) =&gt; {
-    <span class="text-outline">// Your logic here</span>
-  }
-});</code></pre></div></div></div></section>
-</main>
-<!-- Footer Component -->
-<footer class="w-full py-stack-xl mt-stack-xl bg-surface-container-low border-t border-outline-variant">
-<div class="max-w-[1280px] mx-auto px-page-margin-desktop flex flex-col md:flex-row justify-between items-start gap-gutter">
-<div class="space-y-4">
-<span class="font-headline-md text-3xl font-bold text-primary">Jenn</span>
-<p class="font-body-md text-body-md text-on-surface-variant max-w-xs" data-i18n="footer.desc">The instant, open-source buffer for your chaotic mind.</p>
+<!-- Use Cases -->
+<section class="relative py-32 md:py-48 overflow-hidden">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold/5 blur-[150px] rounded-full pointer-events-none"></div>
+<div class="max-w-container-max mx-auto px-margin-safe relative z-10">
+<div class="text-center mb-16 md:mb-24">
+<span class="text-gold font-label-lg uppercase tracking-widest mb-4 block" data-i18n="usecases.label">Use Cases</span>
+<h2 class="font-display text-display mb-6" data-i18n="usecases.title">Who is Jenn for?</h2>
+<p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto" data-i18n="usecases.subtitle">
+One inbox for everything that matters. You write — Jenn figures out where it belongs.
+</p>
 </div>
-<div class="flex flex-wrap gap-x-12 gap-y-6">
-<div class="flex flex-col gap-3">
-<span class="font-label-mono text-label-mono uppercase tracking-widest text-secondary mb-2">Product</span>
-<a class="font-label-mono text-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">Changelog</a>
-<a class="font-label-mono text-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">Plugins</a>
-<a class="font-label-mono text-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">FAQ</a>
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+<!-- Card 1: Ideas -->
+<div class="glass-panel p-8 md:p-10 rounded-[2rem] tilt-card group hover:border-gold/40 transition-all duration-300 flex flex-col">
+<div class="w-14 h-14 rounded-2xl bg-gold/10 border border-gold/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-gold text-3xl">lightbulb</span>
 </div>
-<div class="flex flex-col gap-3">
-<span class="font-label-mono text-label-mono uppercase tracking-widest text-secondary mb-2">Community</span>
-<a class="font-label-mono text-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">Twitter</a>
-<a class="font-label-mono text-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">Discord</a>
-<a class="font-label-mono text-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">GitHub</a>
+<span class="text-gold font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card1.tag">Personal productivity</span>
+<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card1.title">Capture ideas anywhere</h3>
+<p class="font-body-md text-on-surface-variant mb-6 flex-1" data-i18n="usecases.card1.desc">
+Thought on a walk? Message Telegram. Jenn tags it as «Ideas» and drops it into your Notion database — no folders, no copy-paste.
+</p>
+<div class="flex items-start gap-3 pt-4 border-t border-outline-variant/20">
+<span class="material-symbols-outlined text-gold text-[18px] mt-0.5">chat</span>
+<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card1.example">«idea: app for finding travel companions»</p>
 </div>
 </div>
-<div class="w-full md:w-auto pt-8 md:pt-0">
-<p class="font-label-mono text-label-mono text-[11px] uppercase tracking-widest text-on-surface-variant">© 2024 Jenn Workspace. All rights reserved.</p>
+<!-- Card 2: Links -->
+<div class="glass-panel p-8 md:p-10 rounded-[2rem] tilt-card group hover:border-lavender/40 transition-all duration-300 flex flex-col">
+<div class="w-14 h-14 rounded-2xl bg-lavender/10 border border-lavender/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-lavender text-3xl">link</span>
+</div>
+<span class="text-lavender font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card2.tag">Content &amp; research</span>
+<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card2.title">Save links, not chaos</h3>
+<p class="font-body-md text-on-surface-variant mb-6 flex-1" data-i18n="usecases.card2.desc">
+Forward a post or paste a URL. AI reads the context, picks a category, and files it into Notion or Obsidian — so bookmarks stop becoming a graveyard.
+</p>
+<div class="flex items-start gap-3 pt-4 border-t border-outline-variant/20">
+<span class="material-symbols-outlined text-lavender text-[18px] mt-0.5">forward</span>
+<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card2.example">Forward a channel post → sorted into «AI articles»</p>
 </div>
 </div>
+<!-- Card 3: Freelancer -->
+<div class="glass-panel p-8 md:p-10 rounded-[2rem] tilt-card group hover:border-turquoise/40 transition-all duration-300 flex flex-col">
+<div class="w-14 h-14 rounded-2xl bg-turquoise/10 border border-turquoise/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-turquoise text-3xl">payments</span>
+</div>
+<span class="text-turquoise font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card3.tag">Freelancers</span>
+<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card3.title">Track expenses in plain language</h3>
+<p class="font-body-md text-on-surface-variant mb-6 flex-1" data-i18n="usecases.card3.desc">
+«Hosting 1500₽, AI sub $20» — Jenn logs rows for you. End of month, the spreadsheet is already filled.
+</p>
+<div class="flex items-start gap-3 pt-4 border-t border-outline-variant/20">
+<span class="material-symbols-outlined text-turquoise text-[18px] mt-0.5">receipt_long</span>
+<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card3.example">«bought hosting 1500, AI subscription 20$»</p>
+</div>
+</div>
+<!-- Card 4: Student -->
+<div class="glass-panel p-8 md:p-10 rounded-[2rem] tilt-card group hover:border-sand/40 transition-all duration-300 flex flex-col">
+<div class="w-14 h-14 rounded-2xl bg-sand/10 border border-sand/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sand text-3xl">school</span>
+</div>
+<span class="text-sand font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card4.tag">Students &amp; researchers</span>
+<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card4.title">Quote once, store forever</h3>
+<p class="font-body-md text-on-surface-variant mb-6 flex-1" data-i18n="usecases.card4.desc">
+Highlight a paragraph, send it via Desktop Input or Telegram. Category, tags, and source land in your research vault automatically.
+</p>
+<div class="flex items-start gap-3 pt-4 border-t border-outline-variant/20">
+<span class="material-symbols-outlined text-sand text-[18px] mt-0.5">format_quote</span>
+<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card4.example">Select text → Alt+Space → saved to thesis notes</p>
+</div>
+</div>
+<!-- Card 5: Creators -->
+<div class="glass-panel p-8 md:p-10 rounded-[2rem] tilt-card group hover:border-gold/40 transition-all duration-300 flex flex-col">
+<div class="w-14 h-14 rounded-2xl bg-gold/10 border border-gold/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-gold text-3xl">movie_filter</span>
+</div>
+<span class="text-gold font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card5.tag">Creators</span>
+<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card5.title">Build a content inbox</h3>
+<p class="font-body-md text-on-surface-variant mb-6 flex-1" data-i18n="usecases.card5.desc">
+Articles, memes, quotes, news — one chat all day. By evening everything is sorted into blogs, visuals, and content-plan boards.
+</p>
+<div class="flex items-start gap-3 pt-4 border-t border-outline-variant/20">
+<span class="material-symbols-outlined text-gold text-[18px] mt-0.5">auto_awesome</span>
+<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card5.example">Day of scraps → evening: fully sorted libraries</p>
+</div>
+</div>
+<!-- Card 6: Daily dump -->
+<div class="glass-panel p-8 md:p-10 rounded-[2rem] tilt-card group hover:border-lavender/40 transition-all duration-300 flex flex-col">
+<div class="w-14 h-14 rounded-2xl bg-lavender/10 border border-lavender/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-lavender text-3xl">psychology_alt</span>
+</div>
+<span class="text-lavender font-code text-[11px] uppercase tracking-widest mb-3" data-i18n="usecases.card6.tag">Everyday life</span>
+<h3 class="font-display text-headline-lg mb-4" data-i18n="usecases.card6.title">Brain dump, auto-sorted</h3>
+<p class="font-body-md text-on-surface-variant mb-6 flex-1" data-i18n="usecases.card6.desc">
+End of day: one stream of consciousness. Meetings, errands, tasks — Jenn splits them into notes, reminders, and destinations you already use.
+</p>
+<div class="flex items-start gap-3 pt-4 border-t border-outline-variant/20">
+<span class="material-symbols-outlined text-lavender text-[18px] mt-0.5">stream</span>
+<p class="font-code text-label-lg text-on-surface-variant italic" data-i18n="usecases.card6.example">One message → notes + reminders + tasks</p>
+</div>
+</div>
+</div>
+<div class="mt-16 text-center">
+<p class="font-body-md text-on-surface-variant max-w-xl mx-auto mb-8" data-i18n="usecases.footer">
+Jenn is not a replacement for Notion or Obsidian — it is the invisible layer between you and your tools.
+</p>
+<a href="/products.html" class="inline-flex items-center gap-2 text-gold hover:text-primary transition-colors font-label-lg text-label-lg group">
+<span data-i18n="usecases.cta">Explore products</span>
+<span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="relative py-64 px-margin-safe overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+</div>
+<div class="max-w-container-max mx-auto text-center relative z-10">
+<!-- Massive 3D-like Object Background for CTA -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-30 pointer-events-none">
+<div class="w-full h-full rounded-full border-[1px] border-gold border-dashed animate-spin" style="animation-duration: 60s;"></div>
+<div class="absolute inset-20 rounded-full bg-gold/10 blur-[120px]"></div>
+</div>
+<h2 class="font-display text-[80px] leading-none mb-12 tracking-tighter" data-i18n="cta.title">Your knowledge, <br/>on autopilot.</h2>
+<p class="font-body-lg text-on-surface-variant max-w-xl mx-auto mb-12" data-i18n="cta.desc">
+                Capture from Telegram, Desktop, CLI. Route to Notion, Obsidian, anywhere. Jenn handles the rest — powered by AI, open-source, self-hosted.
+            </p>
+<button class="relative group px-12 py-5 bg-gold text-on-primary-fixed rounded-full font-bold text-title-lg overflow-hidden transition-all hover:scale-110 active:scale-95">
+<span class="relative z-10 flex items-center gap-2" data-i18n="cta.button"><span class="material-symbols-outlined text-[20px]">notifications_active</span> Follow Progress</span>
+<div class="absolute inset-0 bg-white/20 translate-x-full group-hover:translate-x-0 transition-transform skew-x-12 duration-500"></div>
+<div class="absolute -inset-4 bg-gold/40 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</button>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-12 px-6 md:px-margin-safe border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-gutter bg-surface-container-lowest z-30 relative mt-auto flex-shrink-0">
+<div class="font-display text-headline-lg text-primary">Jenn</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="footer.docs">Documentation</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="footer.changelog">Changelog</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="footer.privacy">Privacy</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="footer.terms">Terms</a>
+<a class="text-on-surface-variant hover:text-sand transition-colors font-body-md text-body-md" href="#" data-i18n="footer.status">System Status</a>
+</div>
+<div class="text-on-surface-variant font-body-md text-body-md opacity-60" data-i18n="footer.copyright">© 2024 Jenn Console. Architectural Intelligence.</div>
 </footer>
 <script>
-const I18N = {
-  ru: {
-    'nav.lang': 'EN',
-    'nav.product': 'Продукт',
-    'nav.pipeline': 'Конвейер',
-    'nav.faq': 'FAQ',
-    'nav.docs': 'Документация',
-    'nav.signin': 'Войти',
-    'nav.cta': 'Скачать Jenn',
-    'hero.badge': 'Альфа-тестирование',
-    'hero.title': 'Хватит думать, куда сохранить. <span class="italic text-[#B8860B]" style="font-family: \'Cormorant Garamond\', serif;">Просто собирай.</span>',
-    'hero.subtitle': 'Информационная перегрузка — реальность. Notion медленный. Ваш мозг устал от принятия решений. Jenn — мгновенный буфер с открытым кодом, который принимает хаос и маршрутизирует его идеально. Вы контролируете движок.',
-    'hero.cta1': 'Начать использовать',
-    'hero.cta2': 'Self-host решение',
-    'pipeline.inputs': 'Поток ввода',
-    'pipeline.outputs': 'Узлы вывода',
-    'pipeline.chrome': 'Chrome Расширение',
-    'pipeline.telegram': 'Telegram Бот',
-    'pipeline.core': 'Jenn Ядро',
-    'pipeline.neural': 'Нейрообработка',
-    'pipeline.notes': 'Jenn Заметки',
-    'pipeline.obsidian': 'Obsidian Хранилище',
-    'oss.label': 'Модульная экосистема',
-    'oss.title': 'Создавайте свои узлы.',
-    'oss.desc': 'Jenn построен на plug-and-play архитектуре. Любой может создать свои узлы ввода или вывода через Jenn API. Наш developer-first подход гарантирует, что ваш рабочий процесс никогда не ограничен нашими интеграциями.',
-    'oss.cta': 'Документация API',
-    'footer.desc': 'Мгновенный буфер с открытым кодом для хаотичного разума.'
-  },
-  en: {
-    'nav.lang': 'RU',
-    'nav.product': 'Product',
-    'nav.pipeline': 'Pipeline',
-    'nav.faq': 'FAQ',
-    'nav.docs': 'Documentation',
-    'nav.signin': 'Sign in',
-    'nav.cta': 'Get Jenn',
-    'hero.badge': 'Alpha Testing',
-    'hero.title': 'Stop thinking about where to save. <span class="italic text-[#B8860B]" style="font-family: \'Cormorant Garamond\', serif;">Just capture.</span>',
-    'hero.subtitle': 'Information overload is real. Notion is slow and laggy. Your brain is exhausted by decision fatigue. Jenn is the instant, open-source buffer that captures chaos and routes it perfectly. You control the engine.',
-    'hero.cta1': 'Get Started',
-    'hero.cta2': 'Self-host',
-    'pipeline.inputs': 'Input Stream',
-    'pipeline.outputs': 'Output Nodes',
-    'pipeline.chrome': 'Chrome Extension',
-    'pipeline.telegram': 'Telegram Bot',
-    'pipeline.core': 'Jenn Core',
-    'pipeline.neural': 'Neural Processing',
-    'pipeline.notes': 'Jenn Notes',
-    'pipeline.obsidian': 'Obsidian Vault',
-    'oss.label': 'The Modular Ecosystem',
-    'oss.title': 'Build your own nodes.',
-    'oss.desc': 'Jenn is built on a plug-and-play architecture. Anyone can build their own input or output nodes using the Jenn API. Our developer-first approach ensures that your workflow is never limited by our integrations.',
-    'oss.cta': 'Explore API Docs',
-    'footer.desc': 'The instant, open-source buffer for your chaotic mind.'
-  }
-}
+        // Mobile Menu Toggle
+        let mobileMenuOpen = false;
+        function toggleMobileMenu() {
+            mobileMenuOpen = !mobileMenuOpen;
+            const menu = document.getElementById('mobile-menu');
+            const hamburger = document.querySelector('[onclick="toggleMobileMenu()"]');
+            
+            if (mobileMenuOpen) {
+                menu.classList.add('mobile-menu-active');
+                hamburger.classList.add('menu-active');
+            } else {
+                menu.classList.remove('mobile-menu-active');
+                hamburger.classList.remove('menu-active');
+            }
+        }
 
-let currentLang = localStorage.getItem('jenn-lang') || 'ru'
-let currentTheme = localStorage.getItem('jenn-theme') || 'light'
+        // Parallax Effect
+        window.addEventListener('scroll', () => {
+            const items = document.querySelectorAll('.parallax-item');
+            const scrollY = window.scrollY;
+            
+            items.forEach(item => {
+                const speed = item.getAttribute('data-speed') || 0.1;
+                const offset = scrollY * speed;
+                item.style.transform = `translateY(${offset}px) ${item.classList.contains('rotate-12') ? 'rotate(12deg)' : item.classList.contains('-rotate-6') ? 'rotate(-6deg)' : ''}`;
+            });
+        });
 
-function applyLang(lang) {
-  currentLang = lang
-  document.documentElement.lang = lang
-  const dict = I18N[lang]
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n')
-    if (dict[key] !== undefined) el.innerHTML = dict[key]
-  })
-  localStorage.setItem('jenn-lang', lang)
-}
+        // Tilt Card Interaction
+        const cards = document.querySelectorAll('.tilt-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
+            });
+        });
 
-function applyTheme(theme) {
-  currentTheme = theme
-  const html = document.documentElement
-  if (theme === 'dark') {
-    html.classList.remove('light')
-    html.classList.add('dark')
-  } else {
-    html.classList.remove('dark')
-    html.classList.add('light')
-  }
-  const icon = document.getElementById('theme-icon')
-  if (icon) icon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode'
-  localStorage.setItem('jenn-theme', theme)
-}
+        // Floating Particles
+        function createParticles() {
+            const body = document.body;
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'floating-particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                body.appendChild(particle);
+            }
+        }
+        createParticles();
 
-function toggleTheme() {
-  applyTheme(currentTheme === 'light' ? 'dark' : 'light')
-}
+        // Progressive Entrance Observer
+        const observerOptions = {
+            threshold: 0.1
+        };
 
-function toggleLang() {
-  applyLang(currentLang === 'ru' ? 'en' : 'ru')
-}
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                }
+            });
+        }, observerOptions);
 
-applyTheme(currentTheme)
-applyLang(currentLang)
-</script>
+        document.querySelectorAll('section > div').forEach(el => {
+            el.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(el);
+        });
+
+        // Theme Toggle
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.className = savedTheme;
+        updateThemeIcon(savedTheme);
+
+        function toggleTheme() {
+            const current = document.documentElement.className;
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.className = newTheme;
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-icon');
+            if (icon) {
+                icon.textContent = theme === 'dark' ? 'dark_mode' : 'light_mode';
+            }
+        }
+
+        // Language Toggle
+        const translations = {
+            en: {
+                'signin': 'Sign In',
+                'getstarted': 'Get Started',
+                'hero.title': 'Capture Everything.<br/><span class="text-gold italic">Route Intelligently.</span>',
+                'hero.subtitle': 'The AI-powered knowledge router that captures from anywhere and delivers exactly where it matters. Open-source, self-hosted, yours.',
+                'hero.cta': 'Get Started',
+                'core.label': 'How It Works',
+                'core.title': 'The Jenn Pipeline',
+                'pipeline.title': 'AI-Powered Routing',
+                'pipeline.desc': 'Messages flow from Telegram, Desktop, CLI through Jenn Core — an AI router that understands intent and routes to Notion, Obsidian, or any output you configure.',
+                'usecases.label': 'Use Cases',
+                'usecases.title': 'Who is Jenn for?',
+                'usecases.subtitle': 'One inbox for everything that matters. You write — Jenn figures out where it belongs.',
+                'usecases.card1.tag': 'Personal productivity',
+                'usecases.card1.title': 'Capture ideas anywhere',
+                'usecases.card1.desc': 'Thought on a walk? Message Telegram. Jenn tags it as «Ideas» and drops it into your Notion database — no folders, no copy-paste.',
+                'usecases.card1.example': '«idea: app for finding travel companions»',
+                'usecases.card2.tag': 'Content &amp; research',
+                'usecases.card2.title': 'Save links, not chaos',
+                'usecases.card2.desc': 'Forward a post or paste a URL. AI reads the context, picks a category, and files it into Notion or Obsidian — so bookmarks stop becoming a graveyard.',
+                'usecases.card2.example': 'Forward a channel post → sorted into «AI articles»',
+                'usecases.card3.tag': 'Freelancers',
+                'usecases.card3.title': 'Track expenses in plain language',
+                'usecases.card3.desc': '«Hosting 1500₽, AI sub $20» — Jenn logs rows for you. End of month, the spreadsheet is already filled.',
+                'usecases.card3.example': '«bought hosting 1500, AI subscription 20$»',
+                'usecases.card4.tag': 'Students &amp; researchers',
+                'usecases.card4.title': 'Quote once, store forever',
+                'usecases.card4.desc': 'Highlight a paragraph, send it via Desktop Input or Telegram. Category, tags, and source land in your research vault automatically.',
+                'usecases.card4.example': 'Select text → Alt+Space → saved to thesis notes',
+                'usecases.card5.tag': 'Creators',
+                'usecases.card5.title': 'Build a content inbox',
+                'usecases.card5.desc': 'Articles, memes, quotes, news — one chat all day. By evening everything is sorted into blogs, visuals, and content-plan boards.',
+                'usecases.card5.example': 'Day of scraps → evening: fully sorted libraries',
+                'usecases.card6.tag': 'Everyday life',
+                'usecases.card6.title': 'Brain dump, auto-sorted',
+                'usecases.card6.desc': 'End of day: one stream of consciousness. Meetings, errands, tasks — Jenn splits them into notes, reminders, and destinations you already use.',
+                'usecases.card6.example': 'One message → notes + reminders + tasks',
+                'usecases.footer': 'Jenn is not a replacement for Notion or Obsidian — it is the invisible layer between you and your tools.',
+                'usecases.cta': 'Explore products',
+                'cta.title': 'Your knowledge, <br/>on autopilot.',
+                'cta.desc': 'Capture from Telegram, Desktop, CLI. Route to Notion, Obsidian, anywhere. Jenn handles the rest — powered by AI, open-source, self-hosted.',
+                'cta.button': '<span class="material-symbols-outlined text-[20px]">notifications_active</span> Follow Progress',
+                'footer.docs': 'Documentation',
+                'footer.changelog': 'Changelog',
+                'footer.privacy': 'Privacy',
+                'footer.terms': 'Terms',
+                'footer.status': 'System Status',
+                'footer.copyright': '© 2024 Jenn. Open-Source AI Router.'
+            },
+            ru: {
+                'signin': 'Войти',
+                'getstarted': 'Начать',
+                'hero.title': 'Никаких лишних<br/><span class="text-gold italic">решений</span>',
+                'hero.subtitle': 'Отправляйте всё в Jenn. Он сам поймёт контекст и доставит информацию в Obsidian, Notion или любую другую систему.',
+                'hero.cta': 'Начать',
+                'core.label': 'Как это работает',
+                'core.title': 'Структура Jenn',
+                'pipeline.title': 'Маршрутизация',
+                'pipeline.desc': 'Сообщения из Inputs (Telegram, Desktop, и др.) проходят через Jenn Core — роутер, который определяет намерения и направляет данные в Notion, Obsidian или любой другой output.',
+                'usecases.label': 'Сценарии',
+                'usecases.title': 'Кому поможет Jenn?',
+                'usecases.subtitle': 'Одно окно ввода для всего важного. Вы пишете — Jenn сам решает, куда это положить.',
+                'usecases.card1.tag': 'Личная продуктивность',
+                'usecases.card1.title': 'Ловите идеи где угодно',
+                'usecases.card1.desc': 'Мысль на прогулке? Написали боту. Jenn пометит как «Идеи» и сохранит в Notion — без папок и копипаста.',
+                'usecases.card1.example': '«идея: приложение для поиска попутчиков»',
+                'usecases.card2.tag': 'Контент и ресерч',
+                'usecases.card2.title': 'Ссылки без хаоса',
+                'usecases.card2.desc': 'Переслали пост или вставили URL. AI читает контекст, выбирает категорию и кладёт в Notion или Obsidian — закладки перестают быть свалкой.',
+                'usecases.card2.example': 'Переслали пост → в базу «Статьи по AI»',
+                'usecases.card3.tag': 'Фрилансеры',
+                'usecases.card3.title': 'Расходы обычным языком',
+                'usecases.card3.desc': '«Хостинг 1500₽, подписка на AI 20$» — Jenn запишет строки. В конце месяца таблица уже заполнена.',
+                'usecases.card3.example': '«купил хостинг 1500, AI 20$»',
+                'usecases.card4.tag': 'Студенты и исследователи',
+                'usecases.card4.title': 'Цитата один раз — навсегда',
+                'usecases.card4.desc': 'Выделили абзац, отправили через Desktop Input или Telegram. Категория, теги и источник сами попадают в vault.',
+                'usecases.card4.example': 'Выделили текст → Alt+Space → в заметки диплома',
+                'usecases.card5.tag': 'Креаторы',
+                'usecases.card5.title': 'Контент-инбокс',
+                'usecases.card5.desc': 'Статьи, мемы, цитаты, новости — один чат весь день. К вечеру всё разложено по базам: блог, визуал, контент-план.',
+                'usecases.card5.example': 'День обрывков → вечером: всё по полочкам',
+                'usecases.card6.tag': 'Повседневность',
+                'usecases.card6.title': 'Мозговой дамп, автосортировка',
+                'usecases.card6.desc': 'Конец дня: один поток сознания. Встречи, поручения, задачи — Jenn разносит по заметкам, напоминаниям и вашим сервисам.',
+                'usecases.card6.example': 'Одно сообщение → заметки + напоминания + задачи',
+                'usecases.footer': 'Jenn — не замена Notion или Obsidian, а невидимый слой между вами и вашими инструментами.',
+                'usecases.cta': 'Смотреть продукты',
+                'cta.title': 'Ваши знания, <br/>на автопилоте.',
+                'cta.desc': 'Принимайте из Telegram, Desktop, CLI. Направляйте в Notion, Obsidian, куда угодно. Jenn делает остальное — AI, open-source, self-hosted.',
+                'cta.button': '<span class="material-symbols-outlined text-[20px]">notifications_active</span> Следить за проектом',
+                'footer.docs': 'Документация',
+                'footer.changelog': 'История изменений',
+                'footer.privacy': 'Конфиденциальность',
+                'footer.terms': 'Условия',
+                'footer.status': 'Статус системы',
+                'footer.copyright': '© 2024 Jenn. Open-Source AI Router.'
+            }
+        };
+
+        let currentLang = localStorage.getItem('lang') || 'en';
+        applyLanguage(currentLang);
+
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'ru' : 'en';
+            localStorage.setItem('lang', currentLang);
+            applyLanguage(currentLang);
+        }
+
+        function applyLanguage(lang) {
+            const langLabel = document.getElementById('lang-label');
+            if (langLabel) {
+                langLabel.textContent = lang === 'en' ? 'EN' : 'RU';
+            }
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+        }
+    </script>
 </body></html>

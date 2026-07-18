@@ -31,9 +31,9 @@ class Processor extends EventEmitter {
     this.emit('log', entry)
   }
 
-  getSkillOutputFunctions(skillName, cfg) {
+  getSkillOutputFunctions(skillName, cfg, instanceConfig = {}) {
     const skillCfg = cfg.skillsConfig?.[skillName] || {}
-    const outputName = skillCfg.output
+    const outputName = instanceConfig.output || skillCfg.output
     const output = this.outputs.get(outputName)
     if (!output || !output.functions) return {}
     const outputConfig = cfg?.outputs?.[outputName] || {}
@@ -130,12 +130,14 @@ class Processor extends EventEmitter {
     return null
   }
 
-  resolveOutputFunction(action, cfg) {
+  resolveOutputFunction(action, cfg, instanceConfig = {}) {
     if (!action) return null
     const tools = this.getAvailableFunctions(cfg)
     const preferredOutput = action.output || null
+    const allowedOutputs = instanceConfig.outputs || []
 
     const candidates = tools.filter(t => {
+      if (allowedOutputs.length && !allowedOutputs.includes(t.output)) return false
       if (preferredOutput && t.output !== preferredOutput) return false
       if (action.function && t.function === action.function) return true
       if (action.capability && t.capability === action.capability) return true
@@ -210,44 +212,49 @@ class Processor extends EventEmitter {
     }
 
     const skillCfg = cfg.skillsConfig?.[selected.skill] || {}
-    const outputFunctions = this.getSkillOutputFunctions(selected.skill, cfg)
+    const instanceId = selected.instanceId || 'default'
+    const instances = skillCfg.instances || [{ id: 'default', name: 'Default', ...skillCfg }]
+    const instanceConfig = instances.find(i => i.id === instanceId) || instances[0] || {}
+    
+    const outputFunctions = this.getSkillOutputFunctions(selected.skill, cfg, instanceConfig)
     const params = {
       ...(selected.params || {}),
       ...(selected.destination && !(selected.params || {}).destination ? { destination: selected.destination } : {})
     }
 
-    this.log('skill_start', '⚡', `${selected.skill}`, `params: ${JSON.stringify(params)}`)
+    this.log('skill_start', '', `${selected.skill}[${instanceId}]`, `params: ${JSON.stringify(params)}`)
 
     try {
-      const skillResult = await skill.handler(params, message, outputFunctions, skillCfg)
-      this.log('skill_done', '✅', `${selected.skill} выполнен`, JSON.stringify(skillResult))
+      const skillResult = await skill.handler(params, message, outputFunctions, instanceConfig)
+      this.log('skill_done', '✅', `${selected.skill}[${instanceId}] выполнен`, JSON.stringify(skillResult))
 
-      const action = this.normalizeAction(skill, skillResult, selected, skillCfg)
-      if (!action) return { skill: selected.skill, result: skillResult }
+      const action = this.normalizeAction(skill, skillResult, selected, instanceConfig)
+      if (!action) return { skill: selected.skill, instanceId, result: skillResult }
 
       action.params = {
         ...(action.params || {}),
         ...(selected?.fields ? { fields: selected.fields } : {})
       }
 
-      const tool = this.resolveOutputFunction(action, cfg)
+      const tool = this.resolveOutputFunction(action, cfg, instanceConfig)
       if (!tool) {
         this.log('error', '❌', `Не найдена output-функция для action`, JSON.stringify(action))
-        return { skill: selected.skill, action, error: 'Output function not found' }
+        return { skill: selected.skill, instanceId, action, error: 'Output function not found' }
       }
 
       const result = await this.executeOutputFunction(tool, action.params, cfg, {
         message,
         username,
         skill: selected.skill,
+        instanceId,
         skillResult,
         ai: selected
       })
 
-      return { skill: selected.skill, action: { ...action, tool: tool.id }, result }
+      return { skill: selected.skill, instanceId, action: { ...action, tool: tool.id }, result }
     } catch (err) {
-      this.log('error', '❌', `${selected.skill}: ${err.message}`)
-      return { skill: selected.skill, error: err.message }
+      this.log('error', '❌', `${selected.skill}[${instanceId}]: ${err.message}`)
+      return { skill: selected.skill, instanceId, error: err.message }
     }
   }
 
@@ -292,44 +299,68 @@ class Processor extends EventEmitter {
   }
 
   async brainPick(skills, userText, cfg) {
-    const desc = skills.map(s =>
-      `  ${s.name}: ${s.description || ''}${s.params ? ` (параметры: ${JSON.stringify(Object.keys(s.params))})` : ''}`
+    const skillInstances = []
+    for (const skill of skills) {
+      const skillCfg = cfg.skillsConfig?.[skill.name] || {}
+      const instances = skillCfg.instances || [{ id: 'default', name: 'Default', ...skillCfg }]
+      for (const instance of instances) {
+        skillInstances.push({
+          skill: skill.name,
+          instanceId: instance.id,
+          instanceName: instance.name,
+          description: skill.description || '',
+          routerInstructions: instance.routerInstructions || '',
+          outputs: instance.outputs || [],
+          params: skill.params ? Object.keys(skill.params) : []
+        })
+      }
+    }
+
+    const desc = skillInstances.map(si =>
+      `  ${si.skill}[${si.instanceId}] "${si.instanceName}": ${si.description}${si.routerInstructions ? ` — ИНСТРУКЦИЯ: ${si.routerInstructions}` : ''}${si.outputs.length ? ` — outputs: [${si.outputs.join(', ')}]` : ''}${si.params.length ? ` (параметры: ${JSON.stringify(si.params)})` : ''}`
     ).join('\n')
 
     const schemaCtx = this.buildSchemaContext(cfg)
     const toolsCtx = this.buildFunctionsContext(this.getAvailableFunctions(cfg))
 
-    const prompt = `Ты — ядро системы Jenn. Определи намерение пользователя и выбери навык и output.
+    const prompt = `Ты — ядро системы Jenn. Определи намерение пользователя и выбери навык с конкретным инстансом и output.
 
-Доступные навыки:
+Доступные навыки и инстансы:
 ${desc}
 ${schemaCtx}
 ${toolsCtx}
 Ответь ТОЛЬКО JSON без пояснений и markdown.
-Формат: {"skill": "имя_навыка", "params": { ...поля... }, "output": "имя_output", "destination": "id_или_название_destination"}
-Если точно знаешь нужную output-функцию, можешь добавить:
-{"skill": "имя_навыка", "params": {...}, "output": "notion", "call": {"output": "notion", "function": "saveText", "params": {...}}}
-Если ничего не подходит или пользователь просто приветствуется: {"skill": null, "params": {}}
+Формат: {"skill": "имя_навыка", "instanceId": "id_инстанса", "params": { ...поля... }, "output": "имя_output", "destination": "id_или_название_destination"}
+
+ВАЖНО:
+- Каждый навык может иметь несколько инстансов с разными инструкциями
+- Выбирай инстанс на основе routerInstructions — они описывают, когда использовать этот инстанс
+- Если ни один инстанс не подходит, верни {"skill": null, "params": {}}
+- Если точно знаешь нужную output-функцию, можешь добавить:
+{"skill": "имя_навыка", "instanceId": "id", "params": {...}, "output": "notion", "call": {"output": "notion", "function": "saveText", "params": {...}}}
 
 Правила заполнения params:
 - title — заголовок (кратко, до 8 слов)
 - text — полный текст записи
-- category — категория (выбери из доступных select-полей выше)
+- category — категория (выбери из доступных select/multi_select/status-полей выше)
 - destination — выбери id места сохранения из доступных destinations по описанию пользователя
 - database — legacy: имя базы данных из списка выше
 - date — дата в формате YYYY-MM-DD
 - query — поисковый запрос
+- ЛЮБОЕ другое поле — используй ТОЧНОЕ имя колонки из schema таблицы (например "Уровень", "Статус", "Автор", "URL", "Email" и т.д.)
+- Поддерживаемые типы колонок: select, multi_select, status, date, number, checkbox, url, email, phone_number, rich_text, title, people, files, relation
 
 Важно:
-- Ты сам выбираешь output (notion, obsidian и т.д.) на основе текста пользователя.
-- Если пользователь явно назвал output (например "сохрани в obsidian", "запиши в notion") — ОБЯЗАТЕЛЬНО верни "output": "имя_output". Не используй default.
-- Если пользователь назвал место сохранения (папку, БД, destination) — выбери destination по имени.
+- Ты сам выбираешь output (notion, obsidian и т.д.) на основе текста пользователя И инструкций инстанса
+- Если пользователь явно назвал output (например "сохрани в obsidian", "запиши в notion") — ОБЯЗАТЕЛЬНО верни "output": "имя_output"
+- Если пользователь назвал место сохранения (папку, БД, destination) — выбери destination по имени
+- Инстансы с routerInstructions имеют приоритет при совпадении с инструкцией
 - Skills описывают намерение пользователя.
 - Output-функции — это реальные инструменты внешних приложений.
 - Для сохранения всегда выбирай destination по человеческому описанию: "Хранилище — заметки", "Задачи — четкие задачи", "Кино — фильмы/сериалы" и т.д.
 - Если у destination есть select-поля, выбирай category/status из доступных вариантов.
 - Если используешь call, output = имя приложения, function = имя функции внутри output.
-- Если output не назван пользователем — используй output из skillsConfig/default, но верни его явно в "output".`
+- Если output не назван пользователем — используй output из инстанса, но верни его явно в "output".`
 
     this.log('ai_debug', '📤', 'Router AI промпт (полностью)', prompt)
 
@@ -344,7 +375,7 @@ ${toolsCtx}
           [{ role: 'system', content: prompt }, { role: 'user', content: userText }],
           { model: providerCfg.model || mod.defaultModel }
         )
-        this.log('ai_debug', '📥', 'Router AI ответ (полностью)', text)
+        this.log('ai_debug', '', 'Router AI ответ (полностью)', text)
         const parsed = this._tryParseJSON(text)
         if (parsed && (typeof parsed.skill === 'string' || parsed.skill === null)) return parsed
         this.log('ai_debug', '⚠️', `${providerCfg.name}: невалидный JSON`, `raw: ${text?.slice(0, 300)}`)
@@ -358,12 +389,15 @@ ${toolsCtx}
   async fallback(message, cfg) {
     const skill = this.skills.get('save_entry')
     if (skill) {
-      const outputFunctions = this.getSkillOutputFunctions('save_entry', cfg)
+      const skillCfg = cfg.skillsConfig?.save_entry || {}
+      const instances = skillCfg.instances || [{ id: 'default', name: 'Default', ...skillCfg }]
+      const instanceConfig = instances.find(i => i.fallbackDestination) || instances[0] || {}
+      
+      const outputFunctions = this.getSkillOutputFunctions('save_entry', cfg, instanceConfig)
       try {
-        const skillCfg = cfg.skillsConfig?.save_entry || {}
-        const skillResult = await skill.handler({ text: message.text, title: message.text.slice(0, 80) }, message, outputFunctions, skillCfg)
-        const action = this.normalizeAction(skill, skillResult, { skill: 'save_entry', params: { text: message.text } }, skillCfg)
-        const tool = this.resolveOutputFunction(action, cfg)
+        const skillResult = await skill.handler({ text: message.text, title: message.text.slice(0, 80) }, message, outputFunctions, instanceConfig)
+        const action = this.normalizeAction(skill, skillResult, { skill: 'save_entry', params: { text: message.text } }, instanceConfig)
+        const tool = this.resolveOutputFunction(action, cfg, instanceConfig)
         if (!tool) return { skill: 'save_entry', fallback: true, result: skillResult }
         const result = await this.executeOutputFunction(tool, action.params, cfg, { message, skill: 'save_entry', fallback: true })
         return { skill: 'save_entry', fallback: true, action: { ...action, tool: tool.id }, result }
