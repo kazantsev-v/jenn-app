@@ -39,8 +39,9 @@ module.exports = {
 
   getConfig(config) {
     const port = parseInt(config?.ws_port) || 11235
-    const host = process.env.JENN_HOST || 'localhost'
-    const wsUrl = `ws://${host}:${port}`
+    const host = process.env.DOMAIN || 'localhost'
+    const protocol = host === 'localhost' ? 'ws' : 'wss'
+    const wsUrl = `${protocol}://${host}:${port}`
     return { ws_port: port, ws_url: wsUrl }
   },
 
