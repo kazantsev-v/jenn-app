@@ -5,6 +5,8 @@
   "scripts": {
     "start": "node index.js",
     "start:prod": "bash start.sh",
+    "start:prod:core": "bash start.sh --core-only",
+    "start:prod:bot": "bash start.sh --bot-only",
     "start:core": "node jenn-core.js",
     "start:bot": "node jenn-bot.js",
     "setup:autostart": "sudo bash setup-autostart.sh",

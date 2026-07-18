@@ -50,7 +50,19 @@ npm run start:prod
 4. Сохранит конфигурацию в `.env.production`
 5. Запустит core (HTTPS на 443) и bot (Telegram) как отдельные процессы
 
-### Раздельный запуск core и bot
+### Раздельный запуск в production
+
+```bash
+# Только core с HTTPS (Express сервер)
+npm run start:prod:core
+
+# Только Telegram-бот (в другом терминале / tmux)
+npm run start:prod:bot
+```
+
+Полезно для отладки или когда нужно перезапустить только один компонент.
+
+### Раздельный запуск локально
 
 ```bash
 # Только Express сервер (без Telegram-бота)
@@ -70,11 +82,27 @@ sudo npm run setup:autostart
 sudo bash setup-autostart.sh /path/to/jenn-app
 ```
 
-Скрипт создаёт два сервиса:
+Скрипт создаёт два независимых сервиса:
 - `jenn-core.service` — Express сервер
 - `jenn-bot.service` — Telegram-бот (зависит от core)
 
 Оба сервиса автоматически перезапускаются при падении (`Restart=always`).
+
+Можно запускать/останавливать их независимо:
+
+```bash
+# Запустить только core
+sudo systemctl start jenn-core
+
+# Запустить только bot
+sudo systemctl start jenn-bot
+
+# Остановить только core (bot тоже остановится из-за зависимости)
+sudo systemctl stop jenn-core
+
+# Остановить только bot
+sudo systemctl stop jenn-bot
+```
 
 ### Управление сервисами
 
