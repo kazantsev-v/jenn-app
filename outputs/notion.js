@@ -44,6 +44,7 @@ const NAME_MAP = [
 function smartMapToProperties(data, liveProps) {
   const props = {}
   const used = new Set()
+  const mappedDataKeys = new Set()
 
   function findCol(types, names) {
     for (const [name, def] of Object.entries(liveProps)) {
@@ -101,7 +102,11 @@ function smartMapToProperties(data, liveProps) {
     const col = findCol(rule.types, rule.names)
     if (!col) continue
     const built = build(col, liveProps[col], val)
-    if (built) { props[col] = built; used.add(col) }
+    if (built) {
+      props[col] = built
+      used.add(col)
+      mappedDataKeys.add(rule.key)
+    }
   }
 
   const SKIP_KEYS = new Set(['title', 'text', 'content', 'destination', 'database'])
@@ -134,7 +139,7 @@ function smartMapToProperties(data, liveProps) {
 
   for (const [key, val] of Object.entries(data)) {
     if (val === undefined || val === null || val === '') continue
-    if (SKIP_KEYS.has(key)) continue
+    if (SKIP_KEYS.has(key) || mappedDataKeys.has(key)) continue
     if (Object.values(props).some(p => {
       const v = p.select?.name || p.status?.name || p.rich_text?.[0]?.text?.content || p.date?.start || p.url || p.email || p.phone_number
       return v === String(val)

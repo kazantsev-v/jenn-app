@@ -33,10 +33,15 @@ jenn-obsidian/
 *.ico
 !public/favicon.ico
 
-# AI tool artifacts
+# AI tool artifacts and local editor settings
+.agents/
+.claude/
+.zed/
 .opencode/
 opencode.json
 .playwright-mcp/
+skills/
+skills-lock.json
 
 # Documentation (keep README only)
 *.md
