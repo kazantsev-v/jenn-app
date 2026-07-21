@@ -236,6 +236,148 @@
             }
         }
 
+        /* Architecture pipeline */
+        .architecture-grid {
+            align-items: stretch;
+        }
+
+        .architecture-side {
+            width: 100%;
+        }
+
+        @media (min-width: 1024px) {
+            .architecture-grid {
+                grid-template-columns: minmax(0, 1fr) minmax(22rem, 0.78fr);
+                column-gap: clamp(4rem, 7vw, 8rem);
+            }
+
+            .architecture-side {
+                max-width: 27rem;
+                justify-self: end;
+            }
+        }
+
+        .pipeline-card {
+            min-height: 100%;
+        }
+
+        .route-flow {
+            min-height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .route-inputs {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .route-node {
+            width: 7.5rem;
+            min-height: 6rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .route-connector {
+            color: rgba(220, 199, 161, 0.6);
+            flex: 0 0 auto;
+        }
+
+        .route-core {
+            width: 8.5rem;
+            min-height: 7.25rem;
+        }
+
+        @media (max-width: 1023px) {
+            .architecture-grid {
+                gap: 2rem;
+            }
+
+            .route-flow {
+                padding-top: 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .architecture-grid {
+                gap: 1.5rem;
+            }
+
+            .pipeline-card {
+                padding: 2rem !important;
+                border-radius: 2rem !important;
+                border-top-right-radius: 0 !important;
+            }
+
+            .route-flow {
+                align-items: stretch;
+            }
+
+            .route-flow-inner {
+                width: 100%;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .route-inputs {
+                width: 100%;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .route-node,
+            .route-core {
+                width: 100%;
+                min-height: 5.75rem;
+            }
+
+            .route-connector {
+                transform: rotate(90deg);
+                height: 1.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .pipeline-status {
+                align-items: flex-start;
+            }
+
+            .pipeline-status .ml-16 {
+                margin-left: 0;
+            }
+
+            .pipeline-status > div {
+                width: 100%;
+            }
+
+            .pipeline-status .flex-1 {
+                min-width: 0;
+            }
+
+            .pipeline-status .font-code {
+                font-size: 0.625rem;
+                padding: 0.5rem 0.625rem;
+                white-space: nowrap;
+            }
+
+            .open-source-card {
+                padding: 1.5rem !important;
+                align-items: flex-start;
+                gap: 1rem !important;
+            }
+
+            .open-source-card > div:first-child {
+                width: 3rem;
+                height: 3rem;
+                flex: 0 0 auto;
+            }
+        }
+
         /* Mobile Menu Active State */
         .mobile-menu-active {
             transform: translateY(0) !important;
@@ -620,16 +762,16 @@ animate();
 <h2 class="font-display text-display" data-i18n="core.title">Структура Jenn</h2>
 </div>
 <!-- Living Node-Graph Pipeline -->
-<div class="relative grid md:grid-cols-12 gap-8 items-start">
-<div class="md:col-span-7 relative">
-<div class="glass-panel p-10 rounded-[4rem] rounded-tr-none border-l-4 border-gold relative overflow-hidden tilt-card">
+<div class="architecture-grid relative grid gap-8">
+<div class="architecture-copy relative">
+<div class="pipeline-card glass-panel p-10 rounded-[4rem] rounded-tr-none border-l-4 border-gold relative overflow-hidden tilt-card">
 <div class="specular-highlight"></div>
 <h3 class="font-display text-headline-lg mb-6" data-i18n="pipeline.title">Маршрутизация</h3>
 <p class="font-body-lg text-on-surface-variant mb-8 max-w-lg" data-i18n="pipeline.desc">
                             Сообщения из Inputs (Telegram, Desktop, и др.) проходят через Jenn Core — роутер, который определяет намерения и направляет данные в Notion, Obsidian или любой другой output.
                         </p>
 <!-- Visual Node Graph Placeholder -->
-<div class="flex flex-col gap-4">
+<div class="pipeline-status flex flex-col gap-4">
 <div class="flex items-center gap-4">
 <div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center border border-outline-variant">
 <span class="material-symbols-outlined text-gold">psychology</span>
@@ -647,48 +789,40 @@ animate();
 </div>
 </div>
 </div>
-<div class="md:col-span-5 flex flex-col gap-12 pt-8 sm:pt-16 md:pt-24">
-<!-- Plugin Marketplace Flow Cards -->
-<div class="relative">
-<div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-<!-- Telegram Input -->
-<div class="glass-panel p-4 sm:p-5 rounded-xl border border-gold/20 hover:scale-105 transition-transform tilt-card text-center w-full sm:w-auto min-w-[120px]">
-<span class="material-symbols-outlined text-gold mb-2 block mx-auto">send</span>
-<div class="font-title-lg">Telegram</div>
+<div class="architecture-side flex flex-col gap-6 lg:pt-8">
+<!-- Input sources → Jenn Core → output -->
+<div class="route-flow">
+<div class="route-flow-inner flex items-center justify-center gap-3 sm:gap-4">
+<div class="route-inputs">
+<div class="route-node glass-panel p-3 rounded-xl border border-gold/20 hover:scale-105 transition-transform tilt-card">
+<span class="material-symbols-outlined text-gold mb-1 block">send</span>
+<div class="font-title-lg text-sm">Telegram</div>
 <div class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Input</div>
 </div>
-<!-- Arrow -->
-<div class="hidden sm:flex items-center text-gold/60">
-<span class="material-symbols-outlined text-2xl">arrow_forward</span>
+<div class="route-node glass-panel p-3 rounded-xl border border-lavender/20 hover:scale-105 transition-transform tilt-card">
+<span class="material-symbols-outlined text-lavender mb-1 block">laptop_mac</span>
+<div class="font-title-lg text-sm">Desktop</div>
+<div class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Input</div>
 </div>
-<div class="sm:hidden flex items-center text-gold/60 rotate-90">
-<span class="material-symbols-outlined text-2xl">arrow_forward</span>
 </div>
-<!-- Notion Core -->
-<div class="glass-panel p-4 sm:p-5 rounded-xl border border-turquoise/20 hover:scale-105 transition-transform tilt-card text-center w-full sm:w-auto min-w-[120px]">
-<span class="material-symbols-outlined text-turquoise mb-2 block mx-auto">description</span>
-<div class="font-title-lg">Notion</div>
+<div class="route-connector"><span class="material-symbols-outlined text-2xl">arrow_forward</span></div>
+<div class="route-node route-core glass-panel p-4 rounded-2xl border border-gold/40 hover:scale-105 transition-transform tilt-card">
+<span class="material-symbols-outlined text-gold mb-2 block">hub</span>
+<div class="font-title-lg">Jenn Core</div>
+<div class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Router</div>
+</div>
+<div class="route-connector"><span class="material-symbols-outlined text-2xl">arrow_forward</span></div>
+<div class="route-node glass-panel p-3 rounded-xl border border-turquoise/20 hover:scale-105 transition-transform tilt-card">
+<span class="material-symbols-outlined text-turquoise mb-1 block">description</span>
+<div class="font-title-lg text-sm">Notion</div>
 <div class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Output</div>
-</div>
-<!-- Arrow -->
-<div class="hidden sm:flex items-center text-gold/60">
-<span class="material-symbols-outlined text-2xl">arrow_forward</span>
-</div>
-<div class="sm:hidden flex items-center text-gold/60 rotate-90">
-<span class="material-symbols-outlined text-2xl">arrow_forward</span>
-</div>
-<!-- Desktop Input -->
-<div class="glass-panel p-4 sm:p-5 rounded-xl border border-lavender/20 hover:scale-105 transition-transform tilt-card text-center w-full sm:w-auto min-w-[120px]">
-<span class="material-symbols-outlined text-lavender mb-2 block mx-auto">laptop_mac</span>
-<div class="font-title-lg">Desktop</div>
-<div class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Input</div>
 </div>
 </div>
 </div>
 <!-- Security Volumetric Effect -->
 <div class="relative group">
 <div class="absolute -inset-4 bg-gold/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
-<div class="glass-panel p-8 rounded-3xl border-outline-variant relative z-10 flex items-center gap-6 tilt-card">
+<div class="open-source-card glass-panel p-8 rounded-3xl border-outline-variant relative z-10 flex items-center gap-6 tilt-card">
 <div class="w-16 h-16 rounded-2xl bg-surface-container-highest flex items-center justify-center relative">
 <span class="material-symbols-outlined text-gold text-4xl" data-weight="fill">shield</span>
 <div class="absolute inset-0 bg-gold/20 blur-xl rounded-full animate-pulse"></div>
