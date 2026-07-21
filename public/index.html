@@ -261,6 +261,25 @@
             min-height: 100%;
         }
 
+        .open-source-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid rgba(220, 199, 161, 0.22);
+            border-radius: 9999px;
+            background: rgba(30, 30, 33, 0.75);
+            color: #DCC7A1;
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.625rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
         .route-flow {
             min-height: 100%;
             display: flex;
@@ -268,7 +287,8 @@
             justify-content: center;
         }
 
-        .route-inputs {
+        .route-inputs,
+        .route-outputs {
             display: grid;
             gap: 0.75rem;
         }
@@ -324,9 +344,16 @@
                 gap: 0.75rem;
             }
 
-            .route-inputs {
+            .route-inputs,
+            .route-outputs {
                 width: 100%;
                 grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .open-source-badge {
+                position: static;
+                width: fit-content;
+                margin: 0 0 1rem auto;
             }
 
             .route-node,
@@ -365,17 +392,7 @@
                 white-space: nowrap;
             }
 
-            .open-source-card {
-                padding: 1.5rem !important;
-                align-items: flex-start;
-                gap: 1rem !important;
-            }
 
-            .open-source-card > div:first-child {
-                width: 3rem;
-                height: 3rem;
-                flex: 0 0 auto;
-            }
         }
 
         /* Mobile Menu Active State */
@@ -766,6 +783,7 @@ animate();
 <div class="architecture-copy relative">
 <div class="pipeline-card glass-panel p-10 rounded-[4rem] rounded-tr-none border-l-4 border-gold relative overflow-hidden tilt-card">
 <div class="specular-highlight"></div>
+<div class="open-source-badge"><span class="material-symbols-outlined text-sm">shield</span>Open Source</div>
 <h3 class="font-display text-headline-lg mb-6" data-i18n="pipeline.title">Маршрутизация</h3>
 <p class="font-body-lg text-on-surface-variant mb-8 max-w-lg" data-i18n="pipeline.desc">
                             Сообщения из Inputs (Telegram, Desktop, и др.) проходят через Jenn Core — роутер, который определяет намерения и направляет данные в Notion, Obsidian или любой другой output.
@@ -812,26 +830,17 @@ animate();
 <div class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Router</div>
 </div>
 <div class="route-connector"><span class="material-symbols-outlined text-2xl">arrow_forward</span></div>
+<div class="route-outputs">
 <div class="route-node glass-panel p-3 rounded-xl border border-turquoise/20 hover:scale-105 transition-transform tilt-card">
 <span class="material-symbols-outlined text-turquoise mb-1 block">description</span>
 <div class="font-title-lg text-sm">Notion</div>
 <div class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Output</div>
 </div>
+<div class="route-node glass-panel p-3 rounded-xl border border-lavender/20 hover:scale-105 transition-transform tilt-card">
+<span class="material-symbols-outlined text-lavender mb-1 block">diamond</span>
+<div class="font-title-lg text-sm">Obsidian</div>
+<div class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Output</div>
 </div>
-</div>
-<!-- Security Volumetric Effect -->
-<div class="relative group">
-<div class="absolute -inset-4 bg-gold/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
-<div class="open-source-card glass-panel p-8 rounded-3xl border-outline-variant relative z-10 flex items-center gap-6 tilt-card">
-<div class="w-16 h-16 rounded-2xl bg-surface-container-highest flex items-center justify-center relative">
-<span class="material-symbols-outlined text-gold text-4xl" data-weight="fill">shield</span>
-<div class="absolute inset-0 bg-gold/20 blur-xl rounded-full animate-pulse"></div>
-</div>
-<div>
-<div class="font-title-lg mb-1">Open Source</div>
-<p class="text-on-surface-variant text-label-lg">
-Fully open source. Audit the code, extend it, or contribute to the project.
-</p>
 </div>
 </div>
 </div>
