@@ -2060,7 +2060,7 @@ async function openOutputConfig(name) {
   }
   if (meta.hasDestinations) {
     const destTooltip = name === 'notion' ? t('misc.notion_dest_tooltip') : t('misc.obsidian_dest_tooltip');
-    const faqLink = name === 'notion' ? `<a href="/faq-notion.html" target="_blank" class="ml-2 text-primary hover:underline text-xs">${t('misc.notion_setup_guide')}</a>` : '';
+    const faqLink = name === 'notion' ? `<a href="/faq/notion-setup" target="_blank" class="ml-2 text-primary hover:underline text-xs">${t('misc.notion_setup_guide')}</a>` : '';
     html += `<div class="mt-5 pt-4 border-t border-outline-variant"><div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3"><div class="flex items-start gap-2"><p class="text-sm font-medium text-on-surface">${t('misc.destinations')}</p><span class="group relative mt-0.5 cursor-help"><span class="material-symbols-outlined text-[16px] text-on-surface-variant">help_outline</span><span class="tooltip-bubble">${destTooltip}</span></span></div><div class="flex items-center gap-2"><button onclick="loadOutputDestinations('${escapeHtml(name)}')" class="px-3 py-1.5 glass-panel rounded-full text-xs">${t('misc.refresh')}</button>${faqLink}</div></div><p class="text-xs text-on-surface-variant mb-3">${t('misc.destinations_desc')}</p><div id="output-destinations"></div></div>`;
   }
   html += '<div id="output-test-result"></div>';

@@ -12,6 +12,7 @@ const { auth, ping, postMessage, health } = require('./routes')
 const createAdminRouter = require('./routes-admin')
 const store = require('./store')
 const { disconnect: dbDisconnect } = require('./db')
+const { registerSeoRoutes } = require('./seo')
 const telegramBridge = require('./services/telegram-bridge')
 
 const processor = new Processor(loadConfig())
@@ -69,6 +70,7 @@ async function start() {
   app.use(cookieParser())
   app.use(cors({ origin: true, credentials: true }))
   app.use(express.json({ limit: '64kb' }))
+  registerSeoRoutes(app)
 
   app.use('/v1/admin', createAdminRouter(processor, loadedInputs))
 
@@ -79,6 +81,7 @@ async function start() {
   app.get('/pricing', (req, res) => res.sendFile(path.join(__dirname, 'public', 'stitch', 'landing-pricing.html')))
   app.get('/faq', (req, res) => res.sendFile(path.join(__dirname, 'public', 'faq.html')))
   app.get('/faq-article', (req, res) => res.sendFile(path.join(__dirname, 'public', 'faq-article.html')))
+  app.get('/faq/notion-setup', (req, res) => res.sendFile(path.join(__dirname, 'public', 'faq-notion.html')))
   app.get('/products', (req, res) => res.sendFile(path.join(__dirname, 'public', 'products.html')))
 
   app.use(express.static(path.join(__dirname, 'public')))
